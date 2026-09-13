@@ -1,4 +1,5 @@
-import { auth, signIn } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 
 export default async function DashboardLayout({
   children,
@@ -6,7 +7,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  if (!session?.accessToken) await signIn("discord");
+  if (!session?.accessToken) redirect("/");
 
   return children;
 }
