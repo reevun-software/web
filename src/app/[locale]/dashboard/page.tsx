@@ -1,9 +1,12 @@
-import { Layers } from "lucide-react";
+import { Layers, Plus } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link, redirect } from "@/i18n/navigation";
 import { auth } from "@/lib/auth";
 import { getManageableGuilds } from "@/lib/guilds";
+import { DISCORD_BOT_INVITE_URL } from "@/lib/discord";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { OAuthPopupButton } from "@/components/auth/oauth-popup-button";
 
 export default async function DashboardPage() {
   const locale = await getLocale();
@@ -14,7 +17,7 @@ export default async function DashboardPage() {
   }
   const guilds = await getManageableGuilds(session.accessToken);
   const installed = guilds.filter((g) => g.botInstalled);
-  const t = await getTranslations("Dashboard");
+  const [t, tRoot] = await Promise.all([getTranslations("Dashboard"), getTranslations()]);
 
   if (installed.length === 1)
     redirect({ href: `/dashboard/${installed[0].id}`, locale });
@@ -28,6 +31,15 @@ export default async function DashboardPage() {
           <p className="max-w-[46ch] text-sm text-muted-foreground">
             {t("noFamiliesBody")}
           </p>
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+            <OAuthPopupButton startUrl={DISCORD_BOT_INVITE_URL} mode="external">
+              <Plus className="size-4" />
+              {tRoot("Cta.addBot")}
+            </OAuthPopupButton>
+            <Button render={<Link href="/" />} variant="outline">
+              {tRoot("NotFound.home")}
+            </Button>
+          </div>
         </>
       ) : (
         <>
