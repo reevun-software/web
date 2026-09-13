@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/app/globals.css"
+        ],
+        "createdAt": "2026-09-13T12:16:58.742Z",
+        "reason": "user explicitly asked to replicate resend.com's design; this gradient-fill technique was directly observed in resend's own production CSS (.effect-font-gradient), not an AI default reach"
+      }
+    ]
+  }
+}
