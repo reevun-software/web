@@ -196,7 +196,6 @@
   "Leaving": {
     "title": "You're leaving Reevun",
     "body": "{site} is an independent third-party project. We don't verify its content and aren't responsible for it.",
-    "countdown": "Redirecting automatically in {seconds}s.",
     "continueNow": "Continue now",
     "goBack": "Go back"
   }

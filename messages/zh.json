@@ -196,7 +196,6 @@
   "Leaving": {
     "title": "你即将离开 Reevun",
     "body": "{site} 是一个独立的第三方项目。我们不对其内容进行核实，也不对其承担任何责任。",
-    "countdown": "将在 {seconds} 秒后自动跳转。",
     "continueNow": "立即前往",
     "goBack": "返回"
   }

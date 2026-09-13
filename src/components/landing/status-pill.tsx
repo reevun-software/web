@@ -6,7 +6,7 @@ import { getServiceStatus } from "@/lib/status";
 const DOT_COLOR = {
   operational: "bg-emerald-500",
   issue: "bg-amber-500",
-  unknown: "bg-muted-foreground",
+  unavailable: "bg-muted-foreground",
 };
 
 export async function StatusPill({ className }: { className?: string }) {

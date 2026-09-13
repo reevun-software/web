@@ -1,4 +1,8 @@
-const STATUS_PAGE_SLUG = "main";
+// Uptime Kuma's status page slug - set from the dashboard, so it can change
+// whenever someone renames the page there (it already has once: "main" ->
+// "app"). If this starts 404ing again, check what /api/status-page/<slug>
+// the site now redirects to at https://status.reevun.app.
+const STATUS_PAGE_SLUG = "app";
 const STATUS_PAGE_BASE = "https://status.reevun.app";
 
 // https://uptime.kuma.pet - the public status-page JSON API this hits.
@@ -6,7 +10,7 @@ const STATUS_PAGE_BASE = "https://status.reevun.app";
 type Heartbeat = { status: 0 | 1 | 2 | 3 };
 type Monitor = { id: number };
 type StatusPageResponse = {
-  incident: { title: string; style: string } | null;
+  incidents: { title: string; style: string }[];
   publicGroupList: { monitorList: Monitor[] }[];
 };
 type HeartbeatResponse = { heartbeatList: Record<string, Heartbeat[]> };
@@ -14,7 +18,7 @@ type HeartbeatResponse = { heartbeatList: Record<string, Heartbeat[]> };
 export type ServiceStatus =
   | { variant: "operational" }
   | { variant: "issue"; incidentTitle?: string }
-  | { variant: "unknown" };
+  | { variant: "unavailable" };
 
 export async function getServiceStatus(): Promise<ServiceStatus> {
   try {
@@ -42,9 +46,10 @@ export async function getServiceStatus(): Promise<ServiceStatus> {
     });
 
     if (anyDown) return { variant: "issue" };
-    if (page.incident) return { variant: "issue", incidentTitle: page.incident.title };
+    if (page.incidents.length > 0)
+      return { variant: "issue", incidentTitle: page.incidents[0].title };
     return { variant: "operational" };
   } catch {
-    return { variant: "unknown" };
+    return { variant: "unavailable" };
   }
 }

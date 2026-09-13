@@ -136,6 +136,15 @@
   }
 }
 
+@keyframes leaving-ring-deplete {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: var(--ring-circumference);
+  }
+}
+
 /* Deliberately outside any @layer: Tailwind's utilities (bg-primary,
    text-primary-foreground, etc.) live inside a layer, and un-layered rules
    always win the cascade regardless of source order - so this reliably
