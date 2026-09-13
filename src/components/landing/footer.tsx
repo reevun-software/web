@@ -3,6 +3,7 @@ import Link from "next/link";
 import { LogIn } from "lucide-react";
 import { DiscordSignInButton } from "@/components/discord-signin-button";
 import { DISCORD_BOT_INVITE_URL } from "@/lib/discord";
+import { StatusPill } from "@/components/landing/status-pill";
 
 export function Footer() {
   return (
@@ -25,6 +26,7 @@ export function Footer() {
             Панель управления Discord-ботом для RP-сообществ: набор, ранги,
             предупреждения и обращения в одном месте.
           </p>
+          <StatusPill />
         </div>
 
         <div className="flex flex-col gap-3">
@@ -46,14 +48,6 @@ export function Footer() {
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             Вопросы
-          </Link>
-          <Link
-            href="https://status.reevun.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Статус сервисов
           </Link>
         </div>
 
