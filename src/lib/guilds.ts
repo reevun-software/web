@@ -28,7 +28,19 @@ export type ManageableGuild = {
 export async function getManageableGuilds(
   accessToken: string,
 ): Promise<ManageableGuild[]> {
-  const discordGuilds = filterManageable(await getCachedUserGuilds(accessToken));
+  let rawGuilds;
+  try {
+    rawGuilds = await getCachedUserGuilds(accessToken);
+  } catch (error) {
+    // Discord's rate limit on this endpoint is real and not fully under our
+    // control even with the 60s cache above (its own reset window can run
+    // longer than that). Degrade to "no guilds visible right now" instead of
+    // crashing the whole page - a transient 429 shouldn't 500 the dashboard.
+    console.error("getManageableGuilds: Discord guilds fetch failed", error);
+    return [];
+  }
+
+  const discordGuilds = filterManageable(rawGuilds);
   if (discordGuilds.length === 0) return [];
 
   const ids = discordGuilds.map((g) => g.id);
