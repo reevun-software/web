@@ -16,9 +16,7 @@ import { Button } from "@/components/ui/button";
 import { DiscordSignInButton } from "@/components/discord-signin-button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { BrandOrb } from "@/components/landing/brand-orb";
+import { ShatteredCube } from "@/components/landing/shattered-cube";
 import { Reveal } from "@/components/landing/reveal";
 import { Faq } from "@/components/landing/faq";
 import { Footer } from "@/components/landing/footer";
@@ -119,7 +117,6 @@ export default async function Home() {
         {/* Hero: asymmetric split */}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 pt-16 pb-10 md:grid-cols-2 md:items-center md:pt-20">
           <div className="flex flex-col gap-6">
-            <BrandOrb />
             <h1 className="text-3xl font-semibold tracking-tight leading-[1.1] md:text-4xl">
               Управляйте Discord-сообществом из одной панели
             </h1>
@@ -147,51 +144,7 @@ export default async function Home() {
             </div>
           </div>
 
-          <Card className="border-border/60 bg-card/60 p-5 shadow-none">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-muted-foreground">
-                Участники семьи
-              </span>
-              <Badge variant="secondary" className="font-mono text-xs">
-                MajesticRP GTA5RP
-              </Badge>
-            </div>
-            <Separator className="my-4" />
-            <ul className="flex flex-col gap-3">
-              {[
-                { name: "Дмитрий Соколов", rank: "Ранг 2", warnings: 0 },
-                { name: "Алина Ковалёва", rank: "Ранг 3", warnings: 1 },
-                { name: "Тимур Насыров", rank: "Ранг 1", warnings: 0 },
-              ].map((m) => (
-                <li key={m.name} className="flex items-center gap-3">
-                  <span className="relative">
-                    <Avatar className="size-9">
-                      <AvatarFallback className="text-xs">
-                        {m.name
-                          .split(" ")
-                          .map((p) => p[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="absolute -right-0.5 -bottom-0.5 size-2.5 rounded-full bg-emerald-500 ring-2 ring-card" />
-                  </span>
-                  <div className="flex min-w-0 flex-1 flex-col">
-                    <span className="truncate text-sm font-medium">
-                      {m.name}
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      {m.rank}
-                    </span>
-                  </div>
-                  {m.warnings > 0 && (
-                    <Badge variant="destructive" className="text-xs">
-                      {m.warnings} предупреждение
-                    </Badge>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </Card>
+          <ShatteredCube />
         </section>
 
         <p className="mx-auto max-w-6xl px-6 pb-16 text-sm text-muted-foreground">
