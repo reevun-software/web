@@ -47,6 +47,14 @@ export function Footer() {
           >
             Вопросы
           </Link>
+          <Link
+            href="https://status.reevun.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Статус сервисов
+          </Link>
         </div>
 
         <div className="flex flex-col gap-3">

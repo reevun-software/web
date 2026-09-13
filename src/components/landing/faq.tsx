@@ -22,6 +22,26 @@ const FAQ = [
     q: "Нужен ли отдельный пароль для панели?",
     a: "Нет, вход только через Discord OAuth. Отдельного пароля для сайта не существует.",
   },
+  {
+    q: "Куда попадают заявки на вступление?",
+    a: "В отдельный канал на вашем сервере. Перед отправкой форма проверяет заявителя на ботов и спам.",
+  },
+  {
+    q: "Что происходит после третьего предупреждения?",
+    a: "Роль снимается автоматически, без участия модератора — не нужно отслеживать это вручную.",
+  },
+  {
+    q: "Можно переносить участников между голосовыми каналами?",
+    a: "Да, командой /move — сразу для нескольких участников одним действием, без ручного перетаскивания каждого.",
+  },
+  {
+    q: "Видно ли, кто выдал ранг или снял предупреждение?",
+    a: "Да, каждое такое действие сохраняется в журнале и видно в панели вместе с тем, кто его совершил.",
+  },
+  {
+    q: "Бот не отвечает — что делать?",
+    a: "Проверьте status.reevun.app: там видно, какие сервисы Reevun сейчас работают, а какие нет.",
+  },
 ];
 
 export function Faq() {
@@ -29,7 +49,7 @@ export function Faq() {
     <Accordion multiple={false} className="w-full">
       {FAQ.map((item) => (
         <AccordionItem key={item.q} value={item.q}>
-          <AccordionTrigger className="text-left text-base font-medium">
+          <AccordionTrigger className="cursor-pointer text-left text-base font-medium hover:no-underline">
             {item.q}
           </AccordionTrigger>
           <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
