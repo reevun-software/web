@@ -1,8 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { LogIn } from "lucide-react";
-import { DiscordSignInButton } from "@/components/discord-signin-button";
-import { DISCORD_BOT_INVITE_URL } from "@/lib/discord";
 import { StatusPill } from "@/components/landing/status-pill";
 
 export function Footer() {
@@ -26,7 +23,7 @@ export function Footer() {
             Панель управления Discord-ботом для RP-сообществ: набор, ранги,
             предупреждения и обращения в одном месте.
           </p>
-          <StatusPill />
+          <StatusPill className="mt-2" />
         </div>
 
         <div className="flex flex-col gap-3">
@@ -52,22 +49,31 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <span className="text-sm font-medium">Начать</span>
+          <span className="text-sm font-medium">Ресурсы</span>
           <Link
-            href={DISCORD_BOT_INVITE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            Добавить бота на сервер
+            Команды
           </Link>
-          <DiscordSignInButton
-            variant="link"
-            className="h-auto justify-start p-0 text-sm font-normal text-muted-foreground hover:text-foreground"
+          <Link
+            href="/"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            <LogIn className="size-3.5" />
-            Войти через Discord
-          </DiscordSignInButton>
+            Поддержка
+          </Link>
+          <Link
+            href="/"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Документация
+          </Link>
+          <Link
+            href="/"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Обратная связь
+          </Link>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -89,7 +95,7 @@ export function Footer() {
 
       <div className="border-t border-border/60 px-6 py-6">
         <p className="mx-auto max-w-6xl text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Reevun.
+          © 2023–{new Date().getFullYear()}. Reevun Software LLC.
         </p>
       </div>
     </footer>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { getServiceStatus } from "@/lib/status";
 
 const DOT_COLOR = {
@@ -7,7 +8,7 @@ const DOT_COLOR = {
   unknown: "bg-muted-foreground",
 };
 
-export async function StatusPill() {
+export async function StatusPill({ className }: { className?: string }) {
   const status = await getServiceStatus();
 
   return (
@@ -15,7 +16,10 @@ export async function StatusPill() {
       href="https://status.reevun.app"
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-white/[0.08] hover:text-foreground"
+      className={cn(
+        "inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-white/[0.08] hover:text-foreground",
+        className,
+      )}
     >
       <span className={`size-2 rounded-full ${DOT_COLOR[status.variant]}`} />
       {status.label}
