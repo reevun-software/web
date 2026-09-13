@@ -10,6 +10,7 @@ import {
   Settings2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DiscordSignInButton } from "@/components/discord-signin-button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -75,13 +76,10 @@ export default function Home() {
               Reevun
             </span>
           </span>
-          <Button
-            render={<Link href="/api/auth/signin/discord" />}
-            size="sm"
-          >
+          <DiscordSignInButton size="sm">
             <LogIn className="size-4" />
             Войти через Discord
-          </Button>
+          </DiscordSignInButton>
         </div>
       </header>
 
@@ -97,13 +95,10 @@ export default function Home() {
               семье. Один вход через Discord, доступ только к своей общине.
             </p>
             <div className="flex flex-wrap items-center gap-3">
-              <Button
-                render={<Link href="/api/auth/signin/discord" />}
-                size="lg"
-              >
+              <DiscordSignInButton size="lg">
                 Войти через Discord
                 <ArrowRight className="size-4" />
-              </Button>
+              </DiscordSignInButton>
               <Button render={<Link href="#features" />} variant="ghost" size="lg">
                 Смотреть возможности
               </Button>
@@ -215,10 +210,10 @@ export default function Home() {
             <h2 className="max-w-[24ch] text-2xl font-semibold tracking-tight">
               Готовы подключить свою семью к Reevun?
             </h2>
-            <Button render={<Link href="/api/auth/signin/discord" />} size="lg">
+            <DiscordSignInButton size="lg">
               Войти через Discord
               <ArrowRight className="size-4" />
-            </Button>
+            </DiscordSignInButton>
           </div>
         </section>
       </main>

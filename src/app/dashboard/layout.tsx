@@ -1,5 +1,4 @@
-import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+import { auth, signIn } from "@/lib/auth";
 
 export default async function DashboardLayout({
   children,
@@ -7,7 +6,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  if (!session?.accessToken) redirect("/api/auth/signin/discord");
+  if (!session?.accessToken) await signIn("discord");
 
   return children;
 }
