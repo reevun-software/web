@@ -4,9 +4,18 @@ import { getPathname } from "@/i18n/navigation";
 import { signIn } from "@/lib/auth";
 import { AutoSubmitForm } from "@/components/auth/auto-submit-form";
 
-export default async function DiscordSignInPopupPage() {
-  const [locale, t] = await Promise.all([getLocale(), getTranslations("Auth")]);
-  const redirectTo = getPathname({ href: "/auth/popup/complete", locale });
+export default async function DiscordSignInPopupPage({
+  searchParams,
+}: PageProps<"/[locale]/auth/popup/discord-signin">) {
+  const [{ direct }, locale, t] = await Promise.all([
+    searchParams,
+    getLocale(),
+    getTranslations("Auth"),
+  ]);
+  // Reached directly (no popup, mobile fallback) when ?direct=1 - land on the
+  // dashboard instead of the popup's own "you can close this window" page,
+  // which has nothing useful to show outside an actual popup.
+  const redirectTo = getPathname({ href: direct ? "/dashboard" : "/auth/popup/complete", locale });
 
   return (
     <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-3 px-6 text-center text-sm text-muted-foreground">
