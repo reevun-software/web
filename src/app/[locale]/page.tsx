@@ -22,7 +22,7 @@ import { HeroBackground } from "@/components/landing/hero-background";
 import { Reveal } from "@/components/landing/reveal";
 import { Faq } from "@/components/landing/faq";
 import { Footer } from "@/components/landing/footer";
-import { DisclaimerPopup } from "@/components/landing/disclaimer-popup";
+import { NoticeStack } from "@/components/landing/notice-stack";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ProjectLink } from "@/components/landing/project-link";
 
@@ -202,7 +202,7 @@ export default async function Home() {
       </main>
 
       <Footer />
-      <DisclaimerPopup />
+      <NoticeStack />
     </div>
   );
 }

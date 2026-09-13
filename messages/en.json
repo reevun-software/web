@@ -125,7 +125,10 @@
     "allRightsReserved": "All rights reserved.",
     "disclaimer": "Reevun is not affiliated with or endorsed by Take-Two Interactive, Rockstar Games, or any other rights holder. All trademarks belong to their respective owners. Reevun is also not affiliated with or endorsed by the MajesticRP, GTA 5 RP, or Russia Online communities - these are independent projects.",
     "disclaimerTitle": "Disclaimer",
-    "dismissDisclaimer": "Close"
+    "dismissDisclaimer": "Close",
+    "cookiesTitle": "Cookies",
+    "cookiesBody": "Our site uses cookies to improve how it works.",
+    "cookiesLearnMore": "Learn more"
   },
   "Status": {
     "operational": "All systems operational",

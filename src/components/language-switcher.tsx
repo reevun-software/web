@@ -30,7 +30,25 @@ export function LanguageSwitcher() {
   const params = useParams();
 
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      onOpenChange={(open) => {
+        // Switching locale is a real navigation (new RSC render), which
+        // otherwise only starts once clicked - noticeably slower than a
+        // normal link because next-intl's imperative router.replace() here
+        // isn't a <Link>, so Next.js never auto-prefetches it. Warm every
+        // other locale's route the moment the menu opens instead, so the
+        // actual click just swaps in an already-fetched payload.
+        if (!open) return;
+        for (const l of LOCALES) {
+          if (l === locale) continue;
+          router.prefetch(
+            // @ts-expect-error -- see the same cast on replace() below.
+            { pathname, params },
+            { locale: l },
+          );
+        }
+      }}
+    >
       <DropdownMenuTrigger
         render={<Button variant="ghost" size="sm" aria-label={t("label")} />}
       >

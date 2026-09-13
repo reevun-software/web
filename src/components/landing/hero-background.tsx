@@ -14,7 +14,7 @@ export function HeroBackground() {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      <div className="absolute -bottom-1/4 -right-1/5 h-[80vh] w-[90vw] rotate-[-10deg] bg-gradient-to-tr from-white/[0.09] via-white/[0.03] to-transparent blur-3xl" />
+      <div className="hero-glow absolute -bottom-1/4 -right-1/5 h-[80vh] w-[90vw] rotate-[-10deg] bg-gradient-to-tr from-white/[0.09] via-white/[0.03] to-transparent blur-3xl" />
     </div>
   );
 }

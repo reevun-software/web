@@ -125,7 +125,10 @@
     "allRightsReserved": "Tüm hakları saklıdır.",
     "disclaimer": "Reevun; Take-Two Interactive, Rockstar Games veya başka bir hak sahibiyle bağlantılı değildir ve onlar tarafından desteklenmemektedir. Tüm ticari markalar ilgili sahiplerine aittir. Reevun ayrıca MajesticRP, GTA 5 RP ve Rusya Online topluluklarıyla da bağlantılı değildir ve onlar tarafından onaylanmamıştır - bunlar birbirinden bağımsız projelerdir.",
     "disclaimerTitle": "Yasal Uyarı",
-    "dismissDisclaimer": "Kapat"
+    "dismissDisclaimer": "Kapat",
+    "cookiesTitle": "Çerezler",
+    "cookiesBody": "Sitemiz, çalışmasını iyileştirmek için çerezler kullanır.",
+    "cookiesLearnMore": "Daha fazla bilgi"
   },
   "Status": {
     "operational": "Tüm sistemler çalışıyor",
