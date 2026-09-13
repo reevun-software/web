@@ -1,8 +1,11 @@
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { StatusPill } from "@/components/landing/status-pill";
 
 export function Footer() {
+  const t = useTranslations("Footer");
+
   return (
     <footer className="border-t border-border/60">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
@@ -20,82 +23,81 @@ export function Footer() {
             </span>
           </span>
           <p className="max-w-[32ch] text-sm leading-relaxed text-muted-foreground">
-            Панель управления Discord-ботом для RP-сообществ: набор, ранги,
-            предупреждения и обращения в одном месте.
+            {t("description")}
           </p>
           <StatusPill className="mt-2" />
         </div>
 
         <div className="flex flex-col gap-3">
-          <span className="text-sm font-medium">Продукт</span>
+          <span className="text-sm font-medium">{t("product")}</span>
           <Link
             href="#features"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            Возможности
+            {t("features")}
           </Link>
           <Link
             href="#how-it-works"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            Как это работает
+            {t("howItWorks")}
           </Link>
           <Link
             href="#faq"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            Вопросы
+            {t("questions")}
           </Link>
         </div>
 
         <div className="flex flex-col gap-3">
-          <span className="text-sm font-medium">Ресурсы</span>
+          <span className="text-sm font-medium">{t("resources")}</span>
           <Link
             href="/"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            Команды
+            {t("commands")}
           </Link>
           <Link
             href="/"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            Поддержка
+            {t("support")}
           </Link>
           <Link
             href="/"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            Документация
+            {t("documentation")}
           </Link>
           <Link
             href="/"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            Обратная связь
+            {t("feedback")}
           </Link>
         </div>
 
         <div className="flex flex-col gap-3">
-          <span className="text-sm font-medium">Правовая информация</span>
+          <span className="text-sm font-medium">{t("legal")}</span>
           <Link
             href="/privacy"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            Политика конфиденциальности
+            {t("privacy")}
           </Link>
           <Link
             href="/terms"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            Условия использования
+            {t("terms")}
           </Link>
         </div>
       </div>
 
       <div className="border-t border-border/60 px-6 py-6">
         <p className="mx-auto max-w-6xl text-xs text-muted-foreground">
-          © 2023–{new Date().getFullYear()}. Reevun Software LLC.
+          © 2023–{new Date().getFullYear()}. {t("copyright")}
         </p>
       </div>
     </footer>

@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   Users,
   ShieldCheck,
@@ -10,6 +9,7 @@ import {
   ChevronsUpDown,
   Check,
 } from "lucide-react";
+import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,13 +20,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { ManageableGuild } from "@/lib/guilds";
 
-const NAV = [
-  { label: "Участники", icon: Users, segment: "" },
-  { label: "Ранги и предупреждения", icon: ShieldCheck, segment: "ranks" },
-  { label: "Обращения", icon: Ticket, segment: "tickets" },
-  { label: "Настройки", icon: Settings, segment: "settings" },
-];
-
 export function DashboardSidebar({
   guildId,
   guildName,
@@ -36,8 +29,16 @@ export function DashboardSidebar({
   guildName: string;
   guilds: ManageableGuild[];
 }) {
+  const t = useTranslations("Dashboard");
   const pathname = usePathname();
   const base = `/dashboard/${guildId}`;
+
+  const nav = [
+    { label: t("nav.members"), icon: Users, segment: "" },
+    { label: t("nav.ranks"), icon: ShieldCheck, segment: "ranks" },
+    { label: t("nav.tickets"), icon: Ticket, segment: "tickets" },
+    { label: t("nav.settings"), icon: Settings, segment: "settings" },
+  ];
 
   return (
     <aside className="flex min-h-dvh w-64 shrink-0 flex-col border-r border-border/60 bg-card/40">
@@ -65,7 +66,7 @@ export function DashboardSidebar({
                 {g.id === guildId && <Check className="size-4" />}
                 {!g.botInstalled && (
                   <span className="text-xs text-muted-foreground">
-                    нет бота
+                    {t("noBot")}
                   </span>
                 )}
               </DropdownMenuItem>
@@ -75,7 +76,7 @@ export function DashboardSidebar({
       </div>
 
       <nav className="flex flex-col gap-0.5 px-2">
-        {NAV.map((item) => {
+        {nav.map((item) => {
           const href = item.segment ? `${base}/${item.segment}` : base;
           const active = pathname === href;
           return (

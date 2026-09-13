@@ -1,0 +1,196 @@
+{
+  "Metadata": {
+    "title": "Reevun",
+    "description": "Dashboard for the Reevun Discord bot, built for RP communities."
+  },
+  "Header": {
+    "signIn": "Sign in with Discord",
+    "dashboardAria": "Dashboard"
+  },
+  "Hero": {
+    "title": "Run your Discord community",
+    "subtitle": "Reevun handles recruitment, ranks, warnings, and tickets for your family. One sign-in with Discord, access limited to your own community.",
+    "addBot": "Add bot to server",
+    "seeFeatures": "See what it does",
+    "availableFor": "Available for MajesticRP, GTA 5 RP, and Россия Онлайн."
+  },
+  "Features": {
+    "heading": "Everything the bot manages, now in your browser too",
+    "items": [
+      {
+        "title": "Recruitment without the busywork",
+        "body": "New members fill out an application, the bot screens out bots and spam on its own, and an AFK-aware profile builds itself along the way."
+      },
+      {
+        "title": "Ranks advance in order",
+        "body": "The next rank only unlocks after the previous one, and after a third warning the role is removed automatically - no one has to do it by hand."
+      },
+      {
+        "title": "Tickets don't get lost",
+        "body": "Every ticket gets its own number, with the full conversation right there in the dashboard."
+      },
+      {
+        "title": "Move people in one click",
+        "body": "The /move command moves every selected member into a different voice channel at once."
+      },
+      {
+        "title": "See who did what",
+        "body": "Granting a rank, clearing a warning, closing a ticket - every action stays in the log."
+      },
+      {
+        "title": "One account, every family",
+        "body": "Running more than one server? Switch between them without signing in again."
+      }
+    ]
+  },
+  "HowItWorks": {
+    "heading": "Three steps to your first shift",
+    "steps": [
+      {
+        "verb": "Add the bot",
+        "body": "Install Reevun on your Discord server - you'll need administrator permissions."
+      },
+      {
+        "verb": "Sign in",
+        "body": "Log in with your Discord account, no separate password required."
+      },
+      {
+        "verb": "Take over",
+        "body": "Ranks, warnings, and tickets, all in one place."
+      }
+    ]
+  },
+  "Faq": {
+    "heading": "Frequently asked questions",
+    "items": [
+      {
+        "q": "Do I need to host the bot myself?",
+        "a": "No. The bot runs on our infrastructure - you only need to add it to your Discord server and sign in to the dashboard with the same account."
+      },
+      {
+        "q": "Who can see a family in the dashboard?",
+        "a": "Only members with the \"Manage Server\" permission or administrator rights on that Discord server. Everyone else can't see the dashboard."
+      },
+      {
+        "q": "Can I manage more than one server from one account?",
+        "a": "Yes. Reevun was built for multiple families from day one: one Discord account switches between every server where you have permission and the bot is installed."
+      },
+      {
+        "q": "Do I need a separate password for the dashboard?",
+        "a": "No, sign-in is Discord OAuth only. There's no separate password for the site."
+      },
+      {
+        "q": "Where do applications end up?",
+        "a": "In a dedicated channel on your server. Before submitting, the form screens the applicant for bots and spam."
+      },
+      {
+        "q": "What happens after a third warning?",
+        "a": "The role is removed automatically, without a moderator having to step in - no need to track it by hand."
+      },
+      {
+        "q": "Can I move members between voice channels?",
+        "a": "Yes, with /move - several members at once, in a single action, no dragging each one manually."
+      },
+      {
+        "q": "Can I see who granted a rank or cleared a warning?",
+        "a": "Yes, every such action is saved to the log and shown in the dashboard along with who did it."
+      },
+      {
+        "q": "The bot isn't responding - what do I do?",
+        "a": "Check status.reevun.app - it shows which Reevun services are currently up and which aren't."
+      }
+    ]
+  },
+  "Cta": {
+    "heading": "Ready to connect your family to Reevun?",
+    "addBot": "Add bot to server"
+  },
+  "Footer": {
+    "description": "Dashboard for a Discord bot built for RP communities: recruitment, ranks, warnings, and tickets in one place.",
+    "product": "Product",
+    "features": "Features",
+    "howItWorks": "How it works",
+    "questions": "FAQ",
+    "resources": "Resources",
+    "commands": "Commands",
+    "support": "Support",
+    "documentation": "Documentation",
+    "feedback": "Feedback",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "copyright": "Reevun Software LLC."
+  },
+  "Status": {
+    "operational": "All systems operational",
+    "issue": "Service disruption",
+    "unavailable": "Status unavailable"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "body": "This page doesn't exist, or it's been moved.",
+    "home": "Back home"
+  },
+  "Privacy": {
+    "metaTitle": "Privacy Policy — Reevun",
+    "title": "Privacy Policy",
+    "p1": "Signing in works only through Discord OAuth. We receive your Discord user ID, name, avatar, and the list of servers you manage from Discord - enough to show you only the families where Reevun is installed and you have administrator rights.",
+    "p2": "Family member data (profiles, ranks, warnings, tickets) is collected by the bot itself on your Discord server and stored in Reevun's database. This data is visible only to people with management rights on that server.",
+    "p3": "The full privacy policy is still being finalized."
+  },
+  "Terms": {
+    "metaTitle": "Terms of Use — Reevun",
+    "title": "Terms of Use",
+    "p1": "Reevun is a dashboard for a Discord bot built for RP communities. Any member of a Discord server with the bot installed and the \"Manage Server\" permission or administrator rights can use the dashboard.",
+    "p2": "The server owner is responsible for who gets those permissions: access to managing ranks, warnings, and tickets is determined by the Discord server's own settings, not by Reevun directly.",
+    "p3": "The full terms of use are still being finalized."
+  },
+  "Dashboard": {
+    "noFamiliesTitle": "No families with Reevun yet",
+    "noFamiliesBody": "You don't manage any Discord server with Reevun installed. Install the bot on a server where you have administrator rights, and the family will appear here.",
+    "chooseFamilyTitle": "Choose a family",
+    "noBot": "no bot",
+    "nav": {
+      "members": "Members",
+      "ranks": "Ranks & warnings",
+      "tickets": "Tickets",
+      "settings": "Settings"
+    },
+    "members": {
+      "emptyTitle": "No members yet",
+      "emptyBody": "As soon as the bot records this family's first members, they'll show up here.",
+      "heading": "Members",
+      "colMember": "Member",
+      "colRank": "Rank",
+      "colWarnings": "Warnings",
+      "colStatus": "Status",
+      "rank": "Rank {n}",
+      "online": "Online",
+      "afk": "AFK"
+    },
+    "ranks": {
+      "title": "Ranks & warnings",
+      "body": "The rank chain and warning log will show up here once members start getting them through the bot."
+    },
+    "tickets": {
+      "emptyTitle": "No tickets yet",
+      "emptyBody": "Tickets and appeals created through the bot will appear in this list.",
+      "heading": "Tickets",
+      "colNumber": "Number",
+      "colType": "Type",
+      "colStatus": "Status",
+      "colOpened": "Opened",
+      "statusOpen": "open",
+      "statusClosed": "closed"
+    },
+    "settings": {
+      "heading": "Family settings",
+      "name": "Name",
+      "serverId": "Discord server ID",
+      "note": "Changing the bot's name and settings is done through Discord. Dashboard-specific settings will appear here once they're needed."
+    }
+  },
+  "LanguageSwitcher": {
+    "label": "Language"
+  }
+}

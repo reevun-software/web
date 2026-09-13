@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import {
   ArrowRight,
   ShieldCheck,
@@ -10,6 +9,8 @@ import {
   ArrowLeftRight,
   History,
 } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { auth } from "@/lib/auth";
 import { DISCORD_BOT_INVITE_URL } from "@/lib/discord";
 import { Button } from "@/components/ui/button";
@@ -19,57 +20,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Reveal } from "@/components/landing/reveal";
 import { Faq } from "@/components/landing/faq";
 import { Footer } from "@/components/landing/footer";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
-const FEATURES = [
-  {
-    icon: Users,
-    title: "Набор без лишней возни",
-    body: "Новый участник заполняет анкету, бот сам отсеивает ботов и спам, а профиль с AFK-статусом собирается по ходу дела.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Ранги растут по порядку",
-    body: "Следующий ранг открывается только после предыдущего, а после третьего предупреждения роль снимается сама — без вашего участия.",
-  },
-  {
-    icon: Ticket,
-    title: "Обращения не теряются",
-    body: "У каждого тикета свой номер и вся переписка под рукой, прямо в панели.",
-  },
-  {
-    icon: ArrowLeftRight,
-    title: "Перевод одним кликом",
-    body: "Команда /move переносит сразу всех нужных участников в другой голосовой канал.",
-  },
-  {
-    icon: History,
-    title: "Видно, кто что сделал",
-    body: "Выдача ранга, снятие предупреждения, закрытие тикета — каждое действие остаётся в журнале.",
-  },
-  {
-    icon: Layers,
-    title: "Одна учётка на все семьи",
-    body: "Управляете несколькими серверами? Переключайтесь между ними без повторного входа.",
-  },
-];
-
-const STEPS = [
-  {
-    verb: "Добавьте бота",
-    body: "Установите Reevun на свой Discord-сервер — понадобятся права администратора.",
-  },
-  {
-    verb: "Войдите",
-    body: "Авторизуйтесь через свой Discord-аккаунт, без отдельного пароля.",
-  },
-  {
-    verb: "Управляйте",
-    body: "Ранги, предупреждения и обращения участников в одном месте.",
-  },
-];
+const FEATURE_ICONS = [Users, ShieldCheck, Ticket, ArrowLeftRight, History, Layers];
 
 export default async function Home() {
   const session = await auth();
+  const t = await getTranslations();
+
+  const features = t.raw("Features.items") as { title: string; body: string }[];
+  const steps = t.raw("HowItWorks.steps") as { verb: string; body: string }[];
 
   return (
     <div className="flex flex-1 flex-col">
@@ -88,21 +48,24 @@ export default async function Home() {
               Reevun
             </span>
           </span>
-          {session?.user ? (
-            <Link href="/dashboard" aria-label="Личный кабинет">
-              <Avatar>
-                <AvatarImage src={session.user.image ?? undefined} />
-                <AvatarFallback className="text-xs">
-                  {session.user.name?.[0] ?? "?"}
-                </AvatarFallback>
-              </Avatar>
-            </Link>
-          ) : (
-            <DiscordSignInButton size="sm" className="btn-glass">
-              <LogIn className="size-4" />
-              Войти через Discord
-            </DiscordSignInButton>
-          )}
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            {session?.user ? (
+              <Link href="/dashboard" aria-label={t("Header.dashboardAria")}>
+                <Avatar>
+                  <AvatarImage src={session.user.image ?? undefined} />
+                  <AvatarFallback className="text-xs">
+                    {session.user.name?.[0] ?? "?"}
+                  </AvatarFallback>
+                </Avatar>
+              </Link>
+            ) : (
+              <DiscordSignInButton size="sm" className="btn-glass">
+                <LogIn className="size-4" />
+                {t("Header.signIn")}
+              </DiscordSignInButton>
+            )}
+          </div>
         </div>
       </header>
 
@@ -110,11 +73,10 @@ export default async function Home() {
         {/* Hero: centered, text only */}
         <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center md:py-24">
           <h1 className="text-3xl font-semibold tracking-tight leading-[1.15] md:text-5xl">
-            Управляйте Discord-сообществом
+            {t("Hero.title")}
           </h1>
           <p className="max-w-[46ch] text-base leading-relaxed text-muted-foreground md:text-lg">
-            Reevun ведёт набор, ранги, предупреждения и обращения в вашей
-            семье. Один вход через Discord, доступ только к своей общине.
+            {t("Hero.subtitle")}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Button
@@ -128,16 +90,15 @@ export default async function Home() {
               size="lg"
               className="btn-glass"
             >
-              Добавить бота на сервер
+              {t("Hero.addBot")}
               <ArrowRight className="size-4" />
             </Button>
             <Button render={<Link href="#features" />} variant="ghost" size="lg">
-              Смотреть возможности
+              {t("Hero.seeFeatures")}
             </Button>
           </div>
           <p className="pt-2 text-sm text-muted-foreground">
-            Продукт доступен для проектов MajesticRP, GTA 5 RP и Россия
-            Онлайн.
+            {t("Hero.availableFor")}
           </p>
         </section>
 
@@ -146,21 +107,24 @@ export default async function Home() {
           <div className="mx-auto max-w-6xl px-6">
             <Reveal>
               <h2 className="max-w-[30ch] text-3xl font-semibold tracking-tight">
-                Всё, чем управляет бот, теперь и в браузере
+                {t("Features.heading")}
               </h2>
             </Reveal>
             <div className="mt-10 grid gap-4 md:grid-cols-3">
-              {FEATURES.map((f, i) => (
-                <Reveal key={f.title} delay={i * 0.06}>
-                  <Card className="flex h-full flex-col gap-3 border-border/60 bg-card/60 p-6 shadow-none ring-1 ring-transparent transition-colors duration-200 hover:bg-card hover:ring-white/20">
-                    <f.icon className="size-5 text-foreground" strokeWidth={1.5} />
-                    <h3 className="text-lg font-medium">{f.title}</h3>
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      {f.body}
-                    </p>
-                  </Card>
-                </Reveal>
-              ))}
+              {features.map((f, i) => {
+                const Icon = FEATURE_ICONS[i];
+                return (
+                  <Reveal key={f.title} delay={i * 0.06}>
+                    <Card className="flex h-full flex-col gap-3 border-border/60 bg-card/60 p-6 shadow-none ring-1 ring-transparent transition-colors duration-200 hover:bg-card hover:ring-white/20">
+                      <Icon className="size-5 text-foreground" strokeWidth={1.5} />
+                      <h3 className="text-lg font-medium">{f.title}</h3>
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        {f.body}
+                      </p>
+                    </Card>
+                  </Reveal>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -170,11 +134,11 @@ export default async function Home() {
           <div className="mx-auto max-w-6xl px-6">
             <Reveal>
               <h2 className="text-3xl font-semibold tracking-tight">
-                Три шага до первой смены
+                {t("HowItWorks.heading")}
               </h2>
             </Reveal>
             <div className="mt-10 grid gap-8 md:grid-cols-3">
-              {STEPS.map((s, i) => (
+              {steps.map((s, i) => (
                 <Reveal key={s.verb} delay={i * 0.08}>
                   <div className="flex flex-col gap-2">
                     <span className="font-mono text-sm text-muted-foreground">
@@ -196,7 +160,7 @@ export default async function Home() {
           <div className="mx-auto max-w-3xl px-6">
             <Reveal>
               <h2 className="text-3xl font-semibold tracking-tight">
-                Частые вопросы
+                {t("Faq.heading")}
               </h2>
             </Reveal>
             <Reveal delay={0.1} className="mt-10">
@@ -210,7 +174,7 @@ export default async function Home() {
           <Reveal>
             <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 md:flex-row md:items-center md:justify-between">
               <h2 className="max-w-[24ch] text-2xl font-semibold tracking-tight">
-                Готовы подключить свою семью к Reevun?
+                {t("Cta.heading")}
               </h2>
               <Button
                 render={
@@ -223,7 +187,7 @@ export default async function Home() {
                 size="lg"
                 className="btn-glass"
               >
-                Добавить бота на сервер
+                {t("Cta.addBot")}
                 <ArrowRight className="size-4" />
               </Button>
             </div>

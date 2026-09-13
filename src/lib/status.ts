@@ -11,10 +11,10 @@ type StatusPageResponse = {
 };
 type HeartbeatResponse = { heartbeatList: Record<string, Heartbeat[]> };
 
-export type ServiceStatus = {
-  variant: "operational" | "issue" | "unknown";
-  label: string;
-};
+export type ServiceStatus =
+  | { variant: "operational" }
+  | { variant: "issue"; incidentTitle?: string }
+  | { variant: "unknown" };
 
 export async function getServiceStatus(): Promise<ServiceStatus> {
   try {
@@ -41,10 +41,10 @@ export async function getServiceStatus(): Promise<ServiceStatus> {
       return last?.status === 0;
     });
 
-    if (anyDown) return { variant: "issue", label: "Перебои в работе" };
-    if (page.incident) return { variant: "issue", label: page.incident.title };
-    return { variant: "operational", label: "Все системы работают" };
+    if (anyDown) return { variant: "issue" };
+    if (page.incident) return { variant: "issue", incidentTitle: page.incident.title };
+    return { variant: "operational" };
   } catch {
-    return { variant: "unknown", label: "Статус недоступен" };
+    return { variant: "unknown" };
   }
 }

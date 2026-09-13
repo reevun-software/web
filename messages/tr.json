@@ -1,0 +1,196 @@
+{
+  "Metadata": {
+    "title": "Reevun",
+    "description": "RP toplulukları için Reevun Discord botu yönetim paneli."
+  },
+  "Header": {
+    "signIn": "Discord ile giriş yap",
+    "dashboardAria": "Kontrol paneli"
+  },
+  "Hero": {
+    "title": "Discord topluluğunu tek panelden yönet",
+    "subtitle": "Reevun; ailende üye alımını, rütbeleri, uyarıları ve talepleri yönetir. Discord ile tek giriş, sadece kendi topluluğuna erişim.",
+    "addBot": "Botu sunucuya ekle",
+    "seeFeatures": "Özellikleri gör",
+    "availableFor": "Ürün MajesticRP, GTA 5 RP ve Россия Онлайн için kullanılabilir."
+  },
+  "Features": {
+    "heading": "Botun yönettiği her şey artık tarayıcında da",
+    "items": [
+      {
+        "title": "Gereksiz uğraş olmadan üye alımı",
+        "body": "Yeni üye başvuru formunu doldurur, bot botları ve spam'i kendi başına ayıklar, AFK durumlu profil ise kendiliğinden oluşur."
+      },
+      {
+        "title": "Rütbeler sırayla yükselir",
+        "body": "Bir sonraki rütbe ancak öncekinden sonra açılır, üçüncü uyarıdan sonra rol kendiliğinden kaldırılır - sizin müdahalenize gerek kalmaz."
+      },
+      {
+        "title": "Talepler kaybolmaz",
+        "body": "Her talebin kendi numarası vardır, tüm yazışma doğrudan panelde elinizin altındadır."
+      },
+      {
+        "title": "Tek tıkla taşıma",
+        "body": "/move komutu seçilen tüm üyeleri tek seferde başka bir ses kanalına taşır."
+      },
+      {
+        "title": "Kim ne yaptı, görünür",
+        "body": "Rütbe verme, uyarı kaldırma, talep kapatma - her işlem günlükte kalır."
+      },
+      {
+        "title": "Tüm aileler için tek hesap",
+        "body": "Birden fazla sunucuyu mu yönetiyorsun? Yeniden giriş yapmadan aralarında geçiş yap."
+      }
+    ]
+  },
+  "HowItWorks": {
+    "heading": "İlk vardiyaya üç adım",
+    "steps": [
+      {
+        "verb": "Botu ekle",
+        "body": "Reevun'u Discord sunucuna kur - yönetici yetkisine ihtiyacın olacak."
+      },
+      {
+        "verb": "Giriş yap",
+        "body": "Ayrı bir şifreye gerek kalmadan Discord hesabınla giriş yap."
+      },
+      {
+        "verb": "Yönet",
+        "body": "Üyelerin rütbeleri, uyarıları ve talepleri tek yerde."
+      }
+    ]
+  },
+  "Faq": {
+    "heading": "Sık sorulan sorular",
+    "items": [
+      {
+        "q": "Botu kendim barındırmam gerekiyor mu?",
+        "a": "Hayır. Bot bizim altyapımızda çalışır - sadece Discord sunucuna eklemen ve aynı hesapla panele giriş yapman yeterli."
+      },
+      {
+        "q": "Paneldeki bir aileyi kimler görebilir?",
+        "a": "Yalnızca o Discord sunucusunda \"Sunucuyu Yönet\" iznine veya yönetici yetkisine sahip üyeler. Diğer üyeler paneli göremez."
+      },
+      {
+        "q": "Tek hesaptan birden fazla sunucuyu yönetebilir miyim?",
+        "a": "Evet. Reevun baştan itibaren birden fazla aile için tasarlandı: tek bir Discord hesabı, yetkin olan ve botun kurulu olduğu tüm sunucular arasında geçiş yapar."
+      },
+      {
+        "q": "Panel için ayrı bir şifreye ihtiyacım var mı?",
+        "a": "Hayır, giriş yalnızca Discord OAuth ile yapılır. Site için ayrı bir şifre yoktur."
+      },
+      {
+        "q": "Katılım başvuruları nereye gider?",
+        "a": "Sunucundaki ayrı bir kanala. Form, gönderilmeden önce başvuru sahibini bot ve spam açısından kontrol eder."
+      },
+      {
+        "q": "Üçüncü uyarıdan sonra ne olur?",
+        "a": "Rol, bir moderatörün müdahalesine gerek kalmadan otomatik olarak kaldırılır - bunu elle takip etmene gerek yok."
+      },
+      {
+        "q": "Üyeleri ses kanalları arasında taşıyabilir miyim?",
+        "a": "Evet, /move komutuyla - birden fazla üyeyi tek işlemle, her birini tek tek sürüklemeden."
+      },
+      {
+        "q": "Kimin rütbe verdiğini veya uyarı kaldırdığını görebilir miyim?",
+        "a": "Evet, bu tür her işlem günlüğe kaydedilir ve kimin yaptığıyla birlikte panelde görünür."
+      },
+      {
+        "q": "Bot yanıt vermiyor - ne yapmalıyım?",
+        "a": "status.reevun.app adresini kontrol et: Reevun hizmetlerinden hangilerinin çalıştığı orada görünür."
+      }
+    ]
+  },
+  "Cta": {
+    "heading": "Aileni Reevun'a bağlamaya hazır mısın?",
+    "addBot": "Botu sunucuya ekle"
+  },
+  "Footer": {
+    "description": "RP toplulukları için Discord botu yönetim paneli: üye alımı, rütbeler, uyarılar ve talepler tek yerde.",
+    "product": "Ürün",
+    "features": "Özellikler",
+    "howItWorks": "Nasıl çalışır",
+    "questions": "Sorular",
+    "resources": "Kaynaklar",
+    "commands": "Komutlar",
+    "support": "Destek",
+    "documentation": "Dokümantasyon",
+    "feedback": "Geri bildirim",
+    "legal": "Yasal bilgiler",
+    "privacy": "Gizlilik Politikası",
+    "terms": "Kullanım Koşulları",
+    "copyright": "Reevun Software LLC."
+  },
+  "Status": {
+    "operational": "Tüm sistemler çalışıyor",
+    "issue": "Hizmet kesintisi",
+    "unavailable": "Durum bilgisi yok"
+  },
+  "NotFound": {
+    "title": "Sayfa bulunamadı",
+    "body": "Bu sayfa yok ya da taşınmış.",
+    "home": "Ana sayfaya dön"
+  },
+  "Privacy": {
+    "metaTitle": "Gizlilik Politikası — Reevun",
+    "title": "Gizlilik Politikası",
+    "p1": "Siteye giriş yalnızca Discord OAuth ile yapılır. Discord'dan kullanıcı kimliğini, adını, profil resmini ve yönettiğin sunucuların listesini alıyoruz - sana yalnızca Reevun'un kurulu olduğu ve yönetici yetkisine sahip olduğun aileleri göstermek için bu yeterli.",
+    "p2": "Aile üyelerinin verilerini (profiller, rütbeler, uyarılar, talepler) botun kendisi Discord sunucunda toplar ve Reevun veritabanında saklar. Bu veriler yalnızca o sunucuyu yönetme yetkisi olanlara görünür.",
+    "p3": "Gizlilik politikasının tam sürümü şu anda hazırlanıyor."
+  },
+  "Terms": {
+    "metaTitle": "Kullanım Koşulları — Reevun",
+    "title": "Kullanım Koşulları",
+    "p1": "Reevun, RP toplulukları için bir Discord botu yönetim panelidir. Botun kurulu olduğu ve \"Sunucuyu Yönet\" iznine veya yönetici yetkisine sahip olan herhangi bir Discord sunucusu üyesi paneli kullanabilir.",
+    "p2": "Bu yetkileri kime verdiğinden sunucu sahibi sorumludur: rütbe, uyarı ve talep yönetimine erişim doğrudan Reevun tarafından değil, Discord sunucusunun kendi ayarları tarafından belirlenir.",
+    "p3": "Kullanım koşullarının tam sürümü şu anda hazırlanıyor."
+  },
+  "Dashboard": {
+    "noFamiliesTitle": "Henüz Reevun'lu bir aile yok",
+    "noFamiliesBody": "Reevun'un kurulu olduğu herhangi bir Discord sunucusunu yönetmiyorsun. Yönetici yetkisine sahip olduğun bir sunucuya botu kur, aile burada görünecek.",
+    "chooseFamilyTitle": "Bir aile seç",
+    "noBot": "bot yok",
+    "nav": {
+      "members": "Üyeler",
+      "ranks": "Rütbeler ve uyarılar",
+      "tickets": "Talepler",
+      "settings": "Ayarlar"
+    },
+    "members": {
+      "emptyTitle": "Henüz üye yok",
+      "emptyBody": "Bot bu ailenin ilk üyelerini kaydettiğinde burada görünecekler.",
+      "heading": "Üyeler",
+      "colMember": "Üye",
+      "colRank": "Rütbe",
+      "colWarnings": "Uyarılar",
+      "colStatus": "Durum",
+      "rank": "Rütbe {n}",
+      "online": "Çevrim içi",
+      "afk": "AFK"
+    },
+    "ranks": {
+      "title": "Rütbeler ve uyarılar",
+      "body": "Üyeler bot üzerinden almaya başladığında rütbe zinciri ve uyarı günlüğü burada görünecek."
+    },
+    "tickets": {
+      "emptyTitle": "Henüz talep yok",
+      "emptyBody": "Bot üzerinden oluşturulan talepler ve itirazlar bu listede görünecek.",
+      "heading": "Talepler",
+      "colNumber": "Numara",
+      "colType": "Tür",
+      "colStatus": "Durum",
+      "colOpened": "Açıldı",
+      "statusOpen": "açık",
+      "statusClosed": "kapalı"
+    },
+    "settings": {
+      "heading": "Aile ayarları",
+      "name": "Ad",
+      "serverId": "Discord sunucu kimliği",
+      "note": "Bot adı ve ayarları Discord üzerinden değiştirilir. Panele özel ayarlar ihtiyaç duyulduğunda burada görünecek."
+    }
+  },
+  "LanguageSwitcher": {
+    "label": "Dil"
+  }
+}

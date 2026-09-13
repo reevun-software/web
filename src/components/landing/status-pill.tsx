@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { getServiceStatus } from "@/lib/status";
 
@@ -10,6 +11,11 @@ const DOT_COLOR = {
 
 export async function StatusPill({ className }: { className?: string }) {
   const status = await getServiceStatus();
+  const t = await getTranslations("Status");
+  const label =
+    status.variant === "issue" && status.incidentTitle
+      ? status.incidentTitle
+      : t(status.variant);
 
   return (
     <Link
@@ -22,7 +28,7 @@ export async function StatusPill({ className }: { className?: string }) {
       )}
     >
       <span className={`size-2 rounded-full ${DOT_COLOR[status.variant]}`} />
-      {status.label}
+      {label}
     </Link>
   );
 }

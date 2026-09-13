@@ -1,0 +1,196 @@
+{
+  "Metadata": {
+    "title": "Reevun",
+    "description": "Panel de control del bot de Discord Reevun para comunidades de rol."
+  },
+  "Header": {
+    "signIn": "Iniciar sesión con Discord",
+    "dashboardAria": "Panel de control"
+  },
+  "Hero": {
+    "title": "Gestiona tu comunidad de Discord",
+    "subtitle": "Reevun gestiona el reclutamiento, los rangos, las advertencias y los tickets de tu familia. Un solo inicio de sesión con Discord, acceso solo a tu propia comunidad.",
+    "addBot": "Añadir el bot al servidor",
+    "seeFeatures": "Ver funciones",
+    "availableFor": "Disponible para MajesticRP, GTA 5 RP y Россия Онлайн."
+  },
+  "Features": {
+    "heading": "Todo lo que gestiona el bot, ahora también en el navegador",
+    "items": [
+      {
+        "title": "Reclutamiento sin complicaciones",
+        "body": "El nuevo miembro completa un formulario, el bot filtra bots y spam por su cuenta, y el perfil con estado de ausencia se completa sobre la marcha."
+      },
+      {
+        "title": "Los rangos avanzan en orden",
+        "body": "El siguiente rango solo se desbloquea después del anterior, y tras la tercera advertencia el rol se retira automáticamente, sin que tengas que intervenir."
+      },
+      {
+        "title": "Los tickets no se pierden",
+        "body": "Cada ticket tiene su propio número y toda la conversación queda a mano, directamente en el panel."
+      },
+      {
+        "title": "Traslado con un clic",
+        "body": "El comando /move traslada de golpe a todos los miembros seleccionados a otro canal de voz."
+      },
+      {
+        "title": "Se ve quién hizo qué",
+        "body": "Otorgar un rango, retirar una advertencia, cerrar un ticket: cada acción queda registrada."
+      },
+      {
+        "title": "Una cuenta para todas las familias",
+        "body": "¿Gestionas varios servidores? Cambia entre ellos sin volver a iniciar sesión."
+      }
+    ]
+  },
+  "HowItWorks": {
+    "heading": "Tres pasos para tu primer turno",
+    "steps": [
+      {
+        "verb": "Añade el bot",
+        "body": "Instala Reevun en tu servidor de Discord; necesitarás permisos de administrador."
+      },
+      {
+        "verb": "Inicia sesión",
+        "body": "Accede con tu cuenta de Discord, sin necesidad de otra contraseña."
+      },
+      {
+        "verb": "Gestiona",
+        "body": "Rangos, advertencias y tickets de los miembros en un solo lugar."
+      }
+    ]
+  },
+  "Faq": {
+    "heading": "Preguntas frecuentes",
+    "items": [
+      {
+        "q": "¿Tengo que alojar el bot yo mismo?",
+        "a": "No. El bot funciona en nuestra infraestructura: solo tienes que añadirlo a tu servidor de Discord e iniciar sesión en el panel con la misma cuenta."
+      },
+      {
+        "q": "¿Quién puede ver una familia en el panel?",
+        "a": "Solo los miembros con el permiso «Gestionar servidor» o con permisos de administrador en ese servidor de Discord. El resto no puede ver el panel."
+      },
+      {
+        "q": "¿Puedo gestionar varios servidores desde una sola cuenta?",
+        "a": "Sí. Reevun se diseñó desde el principio para varias familias: una cuenta de Discord cambia entre todos los servidores donde tienes permisos y el bot está instalado."
+      },
+      {
+        "q": "¿Necesito una contraseña aparte para el panel?",
+        "a": "No, el acceso es únicamente mediante Discord OAuth. No existe una contraseña separada para el sitio."
+      },
+      {
+        "q": "¿Dónde van a parar las solicitudes de ingreso?",
+        "a": "A un canal específico de tu servidor. Antes de enviarse, el formulario comprueba que el solicitante no sea un bot ni spam."
+      },
+      {
+        "q": "¿Qué ocurre tras la tercera advertencia?",
+        "a": "El rol se retira automáticamente, sin que un moderador tenga que intervenir; no hace falta llevar el control a mano."
+      },
+      {
+        "q": "¿Puedo mover miembros entre canales de voz?",
+        "a": "Sí, con /move: varios miembros a la vez, en una sola acción, sin arrastrar a cada uno manualmente."
+      },
+      {
+        "q": "¿Se puede ver quién otorgó un rango o retiró una advertencia?",
+        "a": "Sí, cada una de esas acciones queda registrada y se muestra en el panel junto con quién la realizó."
+      },
+      {
+        "q": "El bot no responde, ¿qué hago?",
+        "a": "Consulta status.reevun.app: allí se ve qué servicios de Reevun están funcionando y cuáles no."
+      }
+    ]
+  },
+  "Cta": {
+    "heading": "¿Listo para conectar tu familia a Reevun?",
+    "addBot": "Añadir el bot al servidor"
+  },
+  "Footer": {
+    "description": "Panel de control de un bot de Discord para comunidades de rol: reclutamiento, rangos, advertencias y tickets en un solo lugar.",
+    "product": "Producto",
+    "features": "Funciones",
+    "howItWorks": "Cómo funciona",
+    "questions": "Preguntas",
+    "resources": "Recursos",
+    "commands": "Comandos",
+    "support": "Soporte",
+    "documentation": "Documentación",
+    "feedback": "Comentarios",
+    "legal": "Información legal",
+    "privacy": "Política de privacidad",
+    "terms": "Términos de uso",
+    "copyright": "Reevun Software LLC."
+  },
+  "Status": {
+    "operational": "Todos los sistemas operativos",
+    "issue": "Interrupciones en el servicio",
+    "unavailable": "Estado no disponible"
+  },
+  "NotFound": {
+    "title": "Página no encontrada",
+    "body": "Esta página no existe o se ha movido.",
+    "home": "Volver al inicio"
+  },
+  "Privacy": {
+    "metaTitle": "Política de privacidad — Reevun",
+    "title": "Política de privacidad",
+    "p1": "El acceso al sitio se realiza únicamente mediante Discord OAuth. Recibimos de Discord tu identificador de usuario, nombre, avatar y la lista de servidores que administras; esto basta para mostrarte solo las familias donde Reevun está instalado y tienes permisos de administrador.",
+    "p2": "Los datos de los miembros de la familia (perfiles, rangos, advertencias, tickets) los recopila el propio bot en tu servidor de Discord y se guardan en la base de datos de Reevun. Estos datos solo son visibles para quienes tienen permisos de administración en ese servidor.",
+    "p3": "La versión completa de la política de privacidad todavía está en preparación."
+  },
+  "Terms": {
+    "metaTitle": "Términos de uso — Reevun",
+    "title": "Términos de uso",
+    "p1": "Reevun es un panel de control para un bot de Discord destinado a comunidades de rol. Puede usar el panel cualquier miembro de un servidor de Discord donde el bot esté instalado y que cuente con el permiso «Gestionar servidor» o permisos de administrador.",
+    "p2": "El propietario del servidor es responsable de a quién otorga esos permisos: el acceso a la gestión de rangos, advertencias y tickets lo determina la propia configuración del servidor de Discord, no Reevun directamente.",
+    "p3": "La versión completa de los términos de uso todavía está en preparación."
+  },
+  "Dashboard": {
+    "noFamiliesTitle": "Todavía no hay familias con Reevun",
+    "noFamiliesBody": "No administras ningún servidor de Discord con Reevun instalado. Instala el bot en un servidor donde tengas permisos de administrador y la familia aparecerá aquí.",
+    "chooseFamilyTitle": "Elige una familia",
+    "noBot": "sin bot",
+    "nav": {
+      "members": "Miembros",
+      "ranks": "Rangos y advertencias",
+      "tickets": "Tickets",
+      "settings": "Ajustes"
+    },
+    "members": {
+      "emptyTitle": "Todavía no hay miembros",
+      "emptyBody": "En cuanto el bot registre a los primeros miembros de esta familia, aparecerán aquí.",
+      "heading": "Miembros",
+      "colMember": "Miembro",
+      "colRank": "Rango",
+      "colWarnings": "Advertencias",
+      "colStatus": "Estado",
+      "rank": "Rango {n}",
+      "online": "En línea",
+      "afk": "Ausente"
+    },
+    "ranks": {
+      "title": "Rangos y advertencias",
+      "body": "Aquí aparecerán la cadena de rangos y el registro de advertencias en cuanto los miembros empiecen a recibirlos a través del bot."
+    },
+    "tickets": {
+      "emptyTitle": "Todavía no hay tickets",
+      "emptyBody": "Los tickets y apelaciones creados a través del bot aparecerán en esta lista.",
+      "heading": "Tickets",
+      "colNumber": "Número",
+      "colType": "Tipo",
+      "colStatus": "Estado",
+      "colOpened": "Abierto",
+      "statusOpen": "abierto",
+      "statusClosed": "cerrado"
+    },
+    "settings": {
+      "heading": "Ajustes de la familia",
+      "name": "Nombre",
+      "serverId": "ID del servidor de Discord",
+      "note": "El nombre y los parámetros del bot se cambian desde Discord. Aquí aparecerán los ajustes específicos del panel cuando sean necesarios."
+    }
+  },
+  "LanguageSwitcher": {
+    "label": "Idioma"
+  }
+}

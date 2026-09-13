@@ -1,0 +1,196 @@
+{
+  "Metadata": {
+    "title": "Reevun",
+    "description": "Dashboard für den Discord-Bot Reevun, gebaut für RP-Communitys."
+  },
+  "Header": {
+    "signIn": "Mit Discord anmelden",
+    "dashboardAria": "Dashboard"
+  },
+  "Hero": {
+    "title": "Verwalte deine Discord-Community",
+    "subtitle": "Reevun übernimmt Rekrutierung, Ränge, Verwarnungen und Tickets für deine Familie. Ein Login über Discord, Zugriff nur auf die eigene Community.",
+    "addBot": "Bot zum Server hinzufügen",
+    "seeFeatures": "Funktionen ansehen",
+    "availableFor": "Verfügbar für MajesticRP, GTA 5 RP und Россия Онлайн."
+  },
+  "Features": {
+    "heading": "Alles, was der Bot steuert, jetzt auch im Browser",
+    "items": [
+      {
+        "title": "Rekrutierung ohne Aufwand",
+        "body": "Neue Mitglieder füllen ein Formular aus, der Bot filtert Bots und Spam selbst heraus, und ein Profil mit AFK-Status entsteht ganz nebenbei."
+      },
+      {
+        "title": "Ränge steigen der Reihe nach",
+        "body": "Der nächste Rang wird erst nach dem vorherigen freigeschaltet, und nach der dritten Verwarnung wird die Rolle automatisch entfernt - ganz ohne euer Zutun."
+      },
+      {
+        "title": "Anfragen gehen nicht verloren",
+        "body": "Jedes Ticket hat eine eigene Nummer, der gesamte Verlauf ist direkt im Dashboard einsehbar."
+      },
+      {
+        "title": "Verschieben mit einem Klick",
+        "body": "Der Befehl /move verschiebt alle ausgewählten Mitglieder auf einmal in einen anderen Sprachkanal."
+      },
+      {
+        "title": "Sichtbar, wer was gemacht hat",
+        "body": "Rang vergeben, Verwarnung aufgehoben, Ticket geschlossen - jede Aktion bleibt im Protokoll erhalten."
+      },
+      {
+        "title": "Ein Konto für alle Familien",
+        "body": "Verwaltest du mehrere Server? Wechsle zwischen ihnen, ohne dich erneut anzumelden."
+      }
+    ]
+  },
+  "HowItWorks": {
+    "heading": "Drei Schritte bis zur ersten Schicht",
+    "steps": [
+      {
+        "verb": "Bot hinzufügen",
+        "body": "Installiere Reevun auf deinem Discord-Server - dafür brauchst du Administratorrechte."
+      },
+      {
+        "verb": "Anmelden",
+        "body": "Melde dich mit deinem Discord-Konto an, ganz ohne separates Passwort."
+      },
+      {
+        "verb": "Loslegen",
+        "body": "Ränge, Verwarnungen und Anfragen der Mitglieder an einem Ort."
+      }
+    ]
+  },
+  "Faq": {
+    "heading": "Häufige Fragen",
+    "items": [
+      {
+        "q": "Muss ich den Bot selbst hosten?",
+        "a": "Nein. Der Bot läuft auf unserer Infrastruktur - du musst ihn nur zu deinem Discord-Server hinzufügen und dich mit demselben Konto im Dashboard anmelden."
+      },
+      {
+        "q": "Wer sieht eine Familie im Dashboard?",
+        "a": "Nur Mitglieder mit der Berechtigung „Server verwalten“ oder Administratorrechten auf diesem Discord-Server. Alle anderen sehen das Dashboard nicht."
+      },
+      {
+        "q": "Kann ich mehrere Server mit einem Konto verwalten?",
+        "a": "Ja. Reevun ist von Anfang an für mehrere Familien ausgelegt: Ein Discord-Konto wechselt zwischen allen Servern, auf denen du Rechte hast und der Bot installiert ist."
+      },
+      {
+        "q": "Brauche ich ein separates Passwort für das Dashboard?",
+        "a": "Nein, die Anmeldung erfolgt ausschließlich über Discord OAuth. Ein separates Passwort für die Seite gibt es nicht."
+      },
+      {
+        "q": "Wo landen Beitrittsanfragen?",
+        "a": "In einem eigenen Kanal auf deinem Server. Vor dem Absenden prüft das Formular die Bewerbung auf Bots und Spam."
+      },
+      {
+        "q": "Was passiert nach der dritten Verwarnung?",
+        "a": "Die Rolle wird automatisch entfernt, ohne dass ein Moderator eingreifen muss - das muss niemand manuell verfolgen."
+      },
+      {
+        "q": "Kann ich Mitglieder zwischen Sprachkanälen verschieben?",
+        "a": "Ja, mit /move - mehrere Mitglieder gleichzeitig, in einer Aktion, ohne jeden einzeln zu ziehen."
+      },
+      {
+        "q": "Sehe ich, wer einen Rang vergeben oder eine Verwarnung aufgehoben hat?",
+        "a": "Ja, jede solche Aktion wird protokolliert und im Dashboard zusammen mit der ausführenden Person angezeigt."
+      },
+      {
+        "q": "Der Bot reagiert nicht - was tun?",
+        "a": "Schau auf status.reevun.app nach: dort siehst du, welche Reevun-Dienste gerade laufen und welche nicht."
+      }
+    ]
+  },
+  "Cta": {
+    "heading": "Bereit, deine Familie mit Reevun zu verbinden?",
+    "addBot": "Bot zum Server hinzufügen"
+  },
+  "Footer": {
+    "description": "Dashboard für einen Discord-Bot für RP-Communitys: Rekrutierung, Ränge, Verwarnungen und Anfragen an einem Ort.",
+    "product": "Produkt",
+    "features": "Funktionen",
+    "howItWorks": "So funktioniert's",
+    "questions": "Häufige Fragen",
+    "resources": "Ressourcen",
+    "commands": "Befehle",
+    "support": "Support",
+    "documentation": "Dokumentation",
+    "feedback": "Feedback",
+    "legal": "Rechtliches",
+    "privacy": "Datenschutzerklärung",
+    "terms": "Nutzungsbedingungen",
+    "copyright": "Reevun Software LLC."
+  },
+  "Status": {
+    "operational": "Alle Systeme funktionieren",
+    "issue": "Störungen im Betrieb",
+    "unavailable": "Status nicht verfügbar"
+  },
+  "NotFound": {
+    "title": "Seite nicht gefunden",
+    "body": "Diese Seite gibt es nicht oder sie wurde verschoben.",
+    "home": "Zur Startseite"
+  },
+  "Privacy": {
+    "metaTitle": "Datenschutzerklärung — Reevun",
+    "title": "Datenschutzerklärung",
+    "p1": "Die Anmeldung erfolgt ausschließlich über Discord OAuth. Wir erhalten von Discord deine Nutzer-ID, deinen Namen, dein Profilbild und die Liste der Server, die du verwaltest - das reicht aus, um dir nur die Familien anzuzeigen, auf denen Reevun installiert ist und du Administratorrechte hast.",
+    "p2": "Daten der Familienmitglieder (Profile, Ränge, Verwarnungen, Tickets) erfasst der Bot selbst auf deinem Discord-Server und speichert sie in der Reevun-Datenbank. Diese Daten sind nur für Personen mit Verwaltungsrechten auf diesem Server sichtbar.",
+    "p3": "Die vollständige Datenschutzerklärung wird derzeit noch fertiggestellt."
+  },
+  "Terms": {
+    "metaTitle": "Nutzungsbedingungen — Reevun",
+    "title": "Nutzungsbedingungen",
+    "p1": "Reevun ist ein Dashboard für einen Discord-Bot für RP-Communitys. Das Dashboard kann jedes Mitglied eines Discord-Servers nutzen, auf dem der Bot installiert ist und das über die Berechtigung „Server verwalten“ oder Administratorrechte verfügt.",
+    "p2": "Der Serverinhaber ist dafür verantwortlich, wer diese Rechte erhält: Der Zugriff auf die Verwaltung von Rängen, Verwarnungen und Anfragen wird durch die Einstellungen des Discord-Servers selbst bestimmt, nicht direkt durch Reevun.",
+    "p3": "Die vollständigen Nutzungsbedingungen werden derzeit noch fertiggestellt."
+  },
+  "Dashboard": {
+    "noFamiliesTitle": "Noch keine Familien mit Reevun",
+    "noFamiliesBody": "Du verwaltest keinen Discord-Server, auf dem Reevun installiert ist. Installiere den Bot auf einem Server, auf dem du Administratorrechte hast, und die Familie erscheint hier.",
+    "chooseFamilyTitle": "Familie auswählen",
+    "noBot": "kein Bot",
+    "nav": {
+      "members": "Mitglieder",
+      "ranks": "Ränge & Verwarnungen",
+      "tickets": "Anfragen",
+      "settings": "Einstellungen"
+    },
+    "members": {
+      "emptyTitle": "Noch keine Mitglieder",
+      "emptyBody": "Sobald der Bot die ersten Mitglieder dieser Familie erfasst, erscheinen sie hier.",
+      "heading": "Mitglieder",
+      "colMember": "Mitglied",
+      "colRank": "Rang",
+      "colWarnings": "Verwarnungen",
+      "colStatus": "Status",
+      "rank": "Rang {n}",
+      "online": "Online",
+      "afk": "AFK"
+    },
+    "ranks": {
+      "title": "Ränge & Verwarnungen",
+      "body": "Hier erscheinen die Rangkette und das Verwarnungsprotokoll, sobald Mitglieder sie über den Bot erhalten."
+    },
+    "tickets": {
+      "emptyTitle": "Noch keine Anfragen",
+      "emptyBody": "Über den Bot erstellte Tickets und Einsprüche erscheinen in dieser Liste.",
+      "heading": "Anfragen",
+      "colNumber": "Nummer",
+      "colType": "Typ",
+      "colStatus": "Status",
+      "colOpened": "Eröffnet",
+      "statusOpen": "offen",
+      "statusClosed": "geschlossen"
+    },
+    "settings": {
+      "heading": "Familieneinstellungen",
+      "name": "Name",
+      "serverId": "Discord-Server-ID",
+      "note": "Name und Bot-Einstellungen werden über Discord geändert. Dashboard-spezifische Einstellungen erscheinen hier, sobald sie benötigt werden."
+    }
+  },
+  "LanguageSwitcher": {
+    "label": "Sprache"
+  }
+}

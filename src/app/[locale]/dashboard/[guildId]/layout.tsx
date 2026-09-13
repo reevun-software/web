@@ -1,4 +1,6 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
+import { getLocale } from "next-intl/server";
+import { redirect } from "@/i18n/navigation";
 import { auth, signOut } from "@/lib/auth";
 import { getManageableGuilds } from "@/lib/guilds";
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
@@ -9,10 +11,13 @@ import { LogOut } from "lucide-react";
 export default async function GuildLayout({
   children,
   params,
-}: LayoutProps<"/dashboard/[guildId]">) {
+}: LayoutProps<"/[locale]/dashboard/[guildId]">) {
   const { guildId } = await params;
   const session = await auth();
-  if (!session?.accessToken) redirect("/");
+  if (!session?.accessToken) {
+    redirect({ href: "/", locale: await getLocale() });
+    throw new Error("unreachable"); // proves accessToken is defined below to tsc
+  }
   const guilds = await getManageableGuilds(session.accessToken);
   const current = guilds.find((g) => g.id === guildId);
 
