@@ -152,8 +152,8 @@ export default async function Home() {
             <div className="mt-10 grid gap-4 md:grid-cols-3">
               {FEATURES.map((f, i) => (
                 <Reveal key={f.title} delay={i * 0.06}>
-                  <Card className="flex h-full flex-col gap-3 border-border/60 bg-card/60 p-6 shadow-none ring-1 ring-transparent transition-colors duration-200 hover:bg-card hover:ring-brand/30">
-                    <f.icon className="size-5 text-brand" strokeWidth={1.5} />
+                  <Card className="flex h-full flex-col gap-3 border-border/60 bg-card/60 p-6 shadow-none ring-1 ring-transparent transition-colors duration-200 hover:bg-card hover:ring-white/20">
+                    <f.icon className="size-5 text-foreground" strokeWidth={1.5} />
                     <h3 className="text-lg font-medium">{f.title}</h3>
                     <p className="text-sm leading-relaxed text-muted-foreground">
                       {f.body}
