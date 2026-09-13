@@ -51,7 +51,7 @@ export function DashboardSidebar({
               />
             }
           >
-            <span className="truncate">{guildName}</span>
+            <span className="min-w-0 flex-1 truncate text-left">{guildName}</span>
             <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="w-56">
