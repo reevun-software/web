@@ -109,8 +109,8 @@ export default async function Home() {
       <main className="flex-1">
         {/* Hero: centered, text only */}
         <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 pt-20 pb-10 text-center md:pt-28">
-          <h1 className="text-4xl font-semibold tracking-tight leading-[1.1] md:text-6xl">
-            Управляйте Discord-сообществом из одной панели
+          <h1 className="text-3xl font-semibold tracking-tight leading-[1.15] md:text-5xl">
+            Управляйте Discord-сообществом
           </h1>
           <p className="max-w-[46ch] text-base leading-relaxed text-muted-foreground md:text-lg">
             Reevun ведёт набор, ранги, предупреждения и обращения в вашей
