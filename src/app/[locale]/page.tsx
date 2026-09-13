@@ -1,6 +1,8 @@
 import Image from "next/image";
+import type { ReactNode } from "react";
 import {
   ArrowRight,
+  ArrowUpRight,
   ShieldCheck,
   Users,
   Ticket,
@@ -13,6 +15,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { auth } from "@/lib/auth";
 import { DISCORD_BOT_INVITE_URL } from "@/lib/discord";
+import { PROJECT_URLS } from "@/lib/projects";
 import { Button } from "@/components/ui/button";
 import { DiscordSignInButton } from "@/components/discord-signin-button";
 import { Card } from "@/components/ui/card";
@@ -23,6 +26,20 @@ import { Footer } from "@/components/landing/footer";
 import { LanguageSwitcher } from "@/components/language-switcher";
 
 const FEATURE_ICONS = [Users, ShieldCheck, Ticket, ArrowLeftRight, History, Layers];
+
+function ProjectLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <Link
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-0.5 font-medium text-foreground underline decoration-muted-foreground/40 underline-offset-2 transition-colors hover:decoration-foreground"
+    >
+      {children}
+      <ArrowUpRight className="size-3" />
+    </Link>
+  );
+}
 
 export default async function Home() {
   const session = await auth();
@@ -98,7 +115,17 @@ export default async function Home() {
             </Button>
           </div>
           <p className="pt-2 text-sm text-muted-foreground">
-            {t("Hero.availableFor")}
+            {t.rich("Hero.availableFor", {
+              majestic: (chunks) => (
+                <ProjectLink href={PROJECT_URLS.majestic}>{chunks}</ProjectLink>
+              ),
+              gta: (chunks) => (
+                <ProjectLink href={PROJECT_URLS.gta}>{chunks}</ProjectLink>
+              ),
+              russia: (chunks) => (
+                <ProjectLink href={PROJECT_URLS.russia}>{chunks}</ProjectLink>
+              ),
+            })}
           </p>
         </section>
 
