@@ -96,14 +96,11 @@ export function Footer() {
       </div>
 
       <div className="border-t border-border/60 px-6 py-6">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 text-xs text-muted-foreground sm:flex-row sm:justify-between">
+        <div className="mx-auto flex max-w-6xl flex-col gap-1 text-xs text-muted-foreground sm:flex-row sm:justify-between">
           <p>
             © 2023–{new Date().getFullYear()}. {t("copyright")}
           </p>
-          <div className="flex flex-col gap-1 sm:max-w-[42ch] sm:items-end sm:text-right">
-            <p>{t("allRightsReserved")}</p>
-            <p className="leading-relaxed">{t("disclaimer")}</p>
-          </div>
+          <p>{t("allRightsReserved")}</p>
         </div>
       </div>
     </footer>

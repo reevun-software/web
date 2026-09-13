@@ -123,7 +123,9 @@
     "terms": "Kullanım Koşulları",
     "copyright": "Reevun Software LLC.",
     "allRightsReserved": "Tüm hakları saklıdır.",
-    "disclaimer": "Reevun; Take-Two Interactive, Rockstar Games veya başka bir hak sahibiyle bağlantılı değildir ve onlar tarafından desteklenmemektedir. Tüm ticari markalar ilgili sahiplerine aittir. Reevun ayrıca Majestic RP, GTA5RP ve Russia Online topluluklarıyla da bağlantılı değildir ve onlar tarafından onaylanmamıştır - bunlar birbirinden bağımsız projelerdir."
+    "disclaimer": "Reevun; Take-Two Interactive, Rockstar Games veya başka bir hak sahibiyle bağlantılı değildir ve onlar tarafından desteklenmemektedir. Tüm ticari markalar ilgili sahiplerine aittir. Reevun ayrıca MajesticRP, GTA 5 RP ve Rusya Online topluluklarıyla da bağlantılı değildir ve onlar tarafından onaylanmamıştır - bunlar birbirinden bağımsız projelerdir.",
+    "disclaimerTitle": "Yasal Uyarı",
+    "dismissDisclaimer": "Kapat"
   },
   "Status": {
     "operational": "Tüm sistemler çalışıyor",

@@ -123,7 +123,9 @@
     "terms": "使用条款",
     "copyright": "Reevun Software LLC.",
     "allRightsReserved": "保留所有权利。",
-    "disclaimer": "Reevun 与 Take-Two Interactive、Rockstar Games 或任何其他版权方均无关联，亦未获得其认可。所有提及的商标归其各自所有者所有。Reevun 同样与 Majestic RP、GTA5RP 及「Russia Online」社区无关，也未获得其认可 - 它们均为彼此独立的项目。"
+    "disclaimer": "Reevun 与 Take-Two Interactive、Rockstar Games 或任何其他版权方均无关联，亦未获得其认可。所有提及的商标归其各自所有者所有。Reevun 同样与 MajesticRP、GTA 5 RP 及俄罗斯在线社区无关，也未获得其认可 - 它们均为彼此独立的项目。",
+    "disclaimerTitle": "免责声明",
+    "dismissDisclaimer": "关闭"
   },
   "Status": {
     "operational": "所有系统正常运行",
