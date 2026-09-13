@@ -18,7 +18,7 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { BrandCube } from "@/components/landing/brand-cube";
+import { BrandOrb } from "@/components/landing/brand-orb";
 import { Reveal } from "@/components/landing/reveal";
 import { Faq } from "@/components/landing/faq";
 import { Footer } from "@/components/landing/footer";
@@ -119,8 +119,8 @@ export default async function Home() {
         {/* Hero: asymmetric split */}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 pt-16 pb-10 md:grid-cols-2 md:items-center md:pt-20">
           <div className="flex flex-col gap-6">
-            <BrandCube />
-            <h1 className="text-4xl font-semibold tracking-tighter leading-none md:text-6xl">
+            <BrandOrb />
+            <h1 className="text-3xl font-semibold tracking-tight leading-[1.1] md:text-4xl">
               Управляйте Discord-сообществом из одной панели
             </h1>
             <p className="max-w-[46ch] text-base leading-relaxed text-muted-foreground">
