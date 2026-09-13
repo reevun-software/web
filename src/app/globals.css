@@ -165,25 +165,20 @@
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background: linear-gradient(
-    115deg,
-    transparent 30%,
-    rgb(255 255 255 / 0.4) 48%,
-    transparent 66%
+    100deg,
+    transparent 25%,
+    rgb(255 255 255 / 0.45) 50%,
+    transparent 75%
   );
-  transform: translateX(-130%);
-  animation: btn-glass-shine 3.2s ease-in-out infinite;
+  transform: translateX(-120%);
+  transition: transform 650ms ease;
   pointer-events: none;
 }
 
-@keyframes btn-glass-shine {
-  0% {
-    transform: translateX(-130%);
-  }
-  35%,
-  100% {
-    transform: translateX(130%);
-  }
+.btn-glass:hover::after {
+  transform: translateX(120%);
 }
 
 .btn-glass:hover {
@@ -200,7 +195,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .btn-glass::after {
-    animation: none;
+    transition: none;
     display: none;
   }
 }
