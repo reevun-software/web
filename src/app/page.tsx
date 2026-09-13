@@ -107,8 +107,8 @@ export default async function Home() {
       </header>
 
       <main className="flex-1">
-        {/* Hero: centered, text only */}
-        <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 pt-20 pb-10 text-center md:pt-28">
+        {/* Hero: centered, text only, vertically centered in the space below the header */}
+        <section className="mx-auto flex min-h-[calc(100dvh-4rem)] max-w-3xl flex-col items-center justify-center gap-6 px-6 py-16 text-center">
           <h1 className="text-3xl font-semibold tracking-tight leading-[1.15] md:text-5xl">
             Управляйте Discord-сообществом
           </h1>
@@ -135,11 +135,11 @@ export default async function Home() {
               Смотреть возможности
             </Button>
           </div>
+          <p className="pt-2 text-sm text-muted-foreground">
+            Продукт доступен для проектов MajesticRP, GTA 5 RP и Россия
+            Онлайн.
+          </p>
         </section>
-
-        <p className="mx-auto max-w-6xl px-6 pt-4 pb-16 text-center text-sm text-muted-foreground">
-          Продукт доступен для проектов MajesticRP, GTA 5 RP и Россия Онлайн.
-        </p>
 
         {/* Features: bento, 6 cells */}
         <section id="features" className="border-t border-border/60 py-20">
