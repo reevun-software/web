@@ -25,7 +25,9 @@ export function LanguageSwitcher() {
       <DropdownMenuTrigger
         render={<Button variant="ghost" size="sm" aria-label={t("label")} />}
       >
-        <span className={`fi fi-${LOCALE_META[locale].flag} fis rounded-[3px]`} />
+        <span
+          className={`fi fi-${LOCALE_META[locale].flag} fis size-4 shrink-0 rounded-[3px]`}
+        />
         <span className="uppercase">{locale}</span>
         <ChevronDown className="size-3.5 text-muted-foreground" />
       </DropdownMenuTrigger>
@@ -44,7 +46,9 @@ export function LanguageSwitcher() {
               )
             }
           >
-            <span className={`fi fi-${LOCALE_META[l].flag} fis rounded-[3px]`} />
+            <span
+              className={`fi fi-${LOCALE_META[l].flag} fis size-4 shrink-0 rounded-[3px]`}
+            />
             <span className="flex-1">{LOCALE_META[l].label}</span>
             {l === locale && <Check className="size-4" />}
           </DropdownMenuItem>

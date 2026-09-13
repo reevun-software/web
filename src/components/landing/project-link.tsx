@@ -20,7 +20,7 @@ const PROJECT_LABELS: Record<keyof typeof PROJECT_URLS, string> = {
   russia: "Russia Online",
 };
 
-const DURATION_MS = 5000;
+const DURATION_MS = 10000;
 const RADIUS = 16;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 

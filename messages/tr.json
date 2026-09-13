@@ -5,7 +5,9 @@
   },
   "Header": {
     "signIn": "Discord ile giriş yap",
-    "dashboardAria": "Kontrol paneli"
+    "dashboardAria": "Kontrol paneli",
+    "accountMenu": "Hesap menüsü",
+    "signOut": "Çıkış yap"
   },
   "Hero": {
     "title": "Discord topluluğunu tek panelden yönet",
@@ -119,7 +121,8 @@
     "legal": "Yasal bilgiler",
     "privacy": "Gizlilik Politikası",
     "terms": "Kullanım Koşulları",
-    "copyright": "Reevun Software LLC."
+    "copyright": "Reevun Software LLC.",
+    "allRightsReserved": "Tüm hakları saklıdır."
   },
   "Status": {
     "operational": "Tüm sistemler çalışıyor",

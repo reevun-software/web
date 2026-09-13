@@ -5,7 +5,9 @@
   },
   "Header": {
     "signIn": "Sign in with Discord",
-    "dashboardAria": "Dashboard"
+    "dashboardAria": "Dashboard",
+    "accountMenu": "Account menu",
+    "signOut": "Sign out"
   },
   "Hero": {
     "title": "Run your Discord community",
@@ -119,7 +121,8 @@
     "legal": "Legal",
     "privacy": "Privacy Policy",
     "terms": "Terms of Use",
-    "copyright": "Reevun Software LLC."
+    "copyright": "Reevun Software LLC.",
+    "allRightsReserved": "All rights reserved."
   },
   "Status": {
     "operational": "All systems operational",

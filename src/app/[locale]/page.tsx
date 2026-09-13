@@ -16,7 +16,7 @@ import { DISCORD_BOT_INVITE_URL } from "@/lib/discord";
 import { Button } from "@/components/ui/button";
 import { DiscordSignInButton } from "@/components/discord-signin-button";
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AccountMenu } from "@/components/account-menu";
 import { Reveal } from "@/components/landing/reveal";
 import { Faq } from "@/components/landing/faq";
 import { Footer } from "@/components/landing/footer";
@@ -52,14 +52,7 @@ export default async function Home() {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             {session?.user ? (
-              <Link href="/dashboard" aria-label={t("Header.dashboardAria")}>
-                <Avatar>
-                  <AvatarImage src={session.user.image ?? undefined} />
-                  <AvatarFallback className="text-xs">
-                    {session.user.name?.[0] ?? "?"}
-                  </AvatarFallback>
-                </Avatar>
-              </Link>
+              <AccountMenu name={session.user.name} image={session.user.image} />
             ) : (
               <DiscordSignInButton size="sm" className="btn-glass">
                 <LogIn className="size-4" />
@@ -73,42 +66,50 @@ export default async function Home() {
       <main className="flex-1">
         {/* Hero: centered, text only */}
         <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center md:py-24">
-          <h1 className="text-3xl font-semibold tracking-tight leading-[1.15] md:text-5xl">
-            {t("Hero.title")}
-          </h1>
-          <p className="max-w-[46ch] text-base leading-relaxed text-muted-foreground md:text-lg">
-            {t("Hero.subtitle")}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <Button
-              render={
-                <Link
-                  href={DISCORD_BOT_INVITE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                />
-              }
-              size="lg"
-              className="btn-glass"
-            >
-              {t("Hero.addBot")}
-              <ArrowRight className="size-4" />
-            </Button>
-            <Button render={<Link href="#features" />} variant="ghost" size="lg">
-              {t("Hero.seeFeatures")}
-            </Button>
-          </div>
-          <p className="pt-2 text-sm text-muted-foreground">
-            {t.rich("Hero.availableFor", {
-              majestic: (chunks) => (
-                <ProjectLink project="majestic">{chunks}</ProjectLink>
-              ),
-              gta: (chunks) => <ProjectLink project="gta">{chunks}</ProjectLink>,
-              russia: (chunks) => (
-                <ProjectLink project="russia">{chunks}</ProjectLink>
-              ),
-            })}
-          </p>
+          <Reveal>
+            <h1 className="text-3xl font-semibold tracking-tight leading-[1.15] md:text-5xl">
+              {t("Hero.title")}
+            </h1>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <p className="max-w-[46ch] text-base leading-relaxed text-muted-foreground md:text-lg">
+              {t("Hero.subtitle")}
+            </p>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Button
+                render={
+                  <Link
+                    href={DISCORD_BOT_INVITE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                }
+                size="lg"
+                className="btn-glass"
+              >
+                {t("Hero.addBot")}
+                <ArrowRight className="size-4" />
+              </Button>
+              <Button render={<Link href="#features" />} variant="ghost" size="lg">
+                {t("Hero.seeFeatures")}
+              </Button>
+            </div>
+          </Reveal>
+          <Reveal delay={0.24}>
+            <p className="pt-2 text-sm text-muted-foreground">
+              {t.rich("Hero.availableFor", {
+                majestic: (chunks) => (
+                  <ProjectLink project="majestic">{chunks}</ProjectLink>
+                ),
+                gta: (chunks) => <ProjectLink project="gta">{chunks}</ProjectLink>,
+                russia: (chunks) => (
+                  <ProjectLink project="russia">{chunks}</ProjectLink>
+                ),
+              })}
+            </p>
+          </Reveal>
         </section>
 
         {/* Features: bento, 6 cells */}

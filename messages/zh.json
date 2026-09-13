@@ -5,7 +5,9 @@
   },
   "Header": {
     "signIn": "使用 Discord 登录",
-    "dashboardAria": "控制面板"
+    "dashboardAria": "控制面板",
+    "accountMenu": "账号菜单",
+    "signOut": "退出登录"
   },
   "Hero": {
     "title": "在一个面板里管理你的 Discord 社区",
@@ -119,7 +121,8 @@
     "legal": "法律信息",
     "privacy": "隐私政策",
     "terms": "使用条款",
-    "copyright": "Reevun Software LLC."
+    "copyright": "Reevun Software LLC.",
+    "allRightsReserved": "保留所有权利。"
   },
   "Status": {
     "operational": "所有系统正常运行",

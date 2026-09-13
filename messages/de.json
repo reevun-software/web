@@ -5,7 +5,9 @@
   },
   "Header": {
     "signIn": "Mit Discord anmelden",
-    "dashboardAria": "Dashboard"
+    "dashboardAria": "Dashboard",
+    "accountMenu": "Kontomenü",
+    "signOut": "Abmelden"
   },
   "Hero": {
     "title": "Verwalte deine Discord-Community",
@@ -119,7 +121,8 @@
     "legal": "Rechtliches",
     "privacy": "Datenschutzerklärung",
     "terms": "Nutzungsbedingungen",
-    "copyright": "Reevun Software LLC."
+    "copyright": "Reevun Software LLC.",
+    "allRightsReserved": "Alle Rechte vorbehalten."
   },
   "Status": {
     "operational": "Alle Systeme funktionieren",

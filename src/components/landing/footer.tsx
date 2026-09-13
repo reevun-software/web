@@ -96,9 +96,12 @@ export function Footer() {
       </div>
 
       <div className="border-t border-border/60 px-6 py-6">
-        <p className="mx-auto max-w-6xl text-xs text-muted-foreground">
-          © 2023–{new Date().getFullYear()}. {t("copyright")}
-        </p>
+        <div className="mx-auto flex max-w-6xl flex-col gap-1 text-xs text-muted-foreground sm:flex-row sm:justify-between">
+          <p>
+            © 2023–{new Date().getFullYear()}. {t("copyright")}
+          </p>
+          <p>{t("allRightsReserved")}</p>
+        </div>
       </div>
     </footer>
   );

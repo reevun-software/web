@@ -5,7 +5,9 @@
   },
   "Header": {
     "signIn": "Iniciar sesión con Discord",
-    "dashboardAria": "Panel de control"
+    "dashboardAria": "Panel de control",
+    "accountMenu": "Menú de la cuenta",
+    "signOut": "Cerrar sesión"
   },
   "Hero": {
     "title": "Gestiona tu comunidad de Discord",
@@ -119,7 +121,8 @@
     "legal": "Información legal",
     "privacy": "Política de privacidad",
     "terms": "Términos de uso",
-    "copyright": "Reevun Software LLC."
+    "copyright": "Reevun Software LLC.",
+    "allRightsReserved": "Todos los derechos reservados."
   },
   "Status": {
     "operational": "Todos los sistemas operativos",
