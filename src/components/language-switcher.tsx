@@ -13,6 +13,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+// flag-icons' own stylesheet sets width via `.fi.fis` (two classes), which
+// beats a plain Tailwind utility class like `size-4` on specificity - the
+// utility silently never applied. An inline style always wins instead.
+const FLAG_SIZE = { width: 16, height: 16 } as const;
+
+function FlagIcon({ code }: { code: string }) {
+  return <span className={`fi fi-${code} fis shrink-0 rounded-[3px]`} style={FLAG_SIZE} />;
+}
+
 export function LanguageSwitcher() {
   const locale = useLocale() as Locale;
   const t = useTranslations("LanguageSwitcher");
@@ -25,9 +34,7 @@ export function LanguageSwitcher() {
       <DropdownMenuTrigger
         render={<Button variant="ghost" size="sm" aria-label={t("label")} />}
       >
-        <span
-          className={`fi fi-${LOCALE_META[locale].flag} fis size-4 shrink-0 rounded-[3px]`}
-        />
+        <FlagIcon code={LOCALE_META[locale].flag} />
         <span className="uppercase">{locale}</span>
         <ChevronDown className="size-3.5 text-muted-foreground" />
       </DropdownMenuTrigger>
@@ -46,9 +53,7 @@ export function LanguageSwitcher() {
               )
             }
           >
-            <span
-              className={`fi fi-${LOCALE_META[l].flag} fis size-4 shrink-0 rounded-[3px]`}
-            />
+            <FlagIcon code={LOCALE_META[l].flag} />
             <span className="flex-1">{LOCALE_META[l].label}</span>
             {l === locale && <Check className="size-4" />}
           </DropdownMenuItem>
