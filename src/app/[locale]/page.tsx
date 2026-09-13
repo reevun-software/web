@@ -35,6 +35,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-1 flex-col">
+      <HeroBackground />
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <span className="flex items-center gap-2">
@@ -65,9 +66,8 @@ export default async function Home() {
       </header>
 
       <main className="flex-1">
-        {/* Hero: centered, text only, subtle floating background */}
-        <section className="relative overflow-hidden">
-          <HeroBackground />
+        {/* Hero: centered, text only */}
+        <section>
           <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center md:py-24">
             <Reveal>
               <h1 className="text-3xl font-semibold tracking-tight leading-[1.15] md:text-5xl">

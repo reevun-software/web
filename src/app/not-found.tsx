@@ -1,10 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ArrowLeft } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  icons: { icon: "/logo.png" },
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
