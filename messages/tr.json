@@ -214,7 +214,8 @@
       "OAuthAccountNotLinked": "Bu Discord hesabı zaten farklı şekilde bağlı.",
       "Configuration": "Oturum açma hizmeti yanlış yapılandırılmış.",
       "Verification": "Oturum açma bağlantısı geçersiz veya süresi dolmuş.",
-      "Default": "Bilinmeyen hata."
+      "Default": "Bilinmeyen hata.",
+      "OAuthCallbackError": "Discord yetkilendirmeyi tamamlayamadı. Bu genellikle isteği iptal ettiğinizde olur."
     }
   }
 }

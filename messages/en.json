@@ -214,7 +214,8 @@
       "OAuthAccountNotLinked": "This Discord account is already linked differently.",
       "Configuration": "The sign-in service is misconfigured.",
       "Verification": "The sign-in link is invalid or has expired.",
-      "Default": "Unknown error."
+      "Default": "Unknown error.",
+      "OAuthCallbackError": "Discord couldn't complete the authorization. This usually happens if you cancelled the request."
     }
   }
 }

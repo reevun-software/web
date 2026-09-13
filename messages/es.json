@@ -214,7 +214,8 @@
       "OAuthAccountNotLinked": "Esta cuenta de Discord ya está vinculada de otra forma.",
       "Configuration": "El servicio de inicio de sesión está mal configurado.",
       "Verification": "El enlace de inicio de sesión no es válido o ha caducado.",
-      "Default": "Error desconocido."
+      "Default": "Error desconocido.",
+      "OAuthCallbackError": "Discord no pudo completar la autorización. Esto suele ocurrir si cancelaste la solicitud."
     }
   }
 }

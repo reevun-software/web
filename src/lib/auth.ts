@@ -17,7 +17,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   // Locale-less: the proxy's next-intl middleware rewrites this to the
   // visitor's detected locale, same as any other top-level navigation.
-  pages: { error: "/auth/error" },
+  //
+  // Both point at the same page on purpose. Auth.js buckets thrown errors by
+  // `error.kind`, not a single "error page" setting: a SignInError (the kind
+  // OAuthCallbackError - e.g. Discord's own OAuth failing - actually throws)
+  // is routed through `pages.signIn`, while other AuthErrors go through
+  // `pages.error`. Leaving `signIn` unset falls back to next-auth's built-in,
+  // unstyled /api/auth/signin page, which never messages our popup opener or
+  // closes itself - the popup was landing there and just sitting stuck.
+  pages: { signIn: "/auth/error", error: "/auth/error" },
   callbacks: {
     async jwt({ token, account, profile }) {
       if (account) token.accessToken = account.access_token;

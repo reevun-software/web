@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 const KNOWN_ERROR_CODES = [
   "AccessDenied",
   "OAuthAccountNotLinked",
+  "OAuthCallbackError",
   "Configuration",
   "Verification",
 ] as const;

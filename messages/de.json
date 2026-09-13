@@ -214,7 +214,8 @@
       "OAuthAccountNotLinked": "Dieses Discord-Konto ist bereits anders verknüpft.",
       "Configuration": "Der Anmeldedienst ist falsch konfiguriert.",
       "Verification": "Der Anmeldelink ist ungültig oder abgelaufen.",
-      "Default": "Unbekannter Fehler."
+      "Default": "Unbekannter Fehler.",
+      "OAuthCallbackError": "Discord konnte die Autorisierung nicht abschließen. Das passiert meist, wenn Sie die Anfrage abgebrochen haben."
     }
   }
 }

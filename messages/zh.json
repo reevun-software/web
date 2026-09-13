@@ -214,7 +214,8 @@
       "OAuthAccountNotLinked": "该 Discord 账号已以其他方式绑定。",
       "Configuration": "登录服务配置有误。",
       "Verification": "登录链接无效或已过期。",
-      "Default": "未知错误。"
+      "Default": "未知错误。",
+      "OAuthCallbackError": "Discord 未能完成授权。这通常是因为您取消了请求。"
     }
   }
 }

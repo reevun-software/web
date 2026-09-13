@@ -14,6 +14,7 @@ const POPUP_HEIGHT = 720;
 const KNOWN_ERROR_CODES = [
   "AccessDenied",
   "OAuthAccountNotLinked",
+  "OAuthCallbackError",
   "Configuration",
   "Verification",
 ] as const;
