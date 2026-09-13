@@ -107,8 +107,8 @@ export default async function Home() {
       </header>
 
       <main className="flex-1">
-        {/* Hero: centered, text only, vertically centered in the space below the header */}
-        <section className="mx-auto flex min-h-[calc(100dvh-4rem)] max-w-3xl flex-col items-center justify-center gap-6 px-6 py-16 text-center">
+        {/* Hero: centered, text only */}
+        <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center md:py-24">
           <h1 className="text-3xl font-semibold tracking-tight leading-[1.15] md:text-5xl">
             Управляйте Discord-сообществом
           </h1>
