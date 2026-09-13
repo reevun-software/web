@@ -137,7 +137,7 @@ export default async function Home() {
         </section>
 
         <p className="mx-auto max-w-6xl px-6 pt-4 pb-16 text-center text-sm text-muted-foreground">
-          Уже используют команды MajesticRP GTA5RP и Россия Онлайн.
+          Продукт доступен для проектов MajesticRP, GTA 5 RP и Россия Онлайн.
         </p>
 
         {/* Features: bento, 6 cells */}
