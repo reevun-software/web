@@ -4,13 +4,14 @@ import { db } from "@/lib/db";
 import { guilds } from "@/lib/db/schema";
 import { fetchUserGuilds, filterManageable } from "@/lib/discord-guilds";
 
-// Discord's /users/@me/guilds is aggressively rate-limited; the dashboard
-// hits this on every nav click (layout + page both need it), so cache it
-// per access token for a minute instead of calling Discord on each request.
+// Discord's /users/@me/guilds is aggressively rate-limited, and its own
+// reset window can outlast a short cache - a 60s TTL still hit it in
+// practice. 5 minutes trades a bit of staleness (a newly-managed server
+// takes longer to show up) for actually avoiding the 429 in normal use.
 const getCachedUserGuilds = unstable_cache(
   (accessToken: string) => fetchUserGuilds(accessToken),
   ["discord-user-guilds"],
-  { revalidate: 60 },
+  { revalidate: 300 },
 );
 
 export type ManageableGuild = {

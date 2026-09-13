@@ -145,6 +145,42 @@
   }
 }
 
+@keyframes hero-dust {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-8px);
+  }
+}
+
+.animate-hero-dust {
+  animation: hero-dust ease-in-out infinite;
+}
+
+@keyframes hero-crystal-spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+.animate-hero-crystal-spin {
+  animation: hero-crystal-spin 24s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-dust,
+  .animate-hero-crystal-spin {
+    animation: none;
+  }
+}
+
 /* Deliberately outside any @layer: Tailwind's utilities (bg-primary,
    text-primary-foreground, etc.) live inside a layer, and un-layered rules
    always win the cascade regardless of source order - so this reliably
