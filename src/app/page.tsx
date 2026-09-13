@@ -9,10 +9,11 @@ import {
   LogIn,
   Settings2,
 } from "lucide-react";
+import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { DiscordSignInButton } from "@/components/discord-signin-button";
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
@@ -58,7 +59,9 @@ const STEPS = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+
   return (
     <div className="flex flex-1 flex-col">
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
@@ -76,10 +79,21 @@ export default function Home() {
               Reevun
             </span>
           </span>
-          <DiscordSignInButton size="sm">
-            <LogIn className="size-4" />
-            Войти через Discord
-          </DiscordSignInButton>
+          {session?.user ? (
+            <Link href="/dashboard" aria-label="Личный кабинет">
+              <Avatar>
+                <AvatarImage src={session.user.image ?? undefined} />
+                <AvatarFallback className="text-xs">
+                  {session.user.name?.[0] ?? "?"}
+                </AvatarFallback>
+              </Avatar>
+            </Link>
+          ) : (
+            <DiscordSignInButton size="sm">
+              <LogIn className="size-4" />
+              Войти через Discord
+            </DiscordSignInButton>
+          )}
         </div>
       </header>
 
