@@ -23,33 +23,33 @@ import { Footer } from "@/components/landing/footer";
 const FEATURES = [
   {
     icon: Users,
-    title: "Набор и профили",
-    body: "Формы заявок с проверкой на ботов, личный профиль и статус AFK для каждого участника.",
+    title: "Набор без лишней возни",
+    body: "Новый участник заполняет анкету, бот сам отсеивает ботов и спам, а профиль с AFK-статусом собирается по ходу дела.",
   },
   {
     icon: ShieldCheck,
-    title: "Ранги и предупреждения",
-    body: "Повышения по цепочке рангов и автоматический выход из ролей после третьего предупреждения.",
+    title: "Ранги растут по порядку",
+    body: "Следующий ранг открывается только после предыдущего, а после третьего предупреждения роль снимается сама — без вашего участия.",
   },
   {
     icon: Ticket,
-    title: "Обращения и апелляции",
-    body: "Тикеты с понятными номерами и историей переписки, доступные из панели.",
+    title: "Обращения не теряются",
+    body: "У каждого тикета свой номер и вся переписка под рукой, прямо в панели.",
   },
   {
     icon: ArrowLeftRight,
-    title: "Массовый перевод",
-    body: "Команда /move переносит выбранных участников между голосовыми каналами разом.",
+    title: "Перевод одним кликом",
+    body: "Команда /move переносит сразу всех нужных участников в другой голосовой канал.",
   },
   {
     icon: History,
-    title: "Журнал действий",
-    body: "Кто выдал ранг, снял предупреждение или закрыл тикет — история сохраняется и видна в панели.",
+    title: "Видно, кто что сделал",
+    body: "Выдача ранга, снятие предупреждения, закрытие тикета — каждое действие остаётся в журнале.",
   },
   {
     icon: Layers,
-    title: "Несколько семей",
-    body: "Один вход через Discord, переключение между семьями без второго аккаунта.",
+    title: "Одна учётка на все семьи",
+    body: "Управляете несколькими серверами? Переключайтесь между ними без повторного входа.",
   },
 ];
 
@@ -98,7 +98,7 @@ export default async function Home() {
               </Avatar>
             </Link>
           ) : (
-            <DiscordSignInButton size="sm">
+            <DiscordSignInButton size="sm" className="btn-glass">
               <LogIn className="size-4" />
               Войти через Discord
             </DiscordSignInButton>
@@ -126,6 +126,7 @@ export default async function Home() {
                 />
               }
               size="lg"
+              className="btn-glass"
             >
               Добавить бота на сервер
               <ArrowRight className="size-4" />
@@ -151,7 +152,7 @@ export default async function Home() {
             <div className="mt-10 grid gap-4 md:grid-cols-3">
               {FEATURES.map((f, i) => (
                 <Reveal key={f.title} delay={i * 0.06}>
-                  <Card className="flex h-full flex-col gap-3 border-border/60 bg-card/60 p-6 shadow-none">
+                  <Card className="flex h-full flex-col gap-3 border-border/60 bg-card/60 p-6 shadow-none ring-1 ring-transparent transition-colors duration-200 hover:bg-card hover:ring-brand/30">
                     <f.icon className="size-5 text-brand" strokeWidth={1.5} />
                     <h3 className="text-lg font-medium">{f.title}</h3>
                     <p className="text-sm leading-relaxed text-muted-foreground">
@@ -220,6 +221,7 @@ export default async function Home() {
                   />
                 }
                 size="lg"
+                className="btn-glass"
               >
                 Добавить бота на сервер
                 <ArrowRight className="size-4" />
