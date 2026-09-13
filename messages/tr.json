@@ -192,5 +192,12 @@
   },
   "LanguageSwitcher": {
     "label": "Dil"
+  },
+  "Leaving": {
+    "title": "Reevun'dan ayrılıyorsun",
+    "body": "{site}, bağımsız bir üçüncü taraf projesidir. İçeriğini doğrulamıyoruz ve ondan sorumlu değiliz.",
+    "countdown": "{seconds} saniye içinde otomatik yönlendirileceksin.",
+    "continueNow": "Şimdi devam et",
+    "goBack": "Geri dön"
   }
 }

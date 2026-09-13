@@ -27,12 +27,16 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 
 const FEATURE_ICONS = [Users, ShieldCheck, Ticket, ArrowLeftRight, History, Layers];
 
-function ProjectLink({ href, children }: { href: string; children: ReactNode }) {
+function ProjectLink({
+  project,
+  children,
+}: {
+  project: keyof typeof PROJECT_URLS;
+  children: ReactNode;
+}) {
   return (
     <Link
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={`/leaving?project=${project}`}
       className="inline-flex items-center gap-0.5 font-medium text-foreground underline decoration-muted-foreground/40 underline-offset-2 transition-colors hover:decoration-foreground"
     >
       {children}
@@ -117,13 +121,11 @@ export default async function Home() {
           <p className="pt-2 text-sm text-muted-foreground">
             {t.rich("Hero.availableFor", {
               majestic: (chunks) => (
-                <ProjectLink href={PROJECT_URLS.majestic}>{chunks}</ProjectLink>
+                <ProjectLink project="majestic">{chunks}</ProjectLink>
               ),
-              gta: (chunks) => (
-                <ProjectLink href={PROJECT_URLS.gta}>{chunks}</ProjectLink>
-              ),
+              gta: (chunks) => <ProjectLink project="gta">{chunks}</ProjectLink>,
               russia: (chunks) => (
-                <ProjectLink href={PROJECT_URLS.russia}>{chunks}</ProjectLink>
+                <ProjectLink project="russia">{chunks}</ProjectLink>
               ),
             })}
           </p>

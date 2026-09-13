@@ -192,5 +192,12 @@
   },
   "LanguageSwitcher": {
     "label": "Sprache"
+  },
+  "Leaving": {
+    "title": "Du verlässt Reevun",
+    "body": "{site} ist ein unabhängiges Drittanbieterprojekt. Wir prüfen die Inhalte nicht und übernehmen dafür keine Verantwortung.",
+    "countdown": "Automatische Weiterleitung in {seconds} Sek.",
+    "continueNow": "Jetzt fortfahren",
+    "goBack": "Zurück"
   }
 }
