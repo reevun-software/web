@@ -4,19 +4,20 @@ import { LegalPage } from "@/components/legal/legal-page";
 
 export async function generateMetadata({
   params,
-}: PageProps<"/[locale]/privacy">): Promise<Metadata> {
+}: PageProps<"/[locale]/cookies">): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Privacy" });
+  const t = await getTranslations({ locale, namespace: "Cookies" });
   return { title: t("metaTitle") };
 }
 
-export default async function PrivacyPage() {
-  const t = await getTranslations("Privacy");
+export default async function CookiesPage() {
+  const t = await getTranslations("Cookies");
 
   return (
     <LegalPage
       title={t("title")}
       updated={t("updated")}
+      intro={t("intro")}
       sections={t.raw("sections")}
     />
   );

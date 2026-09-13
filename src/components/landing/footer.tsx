@@ -92,6 +92,12 @@ export function Footer() {
           >
             {t("terms")}
           </Link>
+          <Link
+            href="/cookies"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {t("cookiePolicy")}
+          </Link>
         </div>
       </div>
 

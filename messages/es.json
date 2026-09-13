@@ -128,7 +128,8 @@
     "dismissDisclaimer": "Cerrar",
     "cookiesTitle": "Cookies",
     "cookiesBody": "Nuestro sitio usa cookies para mejorar su funcionamiento.",
-    "cookiesLearnMore": "Más información"
+    "cookiesLearnMore": "Más información",
+    "cookiePolicy": "Cookies"
   },
   "Status": {
     "operational": "Todos los sistemas operativos",
@@ -143,16 +144,92 @@
   "Privacy": {
     "metaTitle": "Política de privacidad — Reevun",
     "title": "Política de privacidad",
-    "p1": "El acceso al sitio se realiza únicamente mediante Discord OAuth. Recibimos de Discord tu identificador de usuario, nombre, avatar y la lista de servidores que administras; esto basta para mostrarte solo las familias donde Reevun está instalado y tienes permisos de administrador.",
-    "p2": "Los datos de los miembros de la familia (perfiles, rangos, advertencias, tickets) los recopila el propio bot en tu servidor de Discord y se guardan en la base de datos de Reevun. Estos datos solo son visibles para quienes tienen permisos de administración en ese servidor.",
-    "p3": "La versión completa de la política de privacidad todavía está en preparación."
+    "updated": "Última actualización: 13 de septiembre de 2026",
+    "sections": [
+      {
+        "heading": "1. Qué datos recopilamos",
+        "body": "Al iniciar sesión con Discord OAuth, el Servicio recibe de Discord: el ID de tu cuenta, tu nombre de usuario, tu avatar y la lista de servidores que administras. El Servicio no solicita acceso a tu correo electrónico, datos de pago ni mensajes directos de Discord.\n\nLos datos sobre miembros, rangos, advertencias y tickets de un servidor de Discord específico son recopilados por el Bot en ese mismo servidor y se almacenan en la base de datos de Reevun, vinculados al ID de ese servidor."
+      },
+      {
+        "heading": "2. Cómo usamos tus datos",
+        "body": "Los datos de tu cuenta de Discord se usan únicamente para la autenticación y para determinar qué familias (servidores) puedes administrar a través del panel.\n\nLos datos recopilados por el Bot en un servidor concreto se usan para mostrar y administrar las funciones de ese servidor, y solo son visibles para usuarios con permisos de administración en dicho servidor."
+      },
+      {
+        "heading": "3. Almacenamiento y seguridad",
+        "body": "Los datos se almacenan en bases de datos PostgreSQL y Redis alojadas en la infraestructura de Railway. La conexión con el sitio está protegida mediante cifrado HTTPS. Tu sesión se guarda en una cookie firmada que no puede falsificarse sin conocer la clave secreta del Servicio."
+      },
+      {
+        "heading": "4. Compartir datos con terceros",
+        "body": "El Servicio no vende ni comparte datos personales con terceros con fines publicitarios. La única parte con la que se comunica el Servicio es el propio Discord, algo necesario para que funcione la autenticación. El Servicio no utiliza redes publicitarias ni herramientas de analítica de terceros."
+      },
+      {
+        "heading": "5. Cookies",
+        "body": "El Servicio usa cookies necesarias para iniciar sesión y recordar el idioma de interfaz elegido. La lista completa y el propósito de estas cookies se describen en una Política de Cookies independiente."
+      },
+      {
+        "heading": "6. Tus derechos",
+        "body": "Puedes revocar en cualquier momento el acceso del Servicio a tu cuenta de Discord desde la configuración de Aplicaciones autorizadas de Discord - esto impide de inmediato que el Servicio pueda solicitar los datos de tu cuenta.\n\nPara solicitar la eliminación de datos almacenados en la base de datos de Reevun (por ejemplo, el historial de tickets), contáctanos a través de la sección de Soporte del sitio."
+      },
+      {
+        "heading": "7. Requisitos de edad",
+        "body": "El Servicio está destinado a usuarios que cumplan con la edad mínima establecida en las propias Condiciones de Uso de Discord. No recopilamos deliberadamente datos de usuarios que no cumplan este requisito."
+      },
+      {
+        "heading": "8. Cambios en esta política",
+        "body": "Podemos actualizar esta política periódicamente. La versión vigente siempre está disponible en esta página; ante cambios significativos, podemos notificar adicionalmente a los usuarios a través del sitio."
+      }
+    ]
   },
   "Terms": {
-    "metaTitle": "Términos de uso — Reevun",
-    "title": "Términos de uso",
-    "p1": "Reevun es un panel de control para un bot de Discord destinado a comunidades de rol. Puede usar el panel cualquier miembro de un servidor de Discord donde el bot esté instalado y que cuente con el permiso «Gestionar servidor» o permisos de administrador.",
-    "p2": "El propietario del servidor es responsable de a quién otorga esos permisos: el acceso a la gestión de rangos, advertencias y tickets lo determina la propia configuración del servidor de Discord, no Reevun directamente.",
-    "p3": "La versión completa de los términos de uso todavía está en preparación."
+    "metaTitle": "Condiciones de uso — Reevun",
+    "title": "Condiciones de uso",
+    "updated": "Última actualización: 13 de septiembre de 2026",
+    "sections": [
+      {
+        "heading": "1. Términos y definiciones",
+        "body": "«Servicio» hace referencia al sitio reevun.app y al panel de control del bot de Discord Reevun. «Bot» hace referencia a la aplicación Reevun añadida a un servidor de Discord. «Familia» hace referencia a un servidor de Discord en el que está instalado el Bot. «Usuario» hace referencia a cualquier persona que haya iniciado sesión en el Servicio a través de Discord. «Propietario de familia» hace referencia a un usuario con el permiso «Gestionar servidor» o con permisos de administrador en un servidor de Discord concreto. «Operador», «nosotros» hace referencia a Reevun Software LLC."
+      },
+      {
+        "heading": "2. Objeto del acuerdo",
+        "body": "Reevun es un panel de control para el bot de Discord Reevun, creado para comunidades de rol. El Servicio permite a los propietarios y administradores de servidores de Discord gestionar los rangos de los miembros, los tickets de soporte y otras funciones del Bot a través de una interfaz web, sin necesidad de usar comandos de texto en Discord.\n\nUsar el Servicio implica la aceptación total e incondicional de estas Condiciones."
+      },
+      {
+        "heading": "3. Inicio de sesión y autorización",
+        "body": "El inicio de sesión en el Servicio se realiza exclusivamente mediante Discord OAuth - no existe un registro, usuario ni contraseña independientes, y no se solicitan. Al iniciar sesión con Discord, otorgas al Servicio acceso a información pública básica de tu cuenta de Discord y a la lista de servidores que administras, únicamente para poder mostrarte las familias en las que está instalado el Bot y en las que tienes permisos de gestión. El Servicio no solicita ni almacena la contraseña de tu cuenta de Discord."
+      },
+      {
+        "heading": "4. Derechos y obligaciones del usuario",
+        "body": "El Usuario se compromete a usar el Servicio solo con fines lícitos y de acuerdo con las Condiciones de Uso de Discord; a no intentar interrumpir el funcionamiento del Servicio, eludir las restricciones de acceso ni obtener acceso no autorizado a los datos de otros servidores; y a asumir en solitario la responsabilidad de las decisiones tomadas al gestionar su propia familia."
+      },
+      {
+        "heading": "5. Derechos y obligaciones del Operador",
+        "body": "El Operador procura mantener el Servicio en funcionamiento, pero no garantiza un funcionamiento ininterrumpido (véase «Exclusión de garantías» más abajo). El Operador puede modificar la funcionalidad del Servicio y del Bot, así como restringir o suspender el acceso de usuarios o servidores concretos que incumplan estas Condiciones, las Condiciones de Uso de Discord o la legislación aplicable."
+      },
+      {
+        "heading": "6. Datos creados por los propietarios de familias",
+        "body": "Los datos sobre rangos, advertencias, tickets y otros procesos internos de un servidor de Discord concreto son creados y gestionados por el propietario y los administradores de ese servidor por su cuenta. El Operador no se hace responsable del contenido, la exactitud ni las consecuencias de las decisiones tomadas por los miembros del servidor mediante el uso de las funciones del Bot."
+      },
+      {
+        "heading": "7. Propiedad intelectual",
+        "body": "El nombre «Reevun», el logotipo y el código fuente del Servicio y del Bot son propiedad de Reevun Software LLC. Reevun no está afiliado ni respaldado por Discord Inc., ni tampoco por Take-Two Interactive, Rockstar Games o cualquier otro titular de derechos de GTA - más información en el aviso legal del pie de página del sitio."
+      },
+      {
+        "heading": "8. Exclusión de garantías",
+        "body": "8.1. EL SERVICIO SE PROPORCIONA «TAL CUAL» Y «SEGÚN DISPONIBILIDAD», SIN GARANTÍA DE FUNCIONAMIENTO ININTERRUMPIDO NI LIBRE DE ERRORES.\n8.2. EL OPERADOR PUEDE SUSPENDER O RESTRINGIR EL ACCESO AL SERVICIO EN CUALQUIER MOMENTO, INCLUSO PARA REALIZAR TAREAS DE MANTENIMIENTO.\n8.3. EL OPERADOR NO GARANTIZA LA PERMANENCIA DE LOS DATOS CREADOS EN EL SERVICIO Y RECOMIENDA A LOS PROPIETARIOS DE FAMILIAS CONSERVAR TAMBIÉN LOS REGISTROS IMPORTANTES FUERA DEL SERVICIO.\n8.4. EL OPERADOR NO SE HACE RESPONSABLE DE LAS ACCIONES REALIZADAS POR LOS USUARIOS A TRAVÉS DE LAS FUNCIONES DEL SERVICIO, NI DEL CONTENIDO DE RECURSOS DE TERCEROS QUE PUEDAN ENLAZARSE DESDE EL SERVICIO.\n8.5. EL USUARIO UTILIZA EL SERVICIO BAJO SU PROPIO RIESGO Y ES EL ÚNICO RESPONSABLE DE LAS CONSECUENCIAS DE LAS DECISIONES DE GESTIÓN TOMADAS A TRAVÉS DEL SERVICIO."
+      },
+      {
+        "heading": "9. Terminación del acceso",
+        "body": "El Operador puede restringir o poner fin al acceso de un usuario al Servicio en caso de incumplimiento de estas Condiciones, así como si el Bot es eliminado de un servidor o el usuario revoca los permisos de Discord OAuth. El usuario puede revocar en cualquier momento el acceso del Servicio a su cuenta de Discord desde la configuración de Aplicaciones autorizadas de Discord."
+      },
+      {
+        "heading": "10. Cambios en estas condiciones",
+        "body": "El Operador puede modificar estas Condiciones de forma unilateral. La versión vigente siempre está disponible en esta página. Continuar usando el Servicio después de la publicación de cambios implica la aceptación de la nueva versión."
+      },
+      {
+        "heading": "11. Contacto",
+        "body": "Para cualquier consulta relacionada con estas Condiciones, ponte en contacto con nosotros a través de la sección de Soporte del sitio."
+      }
+    ]
   },
   "Dashboard": {
     "noFamiliesTitle": "Todavía no hay familias con Reevun",
@@ -223,5 +300,41 @@
       "Default": "Error desconocido.",
       "OAuthCallbackError": "Discord no pudo completar la autorización. Esto suele ocurrir si cancelaste la solicitud."
     }
+  },
+  "Cookies": {
+    "metaTitle": "Cookies — Reevun",
+    "title": "Política de cookies",
+    "updated": "Última actualización: 13 de septiembre de 2026",
+    "intro": "Intentamos usar la menor cantidad posible de cookies: solo las que son realmente necesarias para que el sitio funcione.",
+    "sections": [
+      {
+        "heading": "1. Qué son las cookies",
+        "body": "Las cookies son pequeños archivos de texto que un sitio guarda en tu navegador para recordar información entre visitas, como el hecho de que ya has iniciado sesión."
+      },
+      {
+        "heading": "2. Cookies necesarias (técnicas)",
+        "body": "Estas cookies son necesarias para el funcionamiento básico del Servicio y no se pueden desactivar sin perder la posibilidad de usar el sitio:\n- cookie de sesión de Auth.js: almacena el hecho de que has iniciado sesión con Discord;\n- cookie de protección CSRF de Auth.js: protege el formulario de inicio de sesión frente a la falsificación de solicitudes;\n- cookie de retorno de OAuth de Auth.js: se usa brevemente durante el proceso de inicio de sesión con Discord."
+      },
+      {
+        "heading": "3. Cookies funcionales",
+        "body": "- NEXT_LOCALE: recuerda el idioma de interfaz elegido durante aproximadamente 1 año."
+      },
+      {
+        "heading": "4. Almacenamiento local del navegador",
+        "body": "Además de las cookies, el sitio usa el localStorage de tu navegador para recordar que ya has cerrado los avisos sobre el aviso legal y las cookies en la página de inicio. Estos datos permanecen únicamente en tu navegador y nunca se envían al servidor."
+      },
+      {
+        "heading": "5. Cookies de publicidad y analítica",
+        "body": "El Servicio no utiliza redes publicitarias, herramientas de analítica ni rastreadores de terceros."
+      },
+      {
+        "heading": "6. Gestión de cookies",
+        "body": "Puedes restringir o eliminar las cookies desde la configuración de tu navegador. Ten en cuenta que desactivar las cookies necesarias hará imposible iniciar sesión con Discord."
+      },
+      {
+        "heading": "7. Cambios en esta política",
+        "body": "Podemos actualizar esta página a medida que cambien las tecnologías que utilizamos. La versión vigente siempre está disponible aquí."
+      }
+    ]
   }
 }

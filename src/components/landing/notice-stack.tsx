@@ -83,7 +83,7 @@ export function NoticeStack() {
         ) : (
           <>
             {t("cookiesBody")}{" "}
-            <Link href="/privacy" className="underline underline-offset-2 hover:text-foreground">
+            <Link href="/cookies" className="underline underline-offset-2 hover:text-foreground">
               {t("cookiesLearnMore")}
             </Link>
           </>

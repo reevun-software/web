@@ -128,7 +128,8 @@
     "dismissDisclaimer": "Kapat",
     "cookiesTitle": "Çerezler",
     "cookiesBody": "Sitemiz, çalışmasını iyileştirmek için çerezler kullanır.",
-    "cookiesLearnMore": "Daha fazla bilgi"
+    "cookiesLearnMore": "Daha fazla bilgi",
+    "cookiePolicy": "Çerezler"
   },
   "Status": {
     "operational": "Tüm sistemler çalışıyor",
@@ -143,16 +144,92 @@
   "Privacy": {
     "metaTitle": "Gizlilik Politikası — Reevun",
     "title": "Gizlilik Politikası",
-    "p1": "Siteye giriş yalnızca Discord OAuth ile yapılır. Discord'dan kullanıcı kimliğini, adını, profil resmini ve yönettiğin sunucuların listesini alıyoruz - sana yalnızca Reevun'un kurulu olduğu ve yönetici yetkisine sahip olduğun aileleri göstermek için bu yeterli.",
-    "p2": "Aile üyelerinin verilerini (profiller, rütbeler, uyarılar, talepler) botun kendisi Discord sunucunda toplar ve Reevun veritabanında saklar. Bu veriler yalnızca o sunucuyu yönetme yetkisi olanlara görünür.",
-    "p3": "Gizlilik politikasının tam sürümü şu anda hazırlanıyor."
+    "updated": "Son güncelleme: 13 Eylül 2026",
+    "sections": [
+      {
+        "heading": "1. Hangi verileri topluyoruz",
+        "body": "Discord OAuth ile giriş yaptığınızda, Hizmet Discord'dan şunları alır: hesap kimliğiniz, kullanıcı adınız, avatarınız ve yönettiğiniz sunucuların listesi. Hizmet, e-posta adresinize, ödeme bilgilerinize veya Discord özel mesajlarınıza erişim talep etmez.\n\nBelirli bir Discord sunucusundaki üyeler, rütbeler, uyarılar ve destek talepleriyle ilgili veriler, Bot tarafından o sunucuda toplanır ve sunucu kimliğine bağlı olarak Reevun veritabanında saklanır."
+      },
+      {
+        "heading": "2. Verilerinizi nasıl kullanıyoruz",
+        "body": "Discord hesap verileriniz yalnızca kimlik doğrulama ve panel üzerinden hangi aileleri (sunucuları) yönetebileceğinizi belirlemek için kullanılır.\n\nBot tarafından belirli bir sunucuda toplanan veriler, o sunucunun özelliklerini görüntülemek ve yönetmek için kullanılır ve yalnızca o sunucuda yönetici yetkisine sahip kullanıcılar tarafından görülebilir."
+      },
+      {
+        "heading": "3. Depolama ve güvenlik",
+        "body": "Veriler, Railway altyapısında barındırılan PostgreSQL ve Redis veritabanlarında saklanır. Siteyle olan bağlantı HTTPS şifrelemesiyle korunur. Oturumunuz, Hizmetin gizli anahtarı bilinmeden sahtesi üretilemeyecek şekilde imzalanmış bir çerezde saklanır."
+      },
+      {
+        "heading": "4. Verilerin üçüncü taraflarla paylaşılması",
+        "body": "Hizmet, kişisel verileri reklam amacıyla üçüncü taraflarla satmaz veya paylaşmaz. Hizmetin iletişim kurduğu tek taraf, kimlik doğrulamanın çalışması için gerekli olan Discord'un kendisidir. Hizmet, üçüncü taraf reklam ağları veya analiz araçları kullanmaz."
+      },
+      {
+        "heading": "5. Çerezler",
+        "body": "Hizmet, oturum açmak ve seçtiğiniz arayüz dilini hatırlamak için gerekli çerezleri kullanır. Bu çerezlerin tam listesi ve amacı ayrı bir Çerez Politikasında açıklanmıştır."
+      },
+      {
+        "heading": "6. Haklarınız",
+        "body": "Discord hesabınıza Hizmetin erişimini istediğiniz zaman Discord'un Yetkilendirilmiş Uygulamalar ayarlarından iptal edebilirsiniz - bu, Hizmetin hesap verilerinizi talep etmesini anında engeller.\n\nReevun veritabanında saklanan verilerin (örneğin destek talebi geçmişinin) silinmesini talep etmek için sitedeki Destek bölümü üzerinden bizimle iletişime geçin."
+      },
+      {
+        "heading": "7. Yaş gereksinimleri",
+        "body": "Hizmet, Discord'un kendi Kullanım Koşullarında belirtilen asgari yaşı karşılayan kullanıcılara yöneliktir. Bu gereksinimi karşılamayan kullanıcılardan bilerek veri toplamayız."
+      },
+      {
+        "heading": "8. Bu politikadaki değişiklikler",
+        "body": "Bu politikayı zaman zaman güncelleyebiliriz. Güncel sürüm her zaman bu sayfada bulunur; önemli değişiklikler için kullanıcıları site üzerinden ayrıca bilgilendirebiliriz."
+      }
+    ]
   },
   "Terms": {
     "metaTitle": "Kullanım Koşulları — Reevun",
     "title": "Kullanım Koşulları",
-    "p1": "Reevun, RP toplulukları için bir Discord botu yönetim panelidir. Botun kurulu olduğu ve \"Sunucuyu Yönet\" iznine veya yönetici yetkisine sahip olan herhangi bir Discord sunucusu üyesi paneli kullanabilir.",
-    "p2": "Bu yetkileri kime verdiğinden sunucu sahibi sorumludur: rütbe, uyarı ve talep yönetimine erişim doğrudan Reevun tarafından değil, Discord sunucusunun kendi ayarları tarafından belirlenir.",
-    "p3": "Kullanım koşullarının tam sürümü şu anda hazırlanıyor."
+    "updated": "Son güncelleme: 13 Eylül 2026",
+    "sections": [
+      {
+        "heading": "1. Terimler ve tanımlar",
+        "body": "\"Hizmet\", reevun.app web sitesini ve Reevun Discord botu panelini ifade eder. \"Bot\", bir Discord sunucusuna eklenen Reevun uygulamasını ifade eder. \"Aile\", Bot'un kurulu olduğu bir Discord sunucusunu ifade eder. \"Kullanıcı\", Hizmete Discord üzerinden giriş yapmış herhangi bir kişiyi ifade eder. \"Aile sahibi\", belirli bir Discord sunucusunda \"Sunucuyu Yönet\" iznine veya yönetici haklarına sahip kullanıcıyı ifade eder. \"İşletmeci\", \"biz\" Reevun Software LLC'yi ifade eder."
+      },
+      {
+        "heading": "2. Sözleşmenin konusu",
+        "body": "Reevun, RP toplulukları için geliştirilmiş Reevun Discord botunun bir yönetim panelidir. Hizmet, Discord sunucu sahiplerinin ve yöneticilerinin, Discord'da metin komutları kullanmaya gerek kalmadan, üye rütbelerini, destek taleplerini ve diğer Bot özelliklerini bir web arayüzü üzerinden yönetmesini sağlar.\n\nHizmeti kullanmak, bu Koşulların tam ve koşulsuz olarak kabul edildiği anlamına gelir."
+      },
+      {
+        "heading": "3. Giriş ve yetkilendirme",
+        "body": "Hizmete giriş yalnızca Discord OAuth aracılığıyla yapılır - ayrı bir kayıt, kullanıcı adı veya şifre bulunmaz ve talep edilmez. Discord ile giriş yaparak, Hizmete yalnızca Bot'un kurulu olduğu ve yönetim hakkınızın bulunduğu aileleri size gösterebilmesi amacıyla, Discord hesabınızın temel genel bilgilerine ve yönettiğiniz sunucuların listesine erişim izni verirsiniz. Hizmet, Discord hesap şifrenizi talep etmez veya saklamaz."
+      },
+      {
+        "heading": "4. Kullanıcının hak ve yükümlülükleri",
+        "body": "Kullanıcı, Hizmeti yalnızca yasal amaçlarla ve Discord'un Kullanım Koşullarına uygun şekilde kullanmayı; Hizmeti bozmaya, erişim kısıtlamalarını aşmaya veya diğer sunucuların verilerine yetkisiz erişim sağlamaya çalışmamayı; ve kendi ailesini yönetirken aldığı kararların sorumluluğunu tek başına üstlenmeyi kabul eder."
+      },
+      {
+        "heading": "5. İşletmecinin hak ve yükümlülükleri",
+        "body": "İşletmeci, Hizmeti çalışır durumda tutmaya çalışır ancak kesintisiz çalışacağını garanti etmez (aşağıdaki \"Garanti reddi\" bölümüne bakın). İşletmeci, Hizmetin ve Bot'un işlevselliğini değiştirebilir; bu Koşulları, Discord'un Kullanım Koşullarını veya geçerli yasaları ihlal eden kullanıcıların veya sunucuların erişimini kısıtlayabilir veya askıya alabilir."
+      },
+      {
+        "heading": "6. Aile sahipleri tarafından oluşturulan veriler",
+        "body": "Belirli bir Discord sunucusundaki rütbeler, uyarılar, destek talepleri ve diğer iç süreçlerle ilgili veriler, o sunucunun sahibi ve yöneticileri tarafından kendi sorumluluklarında oluşturulur ve yönetilir. İşletmeci, sunucu üyelerinin Bot özelliklerini kullanarak aldığı kararların içeriğinden, doğruluğundan veya sonuçlarından sorumlu değildir."
+      },
+      {
+        "heading": "7. Fikri mülkiyet",
+        "body": "\"Reevun\" adı, logosu ve Hizmet ile Bot'un kaynak kodu Reevun Software LLC'nin mülkiyetindedir. Reevun, Discord Inc. ile bağlantılı değildir ve onun tarafından desteklenmemektedir; aynı şekilde Take-Two Interactive, Rockstar Games veya başka bir GTA hak sahibiyle de bağlantılı değildir - daha fazla bilgi için site alt bilgisindeki yasal uyarıya bakın."
+      },
+      {
+        "heading": "8. Garanti reddi",
+        "body": "8.1. HİZMET, KESİNTİSİZ VEYA HATASIZ ÇALIŞMA GARANTİSİ OLMAKSIZIN \"OLDUĞU GİBİ\" VE \"MEVCUT OLDUĞU ŞEKİLDE\" SUNULMAKTADIR.\n8.2. İŞLETMECİ, BAKIM ÇALIŞMALARI DA DAHİL OLMAK ÜZERE, HER ZAMAN HİZMETE ERİŞİMİ ASKIYA ALABİLİR VEYA KISITLAYABİLİR.\n8.3. İŞLETMECİ, HİZMET İÇİNDE OLUŞTURULAN VERİLERİN KALICILIĞINI GARANTİ ETMEZ VE AİLE SAHİPLERİNİN ÖNEMLİ KAYITLARI HİZMET DIŞINDA DA TUTMASINI ÖNERİR.\n8.4. İŞLETMECİ, KULLANICILARIN HİZMETİN ÖZELLİKLERİ ARACILIĞIYLA GERÇEKLEŞTİRDİĞİ EYLEMLERDEN VEYA HİZMET İÇİNDEN BAĞLANTI VERİLEBİLEN ÜÇÜNCÜ TARAF KAYNAKLARININ İÇERİĞİNDEN SORUMLU DEĞİLDİR.\n8.5. KULLANICI, HİZMETİ KENDİ RİSKİYLE KULLANIR VE HİZMET ARACILIĞIYLA ALINAN YÖNETİM KARARLARININ SONUÇLARINDAN TEK BAŞINA SORUMLUDUR."
+      },
+      {
+        "heading": "9. Erişimin sonlandırılması",
+        "body": "İşletmeci, bu Koşulları ihlal eden bir kullanıcının Hizmete erişimini kısıtlayabilir veya sonlandırabilir; Bot'un bir sunucudan kaldırılması veya kullanıcının Discord OAuth izinlerini iptal etmesi durumunda da aynı şekilde hareket edebilir. Kullanıcı, Hizmetin Discord hesabına erişimini istediği zaman Discord'un Yetkilendirilmiş Uygulamalar ayarlarından iptal edebilir."
+      },
+      {
+        "heading": "10. Bu koşullardaki değişiklikler",
+        "body": "İşletmeci bu Koşulları tek taraflı olarak değiştirebilir. Güncel sürüm her zaman bu sayfada bulunur. Değişiklikler yayımlandıktan sonra Hizmeti kullanmaya devam etmek, yeni sürümün kabul edildiği anlamına gelir."
+      },
+      {
+        "heading": "11. İletişim",
+        "body": "Bu Koşullarla ilgili sorularınız için lütfen sitedeki Destek bölümü üzerinden bizimle iletişime geçin."
+      }
+    ]
   },
   "Dashboard": {
     "noFamiliesTitle": "Henüz Reevun'lu bir aile yok",
@@ -223,5 +300,41 @@
       "Default": "Bilinmeyen hata.",
       "OAuthCallbackError": "Discord yetkilendirmeyi tamamlayamadı. Bu genellikle isteği iptal ettiğinizde olur."
     }
+  },
+  "Cookies": {
+    "metaTitle": "Çerezler — Reevun",
+    "title": "Çerez Politikası",
+    "updated": "Son güncelleme: 13 Eylül 2026",
+    "intro": "Mümkün olduğunca az çerez kullanmaya çalışıyoruz - yalnızca sitenin çalışması için gerçekten gerekli olanları.",
+    "sections": [
+      {
+        "heading": "1. Çerez nedir",
+        "body": "Çerezler, bir sitenin ziyaretler arasında bilgi hatırlamak için tarayıcınızda sakladığı küçük metin dosyalarıdır; örneğin zaten oturum açmış olduğunuz bilgisi gibi."
+      },
+      {
+        "heading": "2. Gerekli (teknik) çerezler",
+        "body": "Bu çerezler Hizmetin temel çalışması için gereklidir ve siteyi kullanma imkanını kaybetmeden devre dışı bırakılamaz:\n- Auth.js oturum çerezi - Discord ile giriş yaptığınız bilgisini saklar;\n- Auth.js CSRF koruma çerezi - giriş formunu istek sahteciliğine karşı korur;\n- Auth.js OAuth geri çağırma çerezi - Discord ile giriş sürecinde kısa süreliğine kullanılır."
+      },
+      {
+        "heading": "3. İşlevsel çerezler",
+        "body": "- NEXT_LOCALE - seçtiğiniz arayüz dilini yaklaşık 1 yıl boyunca hatırlar."
+      },
+      {
+        "heading": "4. Tarayıcı yerel depolaması",
+        "body": "Çerezlerin yanı sıra site, ana sayfadaki yasal uyarı ve çerez bildirimlerini zaten kapattığınızı hatırlamak için tarayıcınızın localStorage alanını kullanır. Bu veriler yalnızca tarayıcınızda kalır ve sunucuya gönderilmez."
+      },
+      {
+        "heading": "5. Reklam ve analiz çerezleri",
+        "body": "Hizmet, üçüncü taraf reklam ağları, analiz araçları veya izleyiciler kullanmaz."
+      },
+      {
+        "heading": "6. Çerezleri yönetme",
+        "body": "Çerezleri tarayıcınızın ayarlarından kısıtlayabilir veya silebilirsiniz. Gerekli çerezleri devre dışı bırakmanın Discord ile giriş yapmayı imkansız hale getireceğini unutmayın."
+      },
+      {
+        "heading": "7. Bu politikadaki değişiklikler",
+        "body": "Kullandığımız teknolojiler değiştikçe bu sayfayı güncelleyebiliriz. Güncel sürüm her zaman burada bulunur."
+      }
+    ]
   }
 }

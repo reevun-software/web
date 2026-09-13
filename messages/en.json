@@ -128,7 +128,8 @@
     "dismissDisclaimer": "Close",
     "cookiesTitle": "Cookies",
     "cookiesBody": "Our site uses cookies to improve how it works.",
-    "cookiesLearnMore": "Learn more"
+    "cookiesLearnMore": "Learn more",
+    "cookiePolicy": "Cookies"
   },
   "Status": {
     "operational": "All systems operational",
@@ -143,16 +144,92 @@
   "Privacy": {
     "metaTitle": "Privacy Policy — Reevun",
     "title": "Privacy Policy",
-    "p1": "Signing in works only through Discord OAuth. We receive your Discord user ID, name, avatar, and the list of servers you manage from Discord - enough to show you only the families where Reevun is installed and you have administrator rights.",
-    "p2": "Family member data (profiles, ranks, warnings, tickets) is collected by the bot itself on your Discord server and stored in Reevun's database. This data is visible only to people with management rights on that server.",
-    "p3": "The full privacy policy is still being finalized."
+    "updated": "Last updated: September 13, 2026",
+    "sections": [
+      {
+        "heading": "1. What data we collect",
+        "body": "When you sign in with Discord OAuth, the Service receives from Discord: your account ID, username, avatar, and the list of servers you manage. The Service does not request access to your email address, payment details, or Discord direct messages.\n\nData about members, ranks, warnings, and tickets for a specific Discord server is collected by the Bot itself on that server and stored in Reevun's database, scoped to that server's ID."
+      },
+      {
+        "heading": "2. How we use your data",
+        "body": "Your Discord account data is used solely for authentication and to determine which families (servers) you can manage through the dashboard.\n\nData collected by the Bot on a given server is used to display and manage that server's features, and is visible only to users with administrative rights on that server."
+      },
+      {
+        "heading": "3. Storage and security",
+        "body": "Data is stored in PostgreSQL and Redis databases hosted on Railway's infrastructure. The connection to the site is secured with HTTPS encryption. Your session is stored in a signed cookie that cannot be forged without the Service's secret key."
+      },
+      {
+        "heading": "4. Sharing data with third parties",
+        "body": "The Service does not sell or share personal data with third parties for advertising purposes. The only party the Service communicates with is Discord itself, which is required for authentication to work. The Service does not use third-party advertising networks or analytics."
+      },
+      {
+        "heading": "5. Cookies",
+        "body": "The Service uses cookies required for signing in and remembering your chosen interface language. The full list and purpose of these cookies is described in a separate Cookie Policy."
+      },
+      {
+        "heading": "6. Your rights",
+        "body": "You can revoke the Service's access to your Discord account at any time from Discord's Authorized Apps settings - this immediately stops the Service from being able to request your account data.\n\nTo request deletion of data stored in Reevun's database (for example, ticket history), reach out through the Support section on the site."
+      },
+      {
+        "heading": "7. Age requirements",
+        "body": "The Service is intended for users who meet the minimum age required by Discord's own Terms of Service. We do not knowingly collect data from users who do not meet this requirement."
+      },
+      {
+        "heading": "8. Changes to this policy",
+        "body": "We may update this policy from time to time. The current version is always available on this page; for significant changes, we may additionally notify users through the site."
+      }
+    ]
   },
   "Terms": {
     "metaTitle": "Terms of Use — Reevun",
     "title": "Terms of Use",
-    "p1": "Reevun is a dashboard for a Discord bot built for RP communities. Any member of a Discord server with the bot installed and the \"Manage Server\" permission or administrator rights can use the dashboard.",
-    "p2": "The server owner is responsible for who gets those permissions: access to managing ranks, warnings, and tickets is determined by the Discord server's own settings, not by Reevun directly.",
-    "p3": "The full terms of use are still being finalized."
+    "updated": "Last updated: September 13, 2026",
+    "sections": [
+      {
+        "heading": "1. Terms and definitions",
+        "body": "\"Service\" means the reevun.app website and the Reevun Discord bot dashboard. \"Bot\" means the Reevun application added to a Discord server. \"Family\" means a Discord server the Bot is installed on. \"User\" means any person who has signed in to the Service through Discord. \"Family owner\" means a user with the \"Manage Server\" permission or administrator rights on a given Discord server. \"Operator\", \"we\" means Reevun Software LLC."
+      },
+      {
+        "heading": "2. Subject of the agreement",
+        "body": "Reevun is a dashboard for the Reevun Discord bot, built for RP communities. The Service lets Discord server owners and administrators manage member ranks, support tickets, and other Bot features through a web interface, without needing to use text commands in Discord.\n\nUsing the Service means full and unconditional acceptance of these Terms."
+      },
+      {
+        "heading": "3. Sign-in and authorization",
+        "body": "Signing in to the Service is done exclusively through Discord OAuth - there is no separate registration, login, or password. By signing in with Discord, you grant the Service access to basic public information from your Discord account and the list of servers you manage, solely so we can show you the families where the Bot is installed and you have management rights. The Service does not request or store your Discord account password."
+      },
+      {
+        "heading": "4. User rights and obligations",
+        "body": "The User agrees to use the Service only for lawful purposes and in accordance with Discord's Terms of Service; not to attempt to disrupt the Service, bypass access restrictions, or gain unauthorized access to other servers' data; and to bear sole responsibility for decisions made while managing their own family."
+      },
+      {
+        "heading": "5. Operator rights and obligations",
+        "body": "The Operator aims to keep the Service running but does not guarantee uninterrupted operation (see \"Disclaimer of warranties\" below). The Operator may change the functionality of the Service and the Bot, and may restrict or suspend access for individual users or servers that violate these Terms, Discord's Terms of Service, or applicable law."
+      },
+      {
+        "heading": "6. Data created by family owners",
+        "body": "Data about ranks, warnings, tickets, and other internal processes on a given Discord server is created and managed by that server's owner and administrators on their own. The Operator is not responsible for the content, accuracy, or consequences of decisions made by server members using the Bot's features."
+      },
+      {
+        "heading": "7. Intellectual property",
+        "body": "The Reevun name, logo, and the Service's and Bot's source code are the property of Reevun Software LLC. Reevun is not affiliated with or endorsed by Discord Inc., nor by Take-Two Interactive, Rockstar Games, or any other GTA rights holder - see the disclaimer in the site footer for more."
+      },
+      {
+        "heading": "8. Disclaimer of warranties",
+        "body": "8.1. THE SERVICE IS PROVIDED \"AS IS\" AND \"AS AVAILABLE\", WITHOUT ANY GUARANTEE OF UNINTERRUPTED OR ERROR-FREE OPERATION.\n8.2. THE OPERATOR MAY SUSPEND OR RESTRICT ACCESS TO THE SERVICE AT ANY TIME, INCLUDING FOR MAINTENANCE.\n8.3. THE OPERATOR DOES NOT GUARANTEE THE PERSISTENCE OF DATA CREATED IN THE SERVICE AND RECOMMENDS THAT FAMILY OWNERS KEEP IMPORTANT RECORDS OUTSIDE THE SERVICE AS WELL.\n8.4. THE OPERATOR IS NOT LIABLE FOR ACTIONS TAKEN BY USERS THROUGH THE SERVICE'S FEATURES, NOR FOR THE CONTENT OF THIRD-PARTY RESOURCES THAT MAY BE LINKED FROM WITHIN THE SERVICE.\n8.5. THE USER USES THE SERVICE AT THEIR OWN RISK AND IS SOLELY RESPONSIBLE FOR THE CONSEQUENCES OF MANAGEMENT DECISIONS MADE THROUGH THE SERVICE."
+      },
+      {
+        "heading": "9. Termination of access",
+        "body": "The Operator may restrict or terminate a user's access to the Service for violating these Terms, or if the Bot is removed from a server or the user revokes Discord OAuth permissions. The user may revoke the Service's access to their Discord account at any time through Discord's Authorized Apps settings."
+      },
+      {
+        "heading": "10. Changes to these terms",
+        "body": "The Operator may amend these Terms unilaterally. The current version is always available on this page. Continuing to use the Service after changes are published constitutes acceptance of the new version."
+      },
+      {
+        "heading": "11. Contact",
+        "body": "For questions about these Terms, please reach out through the Support section on the site."
+      }
+    ]
   },
   "Dashboard": {
     "noFamiliesTitle": "No families with Reevun yet",
@@ -223,5 +300,41 @@
       "Default": "Unknown error.",
       "OAuthCallbackError": "Discord couldn't complete the authorization. This usually happens if you cancelled the request."
     }
+  },
+  "Cookies": {
+    "metaTitle": "Cookies — Reevun",
+    "title": "Cookie Policy",
+    "updated": "Last updated: September 13, 2026",
+    "intro": "We try to use as few cookies as possible - only what's actually necessary for the site to work.",
+    "sections": [
+      {
+        "heading": "1. What cookies are",
+        "body": "Cookies are small text files a site stores in your browser to remember information between visits, such as the fact that you're already signed in."
+      },
+      {
+        "heading": "2. Required (technical) cookies",
+        "body": "These cookies are needed for the Service's basic operation and can't be disabled without losing the ability to use the site:\n- Auth.js session cookie - stores the fact that you're signed in with Discord;\n- Auth.js CSRF protection cookie - protects the sign-in form from request forgery;\n- Auth.js OAuth callback cookie - used briefly during the Discord sign-in flow."
+      },
+      {
+        "heading": "3. Functional cookies",
+        "body": "- NEXT_LOCALE - remembers your chosen interface language for about 1 year."
+      },
+      {
+        "heading": "4. Browser local storage",
+        "body": "Besides cookies, the site uses your browser's localStorage to remember that you've already closed the disclaimer and cookie notices on the homepage. This data stays only in your browser and is never sent to the server."
+      },
+      {
+        "heading": "5. Advertising and analytics cookies",
+        "body": "The Service does not use third-party advertising networks, analytics, or trackers."
+      },
+      {
+        "heading": "6. Managing cookies",
+        "body": "You can restrict or delete cookies in your browser's settings. Note that disabling required cookies will make signing in with Discord impossible."
+      },
+      {
+        "heading": "7. Changes to this policy",
+        "body": "We may update this page as the technology we use changes. The current version is always available here."
+      }
+    ]
   }
 }

@@ -128,7 +128,8 @@
     "dismissDisclaimer": "Schließen",
     "cookiesTitle": "Cookies",
     "cookiesBody": "Unsere Website verwendet Cookies, um ihre Funktionalität zu verbessern.",
-    "cookiesLearnMore": "Mehr erfahren"
+    "cookiesLearnMore": "Mehr erfahren",
+    "cookiePolicy": "Cookies"
   },
   "Status": {
     "operational": "Alle Systeme funktionieren",
@@ -143,16 +144,92 @@
   "Privacy": {
     "metaTitle": "Datenschutzerklärung — Reevun",
     "title": "Datenschutzerklärung",
-    "p1": "Die Anmeldung erfolgt ausschließlich über Discord OAuth. Wir erhalten von Discord deine Nutzer-ID, deinen Namen, dein Profilbild und die Liste der Server, die du verwaltest - das reicht aus, um dir nur die Familien anzuzeigen, auf denen Reevun installiert ist und du Administratorrechte hast.",
-    "p2": "Daten der Familienmitglieder (Profile, Ränge, Verwarnungen, Tickets) erfasst der Bot selbst auf deinem Discord-Server und speichert sie in der Reevun-Datenbank. Diese Daten sind nur für Personen mit Verwaltungsrechten auf diesem Server sichtbar.",
-    "p3": "Die vollständige Datenschutzerklärung wird derzeit noch fertiggestellt."
+    "updated": "Zuletzt aktualisiert: 13. September 2026",
+    "sections": [
+      {
+        "heading": "1. Welche Daten wir erheben",
+        "body": "Beim Anmelden über Discord OAuth erhält der Dienst von Discord: Ihre Konto-ID, Ihren Benutzernamen, Ihr Avatar-Bild und die Liste der Server, die Sie verwalten. Der Dienst fragt keinen Zugriff auf Ihre E-Mail-Adresse, Zahlungsdaten oder Discord-Direktnachrichten an.\n\nDaten zu Mitgliedern, Rängen, Verwarnungen und Tickets eines bestimmten Discord-Servers werden vom Bot selbst auf diesem Server erfasst und in der Reevun-Datenbank, verknüpft mit der Server-ID, gespeichert."
+      },
+      {
+        "heading": "2. Wie wir Ihre Daten verwenden",
+        "body": "Ihre Discord-Kontodaten werden ausschließlich zur Authentifizierung und zur Bestimmung verwendet, welche Familien (Server) Sie über das Dashboard verwalten können.\n\nVom Bot auf einem bestimmten Server erfasste Daten dienen der Anzeige und Verwaltung der Funktionen dieses Servers und sind nur für Nutzer mit Administratorrechten auf diesem Server sichtbar."
+      },
+      {
+        "heading": "3. Speicherung und Schutz der Daten",
+        "body": "Die Daten werden in PostgreSQL- und Redis-Datenbanken gespeichert, die auf der Infrastruktur von Railway betrieben werden. Die Verbindung zur Website ist durch HTTPS-Verschlüsselung geschützt. Ihre Sitzung wird in einem signierten Cookie gespeichert, das ohne den geheimen Schlüssel des Dienstes nicht gefälscht werden kann."
+      },
+      {
+        "heading": "4. Weitergabe an Dritte",
+        "body": "Der Dienst verkauft oder teilt keine personenbezogenen Daten zu Werbezwecken mit Dritten. Die einzige Stelle, mit der der Dienst kommuniziert, ist Discord selbst - dies ist für die Authentifizierung erforderlich. Der Dienst verwendet keine Werbenetzwerke oder Analysetools von Drittanbietern."
+      },
+      {
+        "heading": "5. Cookies",
+        "body": "Der Dienst verwendet Cookies, die für die Anmeldung und das Merken der gewählten Interfacesprache erforderlich sind. Die vollständige Liste und der Zweck dieser Cookies sind in einer separaten Cookie-Richtlinie beschrieben."
+      },
+      {
+        "heading": "6. Ihre Rechte",
+        "body": "Sie können den Zugriff des Dienstes auf Ihr Discord-Konto jederzeit über die Einstellungen für autorisierte Apps in Discord widerrufen - dadurch kann der Dienst sofort keine Daten Ihres Kontos mehr anfragen.\n\nUm die Löschung von in der Reevun-Datenbank gespeicherten Daten zu beantragen (z. B. den Ticketverlauf), wenden Sie sich über den Support-Bereich der Website an uns."
+      },
+      {
+        "heading": "7. Altersanforderungen",
+        "body": "Der Dienst richtet sich an Nutzer, die das in den Discord-Nutzungsbedingungen festgelegte Mindestalter erfüllen. Wir erheben wissentlich keine Daten von Nutzern, die diese Anforderung nicht erfüllen."
+      },
+      {
+        "heading": "8. Änderungen dieser Richtlinie",
+        "body": "Wir können diese Richtlinie von Zeit zu Zeit aktualisieren. Die aktuelle Version ist immer auf dieser Seite verfügbar; bei wesentlichen Änderungen informieren wir Nutzer gegebenenfalls zusätzlich über die Website."
+      }
+    ]
   },
   "Terms": {
     "metaTitle": "Nutzungsbedingungen — Reevun",
     "title": "Nutzungsbedingungen",
-    "p1": "Reevun ist ein Dashboard für einen Discord-Bot für RP-Communitys. Das Dashboard kann jedes Mitglied eines Discord-Servers nutzen, auf dem der Bot installiert ist und das über die Berechtigung „Server verwalten“ oder Administratorrechte verfügt.",
-    "p2": "Der Serverinhaber ist dafür verantwortlich, wer diese Rechte erhält: Der Zugriff auf die Verwaltung von Rängen, Verwarnungen und Anfragen wird durch die Einstellungen des Discord-Servers selbst bestimmt, nicht direkt durch Reevun.",
-    "p3": "Die vollständigen Nutzungsbedingungen werden derzeit noch fertiggestellt."
+    "updated": "Zuletzt aktualisiert: 13. September 2026",
+    "sections": [
+      {
+        "heading": "1. Begriffe und Definitionen",
+        "body": "„Dienst\" bezeichnet die Website reevun.app und das Dashboard des Reevun-Discord-Bots. „Bot\" bezeichnet die Reevun-Anwendung, die einem Discord-Server hinzugefügt wird. „Familie\" bezeichnet einen Discord-Server, auf dem der Bot installiert ist. „Nutzer\" bezeichnet jede Person, die sich über Discord beim Dienst angemeldet hat. „Familienbesitzer\" bezeichnet einen Nutzer mit der Berechtigung „Server verwalten\" oder Administratorrechten auf einem bestimmten Discord-Server. „Betreiber\", „wir\" bezeichnet die Reevun Software LLC."
+      },
+      {
+        "heading": "2. Gegenstand der Vereinbarung",
+        "body": "Reevun ist ein Dashboard für den Reevun-Discord-Bot, entwickelt für RP-Communities. Der Dienst ermöglicht es Besitzern und Administratoren von Discord-Servern, Mitgliedsränge, Support-Tickets und weitere Bot-Funktionen über eine Weboberfläche zu verwalten, ohne Textbefehle in Discord verwenden zu müssen.\n\nDie Nutzung des Dienstes bedeutet die vollständige und vorbehaltlose Zustimmung zu diesen Bedingungen."
+      },
+      {
+        "heading": "3. Anmeldung und Autorisierung",
+        "body": "Die Anmeldung beim Dienst erfolgt ausschließlich über Discord OAuth - eine separate Registrierung, ein Login oder ein Passwort sind nicht vorgesehen und werden nicht abgefragt. Durch die Anmeldung über Discord gewähren Sie dem Dienst Zugriff auf grundlegende öffentliche Informationen Ihres Discord-Kontos und die Liste der von Ihnen verwalteten Server - ausschließlich um Ihnen die Familien anzuzeigen, in denen der Bot installiert ist und Sie Verwaltungsrechte besitzen. Der Dienst fragt Ihr Discord-Passwort weder ab noch speichert er es."
+      },
+      {
+        "heading": "4. Rechte und Pflichten des Nutzers",
+        "body": "Der Nutzer verpflichtet sich, den Dienst nur zu rechtmäßigen Zwecken und im Einklang mit den Discord-Nutzungsbedingungen zu verwenden; nicht zu versuchen, den Dienst zu stören, Zugriffsbeschränkungen zu umgehen oder unbefugten Zugriff auf Daten anderer Server zu erlangen; und die alleinige Verantwortung für Entscheidungen zu tragen, die bei der Verwaltung der eigenen Familie getroffen werden."
+      },
+      {
+        "heading": "5. Rechte und Pflichten des Betreibers",
+        "body": "Der Betreiber ist bestrebt, den Dienst betriebsbereit zu halten, garantiert jedoch keinen unterbrechungsfreien Betrieb (siehe „Haftungsausschluss\" unten). Der Betreiber kann die Funktionalität des Dienstes und des Bots ändern sowie den Zugriff einzelner Nutzer oder Server einschränken oder aussetzen, die gegen diese Bedingungen, die Discord-Nutzungsbedingungen oder geltendes Recht verstoßen."
+      },
+      {
+        "heading": "6. Von Familienbesitzern erstellte Daten",
+        "body": "Daten zu Rängen, Verwarnungen, Tickets und anderen internen Abläufen eines bestimmten Discord-Servers werden vom Besitzer und den Administratoren dieses Servers eigenverantwortlich erstellt und verwaltet. Der Betreiber übernimmt keine Verantwortung für Inhalt, Richtigkeit oder Folgen von Entscheidungen, die Servermitglieder mithilfe der Bot-Funktionen treffen."
+      },
+      {
+        "heading": "7. Geistiges Eigentum",
+        "body": "Der Name „Reevun\", das Logo sowie der Quellcode des Dienstes und des Bots sind Eigentum der Reevun Software LLC. Reevun steht in keiner Verbindung zu Discord Inc. und wird nicht von Discord Inc. unterstützt, ebenso wenig wie von Take-Two Interactive, Rockstar Games oder anderen Rechteinhabern von GTA - mehr dazu im Haftungsausschluss in der Fußzeile der Website."
+      },
+      {
+        "heading": "8. Haftungsausschluss",
+        "body": "8.1. DER DIENST WIRD „WIE BESEHEN\" UND „WIE VERFÜGBAR\" BEREITGESTELLT, OHNE GARANTIE FÜR EINEN UNTERBRECHUNGSFREIEN ODER FEHLERFREIEN BETRIEB.\n8.2. DER BETREIBER KANN DEN ZUGRIFF AUF DEN DIENST JEDERZEIT AUSSETZEN ODER EINSCHRÄNKEN, AUCH FÜR WARTUNGSARBEITEN.\n8.3. DER BETREIBER GARANTIERT NICHT DEN FORTBESTAND VON IM DIENST ERSTELLTEN DATEN UND EMPFIEHLT FAMILIENBESITZERN, WICHTIGE AUFZEICHNUNGEN ZUSÄTZLICH AUSSERHALB DES DIENSTES ZU FÜHREN.\n8.4. DER BETREIBER HAFTET NICHT FÜR HANDLUNGEN, DIE NUTZER ÜBER DIE FUNKTIONEN DES DIENSTES VORNEHMEN, NOCH FÜR DEN INHALT VON DRITTANBIETER-RESSOURCEN, AUF DIE INNERHALB DES DIENSTES VERWIESEN WERDEN KANN.\n8.5. DER NUTZER NUTZT DEN DIENST AUF EIGENES RISIKO UND TRÄGT DIE ALLEINIGE VERANTWORTUNG FÜR DIE FOLGEN VON VERWALTUNGSENTSCHEIDUNGEN, DIE ÜBER DEN DIENST GETROFFEN WERDEN."
+      },
+      {
+        "heading": "9. Beendigung des Zugriffs",
+        "body": "Der Betreiber kann den Zugriff eines Nutzers auf den Dienst einschränken oder beenden, wenn dieser gegen diese Bedingungen verstößt, sowie wenn der Bot von einem Server entfernt wird oder der Nutzer die Discord-OAuth-Berechtigungen widerruft. Der Nutzer kann den Zugriff des Dienstes auf sein Discord-Konto jederzeit über die Einstellungen für autorisierte Apps in Discord widerrufen."
+      },
+      {
+        "heading": "10. Änderungen dieser Bedingungen",
+        "body": "Der Betreiber kann diese Bedingungen einseitig ändern. Die aktuelle Version ist immer auf dieser Seite verfügbar. Die fortgesetzte Nutzung des Dienstes nach Veröffentlichung von Änderungen gilt als Zustimmung zur neuen Fassung."
+      },
+      {
+        "heading": "11. Kontakt",
+        "body": "Bei Fragen zu diesen Bedingungen wenden Sie sich bitte über den Support-Bereich der Website an uns."
+      }
+    ]
   },
   "Dashboard": {
     "noFamiliesTitle": "Noch keine Familien mit Reevun",
@@ -223,5 +300,41 @@
       "Default": "Unbekannter Fehler.",
       "OAuthCallbackError": "Discord konnte die Autorisierung nicht abschließen. Das passiert meist, wenn Sie die Anfrage abgebrochen haben."
     }
+  },
+  "Cookies": {
+    "metaTitle": "Cookies — Reevun",
+    "title": "Cookie-Richtlinie",
+    "updated": "Zuletzt aktualisiert: 13. September 2026",
+    "intro": "Wir versuchen, so wenige Cookies wie möglich zu verwenden - nur das, was für den Betrieb der Website wirklich notwendig ist.",
+    "sections": [
+      {
+        "heading": "1. Was Cookies sind",
+        "body": "Cookies sind kleine Textdateien, die eine Website in Ihrem Browser speichert, um Informationen zwischen Besuchen zu merken, zum Beispiel dass Sie bereits angemeldet sind."
+      },
+      {
+        "heading": "2. Erforderliche (technische) Cookies",
+        "body": "Diese Cookies sind für den grundlegenden Betrieb des Dienstes erforderlich und können nicht deaktiviert werden, ohne die Möglichkeit zu verlieren, die Website zu nutzen:\n- Auth.js-Sitzungscookie - speichert, dass Sie sich über Discord angemeldet haben;\n- Auth.js-CSRF-Schutzcookie - schützt das Anmeldeformular vor Fälschung von Anfragen;\n- Auth.js-OAuth-Callback-Cookie - wird kurzzeitig während des Discord-Anmeldevorgangs verwendet."
+      },
+      {
+        "heading": "3. Funktionale Cookies",
+        "body": "- NEXT_LOCALE - merkt sich die gewählte Interfacesprache für etwa 1 Jahr."
+      },
+      {
+        "heading": "4. Lokaler Speicher des Browsers",
+        "body": "Neben Cookies verwendet die Website den localStorage Ihres Browsers, um sich zu merken, dass Sie die Hinweise zum Haftungsausschluss und zu Cookies auf der Startseite bereits geschlossen haben. Diese Daten bleiben ausschließlich in Ihrem Browser und werden nicht an den Server übertragen."
+      },
+      {
+        "heading": "5. Werbe- und Analyse-Cookies",
+        "body": "Der Dienst verwendet keine Werbenetzwerke, Analysetools oder Tracker von Drittanbietern."
+      },
+      {
+        "heading": "6. Verwaltung von Cookies",
+        "body": "Sie können Cookies in den Einstellungen Ihres Browsers einschränken oder löschen. Beachten Sie, dass das Deaktivieren erforderlicher Cookies die Anmeldung über Discord unmöglich macht."
+      },
+      {
+        "heading": "7. Änderungen dieser Richtlinie",
+        "body": "Wir können diese Seite aktualisieren, wenn sich die von uns verwendeten Technologien ändern. Die aktuelle Version ist immer hier verfügbar."
+      }
+    ]
   }
 }

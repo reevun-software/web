@@ -1,35 +1,29 @@
-import Image from "next/image";
 import {
   ArrowRight,
   ShieldCheck,
   Users,
   Ticket,
   Layers,
-  LogIn,
   ArrowLeftRight,
   History,
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { auth } from "@/lib/auth";
 import { DISCORD_BOT_INVITE_URL } from "@/lib/discord";
 import { Button } from "@/components/ui/button";
-import { DiscordSignInButton } from "@/components/discord-signin-button";
 import { Card } from "@/components/ui/card";
-import { AccountMenu } from "@/components/account-menu";
 import { OAuthPopupButton } from "@/components/auth/oauth-popup-button";
+import { SiteHeader } from "@/components/site-header";
 import { HeroBackground } from "@/components/landing/hero-background";
 import { Reveal } from "@/components/landing/reveal";
 import { Faq } from "@/components/landing/faq";
 import { Footer } from "@/components/landing/footer";
 import { NoticeStack } from "@/components/landing/notice-stack";
-import { LanguageSwitcher } from "@/components/language-switcher";
 import { ProjectLink } from "@/components/landing/project-link";
 
 const FEATURE_ICONS = [Users, ShieldCheck, Ticket, ArrowLeftRight, History, Layers];
 
 export default async function Home() {
-  const session = await auth();
   const t = await getTranslations();
 
   const features = t.raw("Features.items") as { title: string; body: string }[];
@@ -38,34 +32,7 @@ export default async function Home() {
   return (
     <div className="flex flex-1 flex-col">
       <HeroBackground />
-      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <span className="flex items-center gap-2">
-            <Image
-              src="/logo.png"
-              alt="Reevun"
-              width={24}
-              height={24}
-              className="rounded-sm"
-              priority
-            />
-            <span className="text-lg font-semibold tracking-tight">
-              Reevun
-            </span>
-          </span>
-          <div className="flex items-center gap-2">
-            <LanguageSwitcher />
-            {session?.user ? (
-              <AccountMenu name={session.user.name} image={session.user.image} />
-            ) : (
-              <DiscordSignInButton size="sm" className="btn-glass">
-                <LogIn className="size-4" />
-                {t("Header.signIn")}
-              </DiscordSignInButton>
-            )}
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="flex-1">
         {/* Hero: centered, text only */}
