@@ -7,7 +7,7 @@ import { DISCORD_BOT_INVITE_URL } from "@/lib/discord";
 export function Footer() {
   return (
     <footer className="border-t border-border/60">
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-[1.2fr_1fr_1fr]">
+      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
         <div className="flex flex-col gap-3">
           <span className="flex items-center gap-2">
             <Image
@@ -66,6 +66,22 @@ export function Footer() {
             <LogIn className="size-3.5" />
             Войти через Discord
           </DiscordSignInButton>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <span className="text-sm font-medium">Правовая информация</span>
+          <Link
+            href="/privacy"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Политика конфиденциальности
+          </Link>
+          <Link
+            href="/terms"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Условия использования
+          </Link>
         </div>
       </div>
 

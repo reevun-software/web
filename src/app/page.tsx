@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { DiscordSignInButton } from "@/components/discord-signin-button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ShatteredCube } from "@/components/landing/shattered-cube";
 import { Reveal } from "@/components/landing/reveal";
 import { Faq } from "@/components/landing/faq";
 import { Footer } from "@/components/landing/footer";
@@ -26,37 +25,31 @@ const FEATURES = [
     icon: Users,
     title: "Набор и профили",
     body: "Формы заявок с проверкой на ботов, личный профиль и статус AFK для каждого участника.",
-    tinted: true,
   },
   {
     icon: ShieldCheck,
     title: "Ранги и предупреждения",
     body: "Повышения по цепочке рангов и автоматический выход из ролей после третьего предупреждения.",
-    tinted: false,
   },
   {
     icon: Ticket,
     title: "Обращения и апелляции",
     body: "Тикеты с понятными номерами и историей переписки, доступные из панели.",
-    tinted: false,
   },
   {
     icon: ArrowLeftRight,
     title: "Массовый перевод",
     body: "Команда /move переносит выбранных участников между голосовыми каналами разом.",
-    tinted: true,
   },
   {
     icon: History,
     title: "Журнал действий",
     body: "Кто выдал ранг, снял предупреждение или закрыл тикет — история сохраняется и видна в панели.",
-    tinted: false,
   },
   {
     icon: Layers,
     title: "Несколько семей",
     body: "Один вход через Discord, переключение между семьями без второго аккаунта.",
-    tinted: false,
   },
 ];
 
@@ -114,40 +107,36 @@ export default async function Home() {
       </header>
 
       <main className="flex-1">
-        {/* Hero: asymmetric split */}
-        <section className="mx-auto grid max-w-6xl gap-12 px-6 pt-16 pb-10 md:grid-cols-2 md:items-center md:pt-20">
-          <div className="flex flex-col gap-6">
-            <h1 className="text-3xl font-semibold tracking-tight leading-[1.1] md:text-4xl">
-              Управляйте Discord-сообществом из одной панели
-            </h1>
-            <p className="max-w-[46ch] text-base leading-relaxed text-muted-foreground">
-              Reevun ведёт набор, ранги, предупреждения и обращения в вашей
-              семье. Один вход через Discord, доступ только к своей общине.
-            </p>
-            <div className="flex flex-wrap items-center gap-3">
-              <Button
-                render={
-                  <Link
-                    href={DISCORD_BOT_INVITE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  />
-                }
-                size="lg"
-              >
-                Добавить бота на сервер
-                <ArrowRight className="size-4" />
-              </Button>
-              <Button render={<Link href="#features" />} variant="ghost" size="lg">
-                Смотреть возможности
-              </Button>
-            </div>
+        {/* Hero: centered, text only */}
+        <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 pt-20 pb-10 text-center md:pt-28">
+          <h1 className="text-4xl font-semibold tracking-tight leading-[1.1] md:text-6xl">
+            Управляйте Discord-сообществом из одной панели
+          </h1>
+          <p className="max-w-[46ch] text-base leading-relaxed text-muted-foreground md:text-lg">
+            Reevun ведёт набор, ранги, предупреждения и обращения в вашей
+            семье. Один вход через Discord, доступ только к своей общине.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Button
+              render={
+                <Link
+                  href={DISCORD_BOT_INVITE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                />
+              }
+              size="lg"
+            >
+              Добавить бота на сервер
+              <ArrowRight className="size-4" />
+            </Button>
+            <Button render={<Link href="#features" />} variant="ghost" size="lg">
+              Смотреть возможности
+            </Button>
           </div>
-
-          <ShatteredCube />
         </section>
 
-        <p className="mx-auto max-w-6xl px-6 pb-16 text-sm text-muted-foreground">
+        <p className="mx-auto max-w-6xl px-6 pt-4 pb-16 text-center text-sm text-muted-foreground">
           Уже используют команды MajesticRP GTA5RP и Россия Онлайн.
         </p>
 
@@ -162,12 +151,7 @@ export default async function Home() {
             <div className="mt-10 grid gap-4 md:grid-cols-3">
               {FEATURES.map((f, i) => (
                 <Reveal key={f.title} delay={i * 0.06}>
-                  <Card
-                    className={
-                      "flex h-full flex-col gap-3 border-border/60 p-6 shadow-none " +
-                      (f.tinted ? "bg-brand/[0.06]" : "bg-card/60")
-                    }
-                  >
+                  <Card className="flex h-full flex-col gap-3 border-border/60 bg-card/60 p-6 shadow-none">
                     <f.icon className="size-5 text-brand" strokeWidth={1.5} />
                     <h3 className="text-lg font-medium">{f.title}</h3>
                     <p className="text-sm leading-relaxed text-muted-foreground">
