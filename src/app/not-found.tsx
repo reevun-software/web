@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  icons: { icon: "/logo.png" },
+  icons: { icon: "/favicon.png" },
 };
 
 const geistSans = Geist({

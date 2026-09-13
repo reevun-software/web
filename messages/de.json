@@ -201,5 +201,20 @@
     "body": "{site} ist ein unabhängiges Drittanbieterprojekt. Wir prüfen die Inhalte nicht und übernehmen dafür keine Verantwortung.",
     "continueNow": "Jetzt fortfahren",
     "goBack": "Zurück"
+  },
+  "Auth": {
+    "redirecting": "Weiterleitung zu Discord…",
+    "closeWindow": "Sie können dieses Fenster jetzt schließen.",
+    "errorTitle": "Anmeldung fehlgeschlagen",
+    "errorCode": "Fehlercode: {code}",
+    "backHome": "Zur Startseite",
+    "popupBlocked": "Ihr Browser hat das Pop-up-Fenster blockiert. Bitte erlauben Sie Pop-ups für diese Website und versuchen Sie es erneut.",
+    "errorReasons": {
+      "AccessDenied": "Sie haben die Discord-Autorisierungsanfrage abgelehnt.",
+      "OAuthAccountNotLinked": "Dieses Discord-Konto ist bereits anders verknüpft.",
+      "Configuration": "Der Anmeldedienst ist falsch konfiguriert.",
+      "Verification": "Der Anmeldelink ist ungültig oder abgelaufen.",
+      "Default": "Unbekannter Fehler."
+    }
   }
 }

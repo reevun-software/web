@@ -26,7 +26,7 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
-    icons: { icon: "/logo.png" },
+    icons: { icon: "/favicon.png" },
   };
 }
 
@@ -48,7 +48,7 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <TooltipProvider>
             {children}
-            <Toaster />
+            <Toaster position="top-center" />
           </TooltipProvider>
         </NextIntlClientProvider>
       </body>

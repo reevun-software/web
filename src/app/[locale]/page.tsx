@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { DiscordSignInButton } from "@/components/discord-signin-button";
 import { Card } from "@/components/ui/card";
 import { AccountMenu } from "@/components/account-menu";
+import { OAuthPopupButton } from "@/components/auth/oauth-popup-button";
 import { HeroBackground } from "@/components/landing/hero-background";
 import { Reveal } from "@/components/landing/reveal";
 import { Faq } from "@/components/landing/faq";
@@ -81,20 +82,15 @@ export default async function Home() {
             </Reveal>
             <Reveal delay={0.16}>
               <div className="flex flex-wrap items-center justify-center gap-3">
-                <Button
-                  render={
-                    <Link
-                      href={DISCORD_BOT_INVITE_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    />
-                  }
+                <OAuthPopupButton
+                  startUrl={DISCORD_BOT_INVITE_URL}
+                  mode="external"
                   size="lg"
                   className="btn-glass"
                 >
                   {t("Hero.addBot")}
                   <ArrowRight className="size-4" />
-                </Button>
+                </OAuthPopupButton>
                 <Button render={<Link href="#features" />} variant="ghost" size="lg">
                   {t("Hero.seeFeatures")}
                 </Button>
@@ -190,20 +186,15 @@ export default async function Home() {
               <h2 className="max-w-[24ch] text-2xl font-semibold tracking-tight">
                 {t("Cta.heading")}
               </h2>
-              <Button
-                render={
-                  <Link
-                    href={DISCORD_BOT_INVITE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  />
-                }
+              <OAuthPopupButton
+                startUrl={DISCORD_BOT_INVITE_URL}
+                mode="external"
                 size="lg"
                 className="btn-glass"
               >
                 {t("Cta.addBot")}
                 <ArrowRight className="size-4" />
-              </Button>
+              </OAuthPopupButton>
             </div>
           </Reveal>
         </section>

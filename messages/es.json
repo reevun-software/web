@@ -201,5 +201,20 @@
     "body": "{site} es un proyecto independiente de terceros. No verificamos su contenido ni somos responsables de él.",
     "continueNow": "Continuar ahora",
     "goBack": "Volver"
+  },
+  "Auth": {
+    "redirecting": "Redirigiendo a Discord…",
+    "closeWindow": "Ya puedes cerrar esta ventana.",
+    "errorTitle": "Error al iniciar sesión",
+    "errorCode": "Código de error: {code}",
+    "backHome": "Volver al inicio",
+    "popupBlocked": "Tu navegador bloqueó la ventana emergente. Permite las ventanas emergentes de este sitio e inténtalo de nuevo.",
+    "errorReasons": {
+      "AccessDenied": "Rechazaste la solicitud de autorización de Discord.",
+      "OAuthAccountNotLinked": "Esta cuenta de Discord ya está vinculada de otra forma.",
+      "Configuration": "El servicio de inicio de sesión está mal configurado.",
+      "Verification": "El enlace de inicio de sesión no es válido o ha caducado.",
+      "Default": "Error desconocido."
+    }
   }
 }

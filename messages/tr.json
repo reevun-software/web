@@ -201,5 +201,20 @@
     "body": "{site}, bağımsız bir üçüncü taraf projesidir. İçeriğini doğrulamıyoruz ve ondan sorumlu değiliz.",
     "continueNow": "Şimdi devam et",
     "goBack": "Geri dön"
+  },
+  "Auth": {
+    "redirecting": "Discord'a yönlendiriliyor…",
+    "closeWindow": "Bu pencereyi kapatabilirsiniz.",
+    "errorTitle": "Oturum açma başarısız oldu",
+    "errorCode": "Hata kodu: {code}",
+    "backHome": "Ana sayfaya dön",
+    "popupBlocked": "Tarayıcınız açılır pencereyi engelledi. Lütfen bu site için açılır pencerelere izin verip tekrar deneyin.",
+    "errorReasons": {
+      "AccessDenied": "Discord yetkilendirme isteğini reddettiniz.",
+      "OAuthAccountNotLinked": "Bu Discord hesabı zaten farklı şekilde bağlı.",
+      "Configuration": "Oturum açma hizmeti yanlış yapılandırılmış.",
+      "Verification": "Oturum açma bağlantısı geçersiz veya süresi dolmuş.",
+      "Default": "Bilinmeyen hata."
+    }
   }
 }

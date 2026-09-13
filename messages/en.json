@@ -201,5 +201,20 @@
     "body": "{site} is an independent third-party project. We don't verify its content and aren't responsible for it.",
     "continueNow": "Continue now",
     "goBack": "Go back"
+  },
+  "Auth": {
+    "redirecting": "Redirecting to Discord…",
+    "closeWindow": "You can close this window.",
+    "errorTitle": "Sign-in failed",
+    "errorCode": "Error code: {code}",
+    "backHome": "Back to home",
+    "popupBlocked": "Your browser blocked the pop-up window. Please allow pop-ups for this site and try again.",
+    "errorReasons": {
+      "AccessDenied": "You declined the Discord authorization request.",
+      "OAuthAccountNotLinked": "This Discord account is already linked differently.",
+      "Configuration": "The sign-in service is misconfigured.",
+      "Verification": "The sign-in link is invalid or has expired.",
+      "Default": "Unknown error."
+    }
   }
 }

@@ -15,6 +15,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   session: { strategy: "jwt" },
+  // Locale-less: the proxy's next-intl middleware rewrites this to the
+  // visitor's detected locale, same as any other top-level navigation.
+  pages: { error: "/auth/error" },
   callbacks: {
     async jwt({ token, account, profile }) {
       if (account) token.accessToken = account.access_token;
