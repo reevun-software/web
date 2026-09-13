@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { auth, signOut } from "@/lib/auth";
 import { getManageableGuilds } from "@/lib/guilds";
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
@@ -12,7 +12,8 @@ export default async function GuildLayout({
 }: LayoutProps<"/dashboard/[guildId]">) {
   const { guildId } = await params;
   const session = await auth();
-  const guilds = await getManageableGuilds(session!.accessToken!);
+  if (!session?.accessToken) redirect("/");
+  const guilds = await getManageableGuilds(session.accessToken);
   const current = guilds.find((g) => g.id === guildId);
 
   if (!current || !current.botInstalled) notFound();
@@ -28,7 +29,7 @@ export default async function GuildLayout({
         <header className="flex h-14 items-center justify-end gap-3 border-b border-border/60 px-6">
           <Avatar className="size-7">
             <AvatarFallback className="text-xs">
-              {session!.user?.name?.[0] ?? "?"}
+              {session.user?.name?.[0] ?? "?"}
             </AvatarFallback>
           </Avatar>
           <form

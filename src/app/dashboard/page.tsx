@@ -7,7 +7,8 @@ import { Card } from "@/components/ui/card";
 
 export default async function DashboardPage() {
   const session = await auth();
-  const guilds = await getManageableGuilds(session!.accessToken!);
+  if (!session?.accessToken) redirect("/");
+  const guilds = await getManageableGuilds(session.accessToken);
   const installed = guilds.filter((g) => g.botInstalled);
 
   if (installed.length === 1) redirect(`/dashboard/${installed[0].id}`);

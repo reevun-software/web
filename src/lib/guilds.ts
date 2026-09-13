@@ -1,7 +1,17 @@
 import { eq, inArray } from "drizzle-orm";
+import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { guilds } from "@/lib/db/schema";
 import { fetchUserGuilds, filterManageable } from "@/lib/discord-guilds";
+
+// Discord's /users/@me/guilds is aggressively rate-limited; the dashboard
+// hits this on every nav click (layout + page both need it), so cache it
+// per access token for a minute instead of calling Discord on each request.
+const getCachedUserGuilds = unstable_cache(
+  (accessToken: string) => fetchUserGuilds(accessToken),
+  ["discord-user-guilds"],
+  { revalidate: 60 },
+);
 
 export type ManageableGuild = {
   id: string;
@@ -18,7 +28,7 @@ export type ManageableGuild = {
 export async function getManageableGuilds(
   accessToken: string,
 ): Promise<ManageableGuild[]> {
-  const discordGuilds = filterManageable(await fetchUserGuilds(accessToken));
+  const discordGuilds = filterManageable(await getCachedUserGuilds(accessToken));
   if (discordGuilds.length === 0) return [];
 
   const ids = discordGuilds.map((g) => g.id);
