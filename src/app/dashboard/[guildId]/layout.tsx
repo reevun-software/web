@@ -19,7 +19,7 @@ export default async function GuildLayout({
   if (!current || !current.botInstalled) notFound();
 
   return (
-    <div className="flex min-h-full flex-1">
+    <div className="flex min-h-dvh flex-1">
       <DashboardSidebar
         guildId={guildId}
         guildName={current.name}
