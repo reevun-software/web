@@ -33,6 +33,7 @@ export function LanguageSwitcher() {
         {LOCALES.map((l) => (
           <DropdownMenuItem
             key={l}
+            className="cursor-pointer"
             onClick={() =>
               router.replace(
                 // @ts-expect-error -- pathname/params come from the current
