@@ -21,28 +21,37 @@ const PROJECT_LABELS: Record<keyof typeof PROJECT_URLS, string> = {
 };
 
 const DURATION_MS = 5000;
-const RADIUS = 10;
+const RADIUS = 16;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-function CountdownRing({ running }: { running: boolean }) {
+function CountdownRing() {
+  const [secondsLeft, setSecondsLeft] = useState(DURATION_MS / 1000);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSecondsLeft((s) => Math.max(0, s - 1));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" className="-rotate-90">
-      <circle
-        cx="14"
-        cy="14"
-        r={RADIUS}
-        strokeWidth="3"
-        fill="none"
-        className="stroke-white/10"
-      />
-      {/* Mounting/unmounting this circle (rather than toggling a class) is
-          what makes the animation restart from empty each time the dialog
-          reopens - a keyframe animation always plays from 0% on mount. */}
-      {running && (
+    <div className="relative flex size-10 items-center justify-center">
+      <svg width="40" height="40" viewBox="0 0 40 40" className="-rotate-90">
         <circle
-          key="depleting"
-          cx="14"
-          cy="14"
+          cx="20"
+          cy="20"
+          r={RADIUS}
+          strokeWidth="3"
+          fill="none"
+          className="stroke-white/10"
+        />
+        {/* Mounting this fresh each time the dialog opens (the parent only
+            renders CountdownRing while open) is what makes the keyframe
+            animation restart from empty every time - a CSS animation always
+            plays from 0% on mount. */}
+        <circle
+          cx="20"
+          cy="20"
           r={RADIUS}
           strokeWidth="3"
           fill="none"
@@ -54,8 +63,11 @@ function CountdownRing({ running }: { running: boolean }) {
             animation: `leaving-ring-deplete ${DURATION_MS}ms linear forwards`,
           } as React.CSSProperties}
         />
-      )}
-    </svg>
+      </svg>
+      <span className="absolute font-mono text-xs tabular-nums text-muted-foreground">
+        {secondsLeft}
+      </span>
+    </div>
   );
 }
 
@@ -83,7 +95,7 @@ export function ProjectLink({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-0.5 font-medium text-foreground underline decoration-muted-foreground/40 underline-offset-2 transition-colors hover:decoration-foreground"
+        className="inline-flex cursor-pointer items-center gap-0.5 font-medium text-foreground underline decoration-muted-foreground/40 underline-offset-2 transition-colors hover:decoration-foreground"
       >
         {children}
         <ArrowUpRight className="size-3" />
@@ -97,13 +109,22 @@ export function ProjectLink({
             </DialogDescription>
           </DialogHeader>
           <div className="flex items-center justify-center py-2">
-            <CountdownRing running={open} />
+            {open && <CountdownRing />}
           </div>
           <DialogFooter className="sm:justify-center">
-            <Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="cursor-pointer"
+              onClick={() => setOpen(false)}
+            >
               {t("goBack")}
             </Button>
-            <Button render={<a href={targetUrl} />} size="sm">
+            <Button
+              render={<a href={targetUrl} />}
+              size="sm"
+              className="cursor-pointer"
+            >
               {t("continueNow")}
               <ArrowUpRight className="size-4" />
             </Button>
