@@ -5,20 +5,13 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
-
-const KNOWN_ERROR_CODES = [
-  "AccessDenied",
-  "OAuthAccountNotLinked",
-  "OAuthCallbackError",
-  "Configuration",
-  "Verification",
-] as const;
+import { authErrorNumericCode, authErrorReasonKey } from "@/lib/auth-error-codes";
 
 function AuthErrorContent() {
   const params = useSearchParams();
   const code = params.get("error") ?? "Default";
   const t = useTranslations("Auth");
-  const reasonKey = (KNOWN_ERROR_CODES as readonly string[]).includes(code) ? code : "Default";
+  const reasonKey = authErrorReasonKey(code);
 
   // Reached either inside the sign-in popup (Discord redirected here after a
   // denied/failed authorization) or directly, e.g. a bookmarked link. Only
@@ -33,7 +26,9 @@ function AuthErrorContent() {
     <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-3 px-6 text-center">
       <h1 className="text-xl font-semibold tracking-tight">{t("errorTitle")}</h1>
       <p className="max-w-[40ch] text-sm text-muted-foreground">{t(`errorReasons.${reasonKey}`)}</p>
-      <p className="text-xs text-muted-foreground">{t("errorCode", { code })}</p>
+      <p className="text-xs text-muted-foreground">
+        {t("errorCode", { code: authErrorNumericCode(code) })}
+      </p>
       <Button render={<Link href="/" />} variant="ghost" size="sm">
         {t("backHome")}
       </Button>

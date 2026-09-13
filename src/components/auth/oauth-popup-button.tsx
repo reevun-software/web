@@ -7,17 +7,10 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
+import { authErrorNumericCode, authErrorReasonKey } from "@/lib/auth-error-codes";
 
 const POPUP_WIDTH = 500;
 const POPUP_HEIGHT = 720;
-
-const KNOWN_ERROR_CODES = [
-  "AccessDenied",
-  "OAuthAccountNotLinked",
-  "OAuthCallbackError",
-  "Configuration",
-  "Verification",
-] as const;
 
 type OAuthMessage =
   | { source: "reevun-oauth"; status: "success" }
@@ -76,9 +69,10 @@ export function OAuthPopupButton({ startUrl, mode, children, ...props }: OAuthPo
         router.refresh();
         return;
       }
-      const code = event.data.code;
-      const reasonKey = (KNOWN_ERROR_CODES as readonly string[]).includes(code) ? code : "Default";
-      toast.error(t(`errorReasons.${reasonKey}`), { description: t("errorCode", { code }) });
+      const reasonKey = authErrorReasonKey(event.data.code);
+      toast.error(t("errorTitle"), {
+        description: `${t(`errorReasons.${reasonKey}`)} ${t("errorCode", { code: authErrorNumericCode(event.data.code) })}`,
+      });
     }
 
     window.addEventListener("message", onMessage);
