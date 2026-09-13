@@ -137,25 +137,29 @@
 }
 
 /* Slow side-to-side drift so the hero glow reads as a living gradient
-   instead of a static shape. The rotation is repeated in every keyframe step
-   (not left to the base rotate-[-10deg] utility) because a running CSS
-   animation replaces the element's whole `transform`, not just translateX. */
+   instead of a static shape. The two blobs run opposite directions and
+   different durations so they don't move in lockstep. */
 @keyframes hero-glow-drift {
   0%,
   100% {
-    transform: translateX(-10vw) rotate(-10deg);
+    transform: translateX(-10vw);
   }
   50% {
-    transform: translateX(10vw) rotate(-10deg);
+    transform: translateX(10vw);
   }
 }
 
-.hero-glow {
+.hero-glow-a {
   animation: hero-glow-drift 10s ease-in-out infinite;
 }
 
+.hero-glow-b {
+  animation: hero-glow-drift 14s ease-in-out infinite reverse;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-glow {
+  .hero-glow-a,
+  .hero-glow-b {
     animation: none;
   }
 }
