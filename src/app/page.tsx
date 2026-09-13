@@ -1,61 +1,77 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, LogIn } from "lucide-react";
+import {
+  ArrowRight,
+  ShieldCheck,
+  Users,
+  Ticket,
+  Layers,
+  LogIn,
+  ArrowLeftRight,
+  History,
+} from "lucide-react";
 import { auth } from "@/lib/auth";
 import { DISCORD_BOT_INVITE_URL } from "@/lib/discord";
 import { Button } from "@/components/ui/button";
 import { DiscordSignInButton } from "@/components/discord-signin-button";
+import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { GlassCube } from "@/components/landing/glass-cube";
+import { ShatteredCube } from "@/components/landing/shattered-cube";
 import { Reveal } from "@/components/landing/reveal";
 import { Faq } from "@/components/landing/faq";
 import { Footer } from "@/components/landing/footer";
 
-const glassButton =
-  "rounded-2xl border border-white/10 bg-gradient-to-br from-white/12 to-white/5 text-white backdrop-blur-xl transition-colors duration-200 hover:bg-white/90 hover:text-black shadow-glow";
+const FEATURES = [
+  {
+    icon: Users,
+    title: "Набор и профили",
+    body: "Формы заявок с проверкой на ботов, личный профиль и статус AFK для каждого участника.",
+    tinted: true,
+  },
+  {
+    icon: ShieldCheck,
+    title: "Ранги и предупреждения",
+    body: "Повышения по цепочке рангов и автоматический выход из ролей после третьего предупреждения.",
+    tinted: false,
+  },
+  {
+    icon: Ticket,
+    title: "Обращения и апелляции",
+    body: "Тикеты с понятными номерами и историей переписки, доступные из панели.",
+    tinted: false,
+  },
+  {
+    icon: ArrowLeftRight,
+    title: "Массовый перевод",
+    body: "Команда /move переносит выбранных участников между голосовыми каналами разом.",
+    tinted: true,
+  },
+  {
+    icon: History,
+    title: "Журнал действий",
+    body: "Кто выдал ранг, снял предупреждение или закрыл тикет — история сохраняется и видна в панели.",
+    tinted: false,
+  },
+  {
+    icon: Layers,
+    title: "Несколько семей",
+    body: "Один вход через Discord, переключение между семьями без второго аккаунта.",
+    tinted: false,
+  },
+];
 
-const FEATURE_SECTIONS = [
+const STEPS = [
   {
-    title: "Набор, каким он должен быть",
-    body: "Заявки приходят в отдельный канал уже отфильтрованными: проверка на ботов отсекает спам, а профиль заполняется сам по мере ответов.",
-    subs: [
-      {
-        title: "Проверка на ботов",
-        body: "CAPTCHA перед подачей заявки — без неё форма недоступна.",
-      },
-      {
-        title: "Статус AFK",
-        body: "Участник отмечает отсутствие сам, остальные видят это в профиле.",
-      },
-    ],
+    verb: "Добавьте бота",
+    body: "Установите Reevun на свой Discord-сервер — понадобятся права администратора.",
   },
   {
-    title: "Модерация на автопилоте",
-    body: "Повышения идут по заранее заданной цепочке рангов. Команда /move одним действием переводит выбранных участников между голосовыми каналами.",
-    subs: [
-      {
-        title: "Ранги по цепочке",
-        body: "Следующий ранг доступен, только когда пройден предыдущий.",
-      },
-      {
-        title: "Автовыход после 3 предупреждений",
-        body: "Роль снимается сама, без ручного вмешательства модератора.",
-      },
-    ],
+    verb: "Войдите",
+    body: "Авторизуйтесь через свой Discord-аккаунт, без отдельного пароля.",
   },
   {
-    title: "Всё видно, ничего не теряется",
-    body: "Одна панель на несколько семей сразу: переключаетесь между серверами тем же аккаунтом, без повторного входа.",
-    subs: [
-      {
-        title: "Обращения и апелляции",
-        body: "Тикеты с понятным номером и историей переписки.",
-      },
-      {
-        title: "Журнал действий",
-        body: "Кто выдал ранг, снял предупреждение или закрыл тикет — видно в панели.",
-      },
-    ],
+    verb: "Управляйте",
+    body: "Ранги, предупреждения и обращения участников в одном месте.",
   },
 ];
 
@@ -64,18 +80,18 @@ export default async function Home() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <header className="sticky top-0 z-40 border-b border-white/5 bg-black/40 backdrop-blur-xl">
-        <div className="mx-auto flex h-[58px] max-w-7xl items-center justify-between px-6">
+      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <span className="flex items-center gap-2">
             <Image
               src="/logo.png"
               alt="Reevun"
-              width={22}
-              height={22}
+              width={24}
+              height={24}
               className="rounded-sm"
               priority
             />
-            <span className="text-base font-semibold tracking-tight">
+            <span className="text-lg font-semibold tracking-tight">
               Reevun
             </span>
           </span>
@@ -89,7 +105,7 @@ export default async function Home() {
               </Avatar>
             </Link>
           ) : (
-            <DiscordSignInButton size="sm" className={glassButton}>
+            <DiscordSignInButton size="sm">
               <LogIn className="size-4" />
               Войти через Discord
             </DiscordSignInButton>
@@ -98,99 +114,103 @@ export default async function Home() {
       </header>
 
       <main className="flex-1">
-        {/* Hero */}
-        <section className="relative overflow-hidden">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[600px] bg-[radial-gradient(ellipse_60%_50%_at_50%_-10%,color-mix(in_oklch,var(--brand)_25%,transparent),transparent)]"
-          />
-          <div className="mx-auto grid max-w-7xl gap-10 px-6 pt-16 pb-10 md:min-h-[80vh] md:grid-cols-2 md:items-center md:pt-20">
-            <div className="order-2 flex flex-col gap-6 md:order-1">
-              <h1 className="font-serif text-gradient-sheen text-[2.75rem] leading-[1.05] tracking-tight md:text-[4.5rem]">
-                Управляйте
-                <br />
-                Discord-сообществом
-              </h1>
-              <p className="max-w-[46ch] text-base leading-relaxed text-muted-foreground md:text-lg">
-                Reevun ведёт набор, ранги, предупреждения и обращения в вашей
-                семье. Один вход через Discord, доступ только к своей общине.
-              </p>
-              <div className="flex flex-wrap items-center gap-3">
-                <Button
-                  render={
-                    <Link
-                      href={DISCORD_BOT_INVITE_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    />
-                  }
-                  size="lg"
-                  className={glassButton}
-                >
-                  Добавить бота на сервер
-                  <ArrowRight className="size-4" />
-                </Button>
-                <Button render={<Link href="#features" />} variant="ghost" size="lg">
-                  Смотреть возможности
-                </Button>
-              </div>
-            </div>
-
-            <div className="order-1 md:order-2">
-              <GlassCube />
+        {/* Hero: asymmetric split */}
+        <section className="mx-auto grid max-w-6xl gap-12 px-6 pt-16 pb-10 md:grid-cols-2 md:items-center md:pt-20">
+          <div className="flex flex-col gap-6">
+            <h1 className="text-3xl font-semibold tracking-tight leading-[1.1] md:text-4xl">
+              Управляйте Discord-сообществом из одной панели
+            </h1>
+            <p className="max-w-[46ch] text-base leading-relaxed text-muted-foreground">
+              Reevun ведёт набор, ранги, предупреждения и обращения в вашей
+              семье. Один вход через Discord, доступ только к своей общине.
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <Button
+                render={
+                  <Link
+                    href={DISCORD_BOT_INVITE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                }
+                size="lg"
+              >
+                Добавить бота на сервер
+                <ArrowRight className="size-4" />
+              </Button>
+              <Button render={<Link href="#features" />} variant="ghost" size="lg">
+                Смотреть возможности
+              </Button>
             </div>
           </div>
 
-          <p className="mx-auto max-w-7xl px-6 pb-16 text-center text-sm text-muted-foreground">
-            Уже используют команды MajesticRP GTA5RP и Россия Онлайн
-          </p>
+          <ShatteredCube />
         </section>
 
-        {/* Feature sections, resend-style: main claim + two proof points */}
-        <div id="features">
-          {FEATURE_SECTIONS.map((section, si) => (
-            <section
-              key={section.title}
-              className={
-                si === 0
-                  ? "py-12 sm:py-24"
-                  : "mt-20 rounded-3xl border-t border-white/5 py-12 sm:py-24"
-              }
-            >
-              <div className="mx-auto max-w-7xl px-6">
-                <Reveal>
-                  <h2 className="max-w-[22ch] font-serif text-[2rem] leading-[1.15] tracking-tight md:text-[2.75rem]">
-                    {section.title}
-                  </h2>
-                  <p className="mt-4 max-w-[60ch] text-base leading-relaxed text-muted-foreground md:text-lg">
-                    {section.body}
-                  </p>
+        <p className="mx-auto max-w-6xl px-6 pb-16 text-sm text-muted-foreground">
+          Уже используют команды MajesticRP GTA5RP и Россия Онлайн.
+        </p>
+
+        {/* Features: bento, 6 cells */}
+        <section id="features" className="border-t border-border/60 py-20">
+          <div className="mx-auto max-w-6xl px-6">
+            <Reveal>
+              <h2 className="max-w-[30ch] text-3xl font-semibold tracking-tight">
+                Всё, чем управляет бот, теперь и в браузере
+              </h2>
+            </Reveal>
+            <div className="mt-10 grid gap-4 md:grid-cols-3">
+              {FEATURES.map((f, i) => (
+                <Reveal key={f.title} delay={i * 0.06}>
+                  <Card
+                    className={
+                      "flex h-full flex-col gap-3 border-border/60 p-6 shadow-none " +
+                      (f.tinted ? "bg-brand/[0.06]" : "bg-card/60")
+                    }
+                  >
+                    <f.icon className="size-5 text-brand" strokeWidth={1.5} />
+                    <h3 className="text-lg font-medium">{f.title}</h3>
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      {f.body}
+                    </p>
+                  </Card>
                 </Reveal>
-                <div className="mt-10 grid gap-4 md:grid-cols-2">
-                  {section.subs.map((sub, i) => (
-                    <Reveal key={sub.title} delay={i * 0.08}>
-                      <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6">
-                        <h3 className="text-lg font-medium">{sub.title}</h3>
-                        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                          {sub.body}
-                        </p>
-                      </div>
-                    </Reveal>
-                  ))}
-                </div>
-              </div>
-            </section>
-          ))}
-        </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* How it works: full-width 3 columns */}
+        <section id="how-it-works" className="border-t border-border/60 py-20">
+          <div className="mx-auto max-w-6xl px-6">
+            <Reveal>
+              <h2 className="text-3xl font-semibold tracking-tight">
+                Три шага до первой смены
+              </h2>
+            </Reveal>
+            <div className="mt-10 grid gap-8 md:grid-cols-3">
+              {STEPS.map((s, i) => (
+                <Reveal key={s.verb} delay={i * 0.08}>
+                  <div className="flex flex-col gap-2">
+                    <span className="font-mono text-sm text-muted-foreground">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="text-lg font-medium">{s.verb}</h3>
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      {s.body}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* FAQ */}
-        <section
-          id="faq"
-          className="mt-20 rounded-3xl border-t border-white/5 py-12 sm:py-24"
-        >
+        <section id="faq" className="border-t border-border/60 py-20">
           <div className="mx-auto max-w-3xl px-6">
             <Reveal>
-              <h2 className="font-serif text-[2rem] tracking-tight md:text-[2.75rem]">
+              <h2 className="text-3xl font-semibold tracking-tight">
                 Частые вопросы
               </h2>
             </Reveal>
@@ -200,12 +220,12 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Closing CTA */}
-        <section className="mt-20 rounded-3xl border-t border-white/5 py-12 sm:py-24">
+        {/* CTA band */}
+        <section className="border-t border-border/60 py-20">
           <Reveal>
-            <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-6 text-center">
-              <h2 className="text-hollow font-serif text-[2.5rem] tracking-tight md:text-[3.5rem]">
-                Готовы подключить свою семью?
+            <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 md:flex-row md:items-center md:justify-between">
+              <h2 className="max-w-[24ch] text-2xl font-semibold tracking-tight">
+                Готовы подключить свою семью к Reevun?
               </h2>
               <Button
                 render={
@@ -216,7 +236,6 @@ export default async function Home() {
                   />
                 }
                 size="lg"
-                className={glassButton}
               >
                 Добавить бота на сервер
                 <ArrowRight className="size-4" />
