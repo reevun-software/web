@@ -7,15 +7,21 @@ import {
   Ticket,
   Layers,
   LogIn,
-  Settings2,
+  ArrowLeftRight,
+  History,
 } from "lucide-react";
 import { auth } from "@/lib/auth";
+import { DISCORD_BOT_INVITE_URL } from "@/lib/discord";
 import { Button } from "@/components/ui/button";
 import { DiscordSignInButton } from "@/components/discord-signin-button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { BrandCube } from "@/components/landing/brand-cube";
+import { Reveal } from "@/components/landing/reveal";
+import { Faq } from "@/components/landing/faq";
+import { Footer } from "@/components/landing/footer";
 
 const FEATURES = [
   {
@@ -37,21 +43,33 @@ const FEATURES = [
     tinted: false,
   },
   {
+    icon: ArrowLeftRight,
+    title: "Массовый перевод",
+    body: "Команда /move переносит выбранных участников между голосовыми каналами разом.",
+    tinted: true,
+  },
+  {
+    icon: History,
+    title: "Журнал действий",
+    body: "Кто выдал ранг, снял предупреждение или закрыл тикет — история сохраняется и видна в панели.",
+    tinted: false,
+  },
+  {
     icon: Layers,
     title: "Несколько семей",
     body: "Один вход через Discord, переключение между семьями без второго аккаунта.",
-    tinted: true,
+    tinted: false,
   },
 ];
 
 const STEPS = [
   {
-    verb: "Войдите",
-    body: "Авторизуйтесь через свой Discord-аккаунт, без отдельного пароля.",
+    verb: "Добавьте бота",
+    body: "Установите Reevun на свой Discord-сервер — понадобятся права администратора.",
   },
   {
-    verb: "Выберите семью",
-    body: "Панель покажет только те серверы, где у вас есть права управления.",
+    verb: "Войдите",
+    body: "Авторизуйтесь через свой Discord-аккаунт, без отдельного пароля.",
   },
   {
     verb: "Управляйте",
@@ -101,6 +119,7 @@ export default async function Home() {
         {/* Hero: asymmetric split */}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 pt-16 pb-10 md:grid-cols-2 md:items-center md:pt-20">
           <div className="flex flex-col gap-6">
+            <BrandCube />
             <h1 className="text-4xl font-semibold tracking-tighter leading-none md:text-6xl">
               Управляйте Discord-сообществом из одной панели
             </h1>
@@ -109,17 +128,26 @@ export default async function Home() {
               семье. Один вход через Discord, доступ только к своей общине.
             </p>
             <div className="flex flex-wrap items-center gap-3">
-              <DiscordSignInButton size="lg">
-                Войти через Discord
+              <Button
+                render={
+                  <Link
+                    href={DISCORD_BOT_INVITE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                }
+                size="lg"
+              >
+                Добавить бота на сервер
                 <ArrowRight className="size-4" />
-              </DiscordSignInButton>
+              </Button>
               <Button render={<Link href="#features" />} variant="ghost" size="lg">
                 Смотреть возможности
               </Button>
             </div>
           </div>
 
-          <Card className="border-border/60 bg-card/60 p-5 shadow-none animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <Card className="border-border/60 bg-card/60 p-5 shadow-none">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-muted-foreground">
                 Участники семьи
@@ -170,80 +198,101 @@ export default async function Home() {
           Уже используют команды MajesticRP GTA5RP и Россия Онлайн.
         </p>
 
-        {/* Features: asymmetric bento */}
+        {/* Features: bento, 6 cells */}
         <section id="features" className="border-t border-border/60 py-20">
           <div className="mx-auto max-w-6xl px-6">
-            <h2 className="max-w-[30ch] text-3xl font-semibold tracking-tight">
-              Всё, чем управляет бот, теперь и в браузере
-            </h2>
-            <div className="mt-10 grid gap-4 md:grid-cols-2">
-              {FEATURES.map((f) => (
-                <Card
-                  key={f.title}
-                  className={
-                    "flex flex-col gap-3 border-border/60 p-6 shadow-none " +
-                    (f.tinted ? "bg-brand/[0.06]" : "bg-card/60")
-                  }
-                >
-                  <f.icon className="size-5 text-brand" strokeWidth={1.5} />
-                  <h3 className="text-lg font-medium">{f.title}</h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {f.body}
-                  </p>
-                </Card>
+            <Reveal>
+              <h2 className="max-w-[30ch] text-3xl font-semibold tracking-tight">
+                Всё, чем управляет бот, теперь и в браузере
+              </h2>
+            </Reveal>
+            <div className="mt-10 grid gap-4 md:grid-cols-3">
+              {FEATURES.map((f, i) => (
+                <Reveal key={f.title} delay={i * 0.06}>
+                  <Card
+                    className={
+                      "flex h-full flex-col gap-3 border-border/60 p-6 shadow-none " +
+                      (f.tinted ? "bg-brand/[0.06]" : "bg-card/60")
+                    }
+                  >
+                    <f.icon className="size-5 text-brand" strokeWidth={1.5} />
+                    <h3 className="text-lg font-medium">{f.title}</h3>
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      {f.body}
+                    </p>
+                  </Card>
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
 
         {/* How it works: full-width 3 columns */}
-        <section className="border-t border-border/60 py-20">
+        <section id="how-it-works" className="border-t border-border/60 py-20">
           <div className="mx-auto max-w-6xl px-6">
-            <h2 className="text-3xl font-semibold tracking-tight">
-              Три шага до первой смены
-            </h2>
+            <Reveal>
+              <h2 className="text-3xl font-semibold tracking-tight">
+                Три шага до первой смены
+              </h2>
+            </Reveal>
             <div className="mt-10 grid gap-8 md:grid-cols-3">
               {STEPS.map((s, i) => (
-                <div key={s.verb} className="flex flex-col gap-2">
-                  <span className="font-mono text-sm text-muted-foreground">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="text-lg font-medium">{s.verb}</h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {s.body}
-                  </p>
-                </div>
+                <Reveal key={s.verb} delay={i * 0.08}>
+                  <div className="flex flex-col gap-2">
+                    <span className="font-mono text-sm text-muted-foreground">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="text-lg font-medium">{s.verb}</h3>
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      {s.body}
+                    </p>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
 
+        {/* FAQ */}
+        <section id="faq" className="border-t border-border/60 py-20">
+          <div className="mx-auto max-w-3xl px-6">
+            <Reveal>
+              <h2 className="text-3xl font-semibold tracking-tight">
+                Частые вопросы
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1} className="mt-10">
+              <Faq />
+            </Reveal>
+          </div>
+        </section>
+
         {/* CTA band */}
         <section className="border-t border-border/60 py-20">
-          <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 md:flex-row md:items-center md:justify-between">
-            <h2 className="max-w-[24ch] text-2xl font-semibold tracking-tight">
-              Готовы подключить свою семью к Reevun?
-            </h2>
-            <DiscordSignInButton size="lg">
-              Войти через Discord
-              <ArrowRight className="size-4" />
-            </DiscordSignInButton>
-          </div>
+          <Reveal>
+            <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 md:flex-row md:items-center md:justify-between">
+              <h2 className="max-w-[24ch] text-2xl font-semibold tracking-tight">
+                Готовы подключить свою семью к Reevun?
+              </h2>
+              <Button
+                render={
+                  <Link
+                    href={DISCORD_BOT_INVITE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                }
+                size="lg"
+              >
+                Добавить бота на сервер
+                <ArrowRight className="size-4" />
+              </Button>
+            </div>
+          </Reveal>
         </section>
       </main>
 
-      <footer className="border-t border-border/60 py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-6 text-sm text-muted-foreground md:flex-row md:justify-between">
-          <span>Reevun</span>
-          <Link
-            href="https://github.com/reevun-software/main-bot"
-            className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
-          >
-            <Settings2 className="size-4" strokeWidth={1.5} />
-            main-bot на GitHub
-          </Link>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
