@@ -34,10 +34,17 @@ type MajesticOnlineResponse = {
 
 async function fetchJson<T>(url: string): Promise<T | null> {
   try {
-    const res = await fetch(url, { next: { revalidate: 30 } });
-    if (!res.ok) return null;
+    const res = await fetch(url, {
+      next: { revalidate: 30 },
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; ReevunBot/1.0)" },
+    });
+    if (!res.ok) {
+      console.error("online-monitoring: non-OK response", url, res.status, await res.text());
+      return null;
+    }
     return (await res.json()) as T;
-  } catch {
+  } catch (error) {
+    console.error("online-monitoring: fetch failed", url, error);
     return null;
   }
 }
