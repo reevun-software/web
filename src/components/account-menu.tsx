@@ -1,10 +1,11 @@
-import { LayoutDashboard, Settings, LogOut, LifeBuoy } from "lucide-react";
+import { LayoutDashboard, Settings, LifeBuoy } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { signOut } from "@/lib/auth";
 import { SUPPORT_DISCORD_URL } from "@/lib/discord";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LanguageSubmenu } from "@/components/language-submenu";
+import { SignOutMenuItem } from "@/components/sign-out-menu-item";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -73,22 +74,13 @@ export async function AccountMenu({
           {tRoot("Footer.support")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <form
+        <SignOutMenuItem
+          label={t("signOut")}
           action={async () => {
             "use server";
             await signOut();
           }}
-          className="contents"
-        >
-          <DropdownMenuItem
-            render={<button type="submit" className="w-full" />}
-            variant="destructive"
-            className="cursor-pointer"
-          >
-            <LogOut className="size-4" strokeWidth={1.5} />
-            {t("signOut")}
-          </DropdownMenuItem>
-        </form>
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );
