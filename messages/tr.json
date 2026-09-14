@@ -322,7 +322,11 @@
       "peakAllTime": "Tüm zamanların zirvesi",
       "unavailable": "Veriler alınamadı. Lütfen sayfayı daha sonra yenileyin.",
       "russiaOnlineName": "Rusya Online",
-      "historyEmpty": "Geçmiş verisi toplanıyor - yeterli veri birikince grafik burada görünecek."
+      "historyEmpty": "Geçmiş verisi toplanıyor - yeterli veri birikince grafik burada görünecek.",
+      "range1": "1 gün",
+      "range7": "7 gün",
+      "range30": "30 gün",
+      "range90": "90 gün"
     },
     "blacklist": {
       "heading": "Kara Liste",
@@ -361,8 +365,6 @@
       "heading": "Güvenlik",
       "moderatorsTitle": "Moderatörler",
       "moderatorRoleIds": "Moderatör rol ID'leri",
-      "moderatorRoleIdsPlaceholder": "Her satıra bir ID veya virgülle ayırın",
-      "moderatorRoleIdsNote": "Bir rol ID'sini kopyalamak için Discord'da Geliştirici Modunu etkinleştirin (role sağ tıklayın -> Rol ID'sini Kopyala).",
       "automodTitle": "Otomatik moderasyon",
       "filters": {
         "filterLinks": {
@@ -396,7 +398,10 @@
       "muteModeRole": "Rol ata",
       "muteModeBoth": "İkisi de",
       "muteRoleId": "Susturma rolü ID'si",
-      "save": "Kaydet"
+      "save": "Kaydet",
+      "addRole": "Rol ekle",
+      "rolesUnavailable": "Bu sunucunun rolleri yüklenemedi. Reevun botunun sunucuya eklendiğinden emin olun.",
+      "muteRoleIdPlaceholder": "Bir rol seçin"
     }
   },
   "LanguageSwitcher": {

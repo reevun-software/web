@@ -322,7 +322,11 @@
       "peakAllTime": "历史峰值",
       "unavailable": "无法获取数据，请稍后刷新页面重试。",
       "russiaOnlineName": "俄罗斯在线",
-      "historyEmpty": "正在累积历史数据——数据足够后图表将显示在此处。"
+      "historyEmpty": "正在累积历史数据——数据足够后图表将显示在此处。",
+      "range1": "1 天",
+      "range7": "7 天",
+      "range30": "30 天",
+      "range90": "90 天"
     },
     "blacklist": {
       "heading": "黑名单",
@@ -361,8 +365,6 @@
       "heading": "安全",
       "moderatorsTitle": "管理人员",
       "moderatorRoleIds": "管理员身份组 ID",
-      "moderatorRoleIdsPlaceholder": "每行一个 ID，或用逗号分隔",
-      "moderatorRoleIdsNote": "在 Discord 中启用开发者模式以复制身份组 ID（右键身份组 → 复制身份组 ID）。",
       "automodTitle": "自动管理",
       "filters": {
         "filterLinks": {
@@ -396,7 +398,10 @@
       "muteModeRole": "赋予身份组",
       "muteModeBoth": "两者都用",
       "muteRoleId": "禁言身份组 ID",
-      "save": "保存"
+      "save": "保存",
+      "addRole": "添加身份组",
+      "rolesUnavailable": "无法加载该服务器的身份组，请确认已将 Reevun 机器人添加到此服务器。",
+      "muteRoleIdPlaceholder": "选择身份组"
     }
   },
   "LanguageSwitcher": {

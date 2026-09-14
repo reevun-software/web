@@ -28,10 +28,14 @@ export default async function MonitoringPage() {
       .map(([project, data]) => recordOnlineSnapshot(project, data!.totalPlayers)),
   );
 
+  // Fetched once at the widest range the UI offers (90 days) - the range
+  // buttons in OnlineMonitoringTabs just filter this client-side instead of
+  // re-fetching per click.
+  const HISTORY_HOURS = 90 * 24;
   const [majesticHistory, russiaOnlineHistory, gta5rpHistory] = await Promise.all([
-    getOnlineHistory("majestic"),
-    getOnlineHistory("russiaonline"),
-    getOnlineHistory("gta5rp"),
+    getOnlineHistory("majestic", HISTORY_HOURS),
+    getOnlineHistory("russiaonline", HISTORY_HOURS),
+    getOnlineHistory("gta5rp", HISTORY_HOURS),
   ]);
 
   return (
@@ -39,20 +43,39 @@ export default async function MonitoringPage() {
       <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
       <OnlineMonitoringTabs
         projects={[
-          { key: "majestic", label: "Majestic RP", data: majestic, history: majesticHistory },
+          {
+            key: "majestic",
+            label: "Majestic RP",
+            logo: "https://majestic-rp.ru/favicon.ico",
+            data: majestic,
+            history: majesticHistory,
+          },
           {
             key: "russiaonline",
             label: t("russiaOnlineName"),
+            logo: "https://majestic-rp.ru/images/russia-online/ro-logo-icon.svg",
             data: russiaOnline,
             history: russiaOnlineHistory,
           },
-          { key: "gta5rp", label: "GTA5RP", data: gta5rp, history: gta5rpHistory },
+          {
+            key: "gta5rp",
+            label: "GTA5RP",
+            logo: "https://gta5rp.com/images/logo/main.png",
+            data: gta5rp,
+            history: gta5rpHistory,
+          },
         ]}
         current={t("current")}
         peakToday={t("peakToday")}
         peakAllTime={t("peakAllTime")}
         unavailable={t("unavailable")}
         historyEmpty={t("historyEmpty")}
+        rangeLabels={{
+          1: t("range1"),
+          7: t("range7"),
+          30: t("range30"),
+          90: t("range90"),
+        }}
       />
     </div>
   );

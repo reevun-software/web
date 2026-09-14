@@ -322,7 +322,11 @@
       "peakAllTime": "Пик за всё время",
       "unavailable": "Не удалось получить данные. Попробуйте обновить страницу позже.",
       "russiaOnlineName": "Россия Онлайн",
-      "historyEmpty": "Собираем историю — график появится, как только накопится больше данных."
+      "historyEmpty": "Собираем историю — график появится, как только накопится больше данных.",
+      "range1": "1 день",
+      "range7": "7 дней",
+      "range30": "30 дней",
+      "range90": "90 дней"
     },
     "blacklist": {
       "heading": "Чёрный список",
@@ -361,8 +365,6 @@
       "heading": "Безопасность",
       "moderatorsTitle": "Модераторы",
       "moderatorRoleIds": "ID ролей модераторов",
-      "moderatorRoleIdsPlaceholder": "По одному ID на строку или через запятую",
-      "moderatorRoleIdsNote": "Включите Режим разработчика в Discord, чтобы скопировать ID роли (ПКМ по роли → Копировать ID роли).",
       "automodTitle": "Автомодерация",
       "filters": {
         "filterLinks": {
@@ -396,7 +398,10 @@
       "muteModeRole": "Выдавать роль",
       "muteModeBoth": "И то, и другое",
       "muteRoleId": "ID роли мьюта",
-      "save": "Сохранить"
+      "save": "Сохранить",
+      "addRole": "Добавить роль",
+      "rolesUnavailable": "Не удалось получить роли сервера. Убедитесь, что бот Reevun добавлен на этот сервер.",
+      "muteRoleIdPlaceholder": "Выберите роль"
     }
   },
   "LanguageSwitcher": {

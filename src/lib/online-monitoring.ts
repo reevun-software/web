@@ -9,6 +9,7 @@ export type OnlineCity = {
   queued?: number;
   peak?: number;
   online?: boolean;
+  countryCode?: string; // flag-icons country code, e.g. "ru", "de", "pl"
 };
 
 export type OnlineProjectData = {
@@ -29,6 +30,7 @@ type MajesticServer = {
   queuedPlayers: number;
   peakAllTime: number;
   status: boolean;
+  country: string;
 };
 
 type MajesticOnlineResponse = {
@@ -69,6 +71,7 @@ async function getMajesticFamilyOnline(url: string): Promise<OnlineProjectData |
       queued: s.queuedPlayers,
       peak: s.peakAllTime,
       online: s.status,
+      countryCode: s.country,
     })),
     totalPlayers: data.players ?? 0,
     peakToday: data.peakToday,
@@ -88,6 +91,7 @@ type RageMpServer = {
   name?: string;
   players?: number;
   peak?: number;
+  lang?: string;
 };
 
 type RageMpMaster = Record<string, RageMpServer>;
@@ -109,6 +113,7 @@ export async function getGta5rpOnline(): Promise<OnlineProjectData | null> {
     name: v.name?.split("|")[1]?.trim() || key.split(".")[0],
     players: v.players ?? 0,
     peak: v.peak,
+    countryCode: v.lang,
   }));
 
   return {

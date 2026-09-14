@@ -322,7 +322,11 @@
       "peakAllTime": "All-time peak",
       "unavailable": "Couldn't fetch this data. Try refreshing the page later.",
       "russiaOnlineName": "Russia Online",
-      "historyEmpty": "Building history - the chart will appear once more data has accumulated."
+      "historyEmpty": "Building history - the chart will appear once more data has accumulated.",
+      "range1": "1 day",
+      "range7": "7 days",
+      "range30": "30 days",
+      "range90": "90 days"
     },
     "blacklist": {
       "heading": "Blacklist",
@@ -361,8 +365,6 @@
       "heading": "Security",
       "moderatorsTitle": "Moderators",
       "moderatorRoleIds": "Moderator role IDs",
-      "moderatorRoleIdsPlaceholder": "One ID per line or comma-separated",
-      "moderatorRoleIdsNote": "Enable Developer Mode in Discord to copy a role ID (right-click a role -> Copy Role ID).",
       "automodTitle": "Auto-moderation",
       "filters": {
         "filterLinks": {
@@ -396,7 +398,10 @@
       "muteModeRole": "Assign a role",
       "muteModeBoth": "Both",
       "muteRoleId": "Mute role ID",
-      "save": "Save"
+      "save": "Save",
+      "addRole": "Add role",
+      "rolesUnavailable": "Couldn't load this server's roles. Make sure the Reevun bot is added to it.",
+      "muteRoleIdPlaceholder": "Select a role"
     }
   },
   "LanguageSwitcher": {

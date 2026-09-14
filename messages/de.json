@@ -322,7 +322,11 @@
       "peakAllTime": "Höchststand insgesamt",
       "unavailable": "Daten konnten nicht abgerufen werden. Bitte die Seite später neu laden.",
       "russiaOnlineName": "Russland Online",
-      "historyEmpty": "Verlauf wird aufgebaut - das Diagramm erscheint, sobald mehr Daten vorliegen."
+      "historyEmpty": "Verlauf wird aufgebaut - das Diagramm erscheint, sobald mehr Daten vorliegen.",
+      "range1": "1 Tag",
+      "range7": "7 Tage",
+      "range30": "30 Tage",
+      "range90": "90 Tage"
     },
     "blacklist": {
       "heading": "Schwarze Liste",
@@ -361,8 +365,6 @@
       "heading": "Sicherheit",
       "moderatorsTitle": "Moderatoren",
       "moderatorRoleIds": "Moderator-Rollen-IDs",
-      "moderatorRoleIdsPlaceholder": "Eine ID pro Zeile oder durch Komma getrennt",
-      "moderatorRoleIdsNote": "Aktivieren Sie den Entwicklermodus in Discord, um eine Rollen-ID zu kopieren (Rechtsklick auf eine Rolle -> Rollen-ID kopieren).",
       "automodTitle": "Automoderation",
       "filters": {
         "filterLinks": {
@@ -396,7 +398,10 @@
       "muteModeRole": "Rolle vergeben",
       "muteModeBoth": "Beides",
       "muteRoleId": "Stummschaltungs-Rollen-ID",
-      "save": "Speichern"
+      "save": "Speichern",
+      "addRole": "Rolle hinzufügen",
+      "rolesUnavailable": "Die Rollen dieses Servers konnten nicht geladen werden. Stellen Sie sicher, dass der Reevun-Bot hinzugefügt wurde.",
+      "muteRoleIdPlaceholder": "Rolle auswählen"
     }
   },
   "LanguageSwitcher": {

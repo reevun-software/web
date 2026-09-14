@@ -4,12 +4,12 @@ import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { guildSecuritySettings } from "@/lib/db/schema";
+import { getGuildRoles } from "@/lib/discord-guild";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
+import { RolePicker } from "@/components/dashboard/role-picker";
 import {
   Select,
   SelectTrigger,
@@ -32,11 +32,14 @@ export default async function SecurityPage({
 }: PageProps<"/[locale]/dashboard/[guildId]/security">) {
   const { guildId } = await params;
   const t = await getTranslations("Dashboard.security");
-  const [settings] = await db
-    .select()
-    .from(guildSecuritySettings)
-    .where(eq(guildSecuritySettings.guildId, guildId))
-    .limit(1);
+  const [[settings], roles] = await Promise.all([
+    db
+      .select()
+      .from(guildSecuritySettings)
+      .where(eq(guildSecuritySettings.guildId, guildId))
+      .limit(1),
+    getGuildRoles(guildId),
+  ]);
 
   const current = settings ?? {
     moderatorRoleIds: [] as string[],
@@ -52,12 +55,9 @@ export default async function SecurityPage({
 
   async function save(formData: FormData) {
     "use server";
-    const moderatorRoleIds = (formData.get("moderatorRoleIds") as string)
-      .split(/[\n,]/)
-      .map((id) => id.trim())
-      .filter(Boolean);
+    const moderatorRoleIds = formData.getAll("moderatorRoleIds") as string[];
     const muteMode = formData.get("muteMode") as string;
-    const muteRoleId = (formData.get("muteRoleId") as string)?.trim() || null;
+    const muteRoleId = (formData.get("muteRoleId") as string) || null;
 
     const values = {
       guildId,
@@ -90,17 +90,15 @@ export default async function SecurityPage({
       <form action={save} className="flex flex-col gap-4">
         <Card className="flex flex-col gap-3 p-6">
           <span className="text-sm font-medium">{t("moderatorsTitle")}</span>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="moderatorRoleIds">{t("moderatorRoleIds")}</Label>
-            <Textarea
-              id="moderatorRoleIds"
+          <div className="flex flex-col gap-2">
+            <Label>{t("moderatorRoleIds")}</Label>
+            <RolePicker
               name="moderatorRoleIds"
-              rows={3}
-              defaultValue={current.moderatorRoleIds.join("\n")}
-              placeholder={t("moderatorRoleIdsPlaceholder")}
-              className="font-mono text-xs"
+              roles={roles}
+              defaultSelectedIds={current.moderatorRoleIds}
+              addLabel={t("addRole")}
+              emptyLabel={t("rolesUnavailable")}
             />
-            <p className="text-xs text-muted-foreground">{t("moderatorRoleIdsNote")}</p>
           </div>
         </Card>
 
@@ -142,12 +140,22 @@ export default async function SecurityPage({
           </div>
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="muteRoleId">{t("muteRoleId")}</Label>
-            <Input
-              id="muteRoleId"
-              name="muteRoleId"
-              defaultValue={current.muteRoleId ?? ""}
-              className="font-mono text-xs sm:w-64"
-            />
+            {roles.length > 0 ? (
+              <Select name="muteRoleId" defaultValue={current.muteRoleId ?? undefined}>
+                <SelectTrigger id="muteRoleId" className="w-full sm:w-64">
+                  <SelectValue placeholder={t("muteRoleIdPlaceholder")} />
+                </SelectTrigger>
+                <SelectContent>
+                  {roles.map((role) => (
+                    <SelectItem key={role.id} value={role.id}>
+                      {role.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : (
+              <p className="text-sm text-muted-foreground">{t("rolesUnavailable")}</p>
+            )}
           </div>
         </Card>
 

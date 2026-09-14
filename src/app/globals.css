@@ -162,6 +162,10 @@
   .hero-glow-b {
     animation: none;
   }
+
+  .odometer-digit {
+    transition: none;
+  }
 }
 
 @keyframes leaving-ring-deplete {
