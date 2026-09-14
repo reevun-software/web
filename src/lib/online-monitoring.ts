@@ -1,3 +1,7 @@
+import { and, asc, desc, eq, gte } from "drizzle-orm";
+import { db } from "@/lib/db";
+import { onlineSnapshots } from "@/lib/db/schema";
+
 export type OnlineCity = {
   id: string;
   name: string;
@@ -13,6 +17,10 @@ export type OnlineProjectData = {
   peakToday?: number;
   peakAllTime?: number;
 };
+
+export type OnlineProjectKey = "majestic" | "russiaonline" | "gta5rp";
+
+export type OnlineHistoryPoint = { recordedAt: Date; totalPlayers: number };
 
 type MajesticServer = {
   id: string;
@@ -109,4 +117,42 @@ export async function getGta5rpOnline(): Promise<OnlineProjectData | null> {
     // RAGE:MP's master list doesn't expose a today/all-time peak, only a
     // rolling peak per server (already surfaced as each city's own `peak`).
   };
+}
+
+const SNAPSHOT_MIN_INTERVAL_MS = 15 * 60 * 1000;
+
+// ponytail: history is seeded by whoever happens to view the monitoring page
+// (at most one snapshot per project per ~15min) rather than a dedicated
+// scheduled worker - simplest thing that actually accumulates real data with
+// no new infrastructure. Upgrade path: a Railway cron service calling these
+// same fetch functions on a fixed interval, once the page gets enough
+// traffic that organic views leave gaps.
+export async function recordOnlineSnapshot(project: OnlineProjectKey, totalPlayers: number) {
+  const [last] = await db
+    .select({ recordedAt: onlineSnapshots.recordedAt })
+    .from(onlineSnapshots)
+    .where(eq(onlineSnapshots.project, project))
+    .orderBy(desc(onlineSnapshots.recordedAt))
+    .limit(1);
+
+  if (last && Date.now() - last.recordedAt.getTime() < SNAPSHOT_MIN_INTERVAL_MS) return;
+
+  await db.insert(onlineSnapshots).values({ project, totalPlayers });
+}
+
+export async function getOnlineHistory(
+  project: OnlineProjectKey,
+  hours = 24,
+): Promise<OnlineHistoryPoint[]> {
+  const since = new Date(Date.now() - hours * 60 * 60 * 1000);
+  const rows = await db
+    .select({
+      recordedAt: onlineSnapshots.recordedAt,
+      totalPlayers: onlineSnapshots.totalPlayers,
+    })
+    .from(onlineSnapshots)
+    .where(and(eq(onlineSnapshots.project, project), gte(onlineSnapshots.recordedAt, since)))
+    .orderBy(asc(onlineSnapshots.recordedAt));
+
+  return rows;
 }

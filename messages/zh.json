@@ -317,7 +317,8 @@
       "peakToday": "今日峰值",
       "peakAllTime": "历史峰值",
       "unavailable": "无法获取数据，请稍后刷新页面重试。",
-      "russiaOnlineName": "俄罗斯在线"
+      "russiaOnlineName": "俄罗斯在线",
+      "historyEmpty": "正在累积历史数据——数据足够后图表将显示在此处。"
     }
   },
   "LanguageSwitcher": {

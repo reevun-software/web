@@ -317,7 +317,8 @@
       "peakToday": "Höchststand heute",
       "peakAllTime": "Höchststand insgesamt",
       "unavailable": "Daten konnten nicht abgerufen werden. Bitte die Seite später neu laden.",
-      "russiaOnlineName": "Russland Online"
+      "russiaOnlineName": "Russland Online",
+      "historyEmpty": "Verlauf wird aufgebaut - das Diagramm erscheint, sobald mehr Daten vorliegen."
     }
   },
   "LanguageSwitcher": {

@@ -317,7 +317,8 @@
       "peakToday": "Bugünkü zirve",
       "peakAllTime": "Tüm zamanların zirvesi",
       "unavailable": "Veriler alınamadı. Lütfen sayfayı daha sonra yenileyin.",
-      "russiaOnlineName": "Rusya Online"
+      "russiaOnlineName": "Rusya Online",
+      "historyEmpty": "Geçmiş verisi toplanıyor - yeterli veri birikince grafik burada görünecek."
     }
   },
   "LanguageSwitcher": {

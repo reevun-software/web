@@ -1,4 +1,4 @@
-import { pgTable, text, integer, timestamp, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, text, integer, timestamp, primaryKey, serial } from "drizzle-orm/pg-core";
 
 // A "family" = one Discord server running the bot. Every domain table below
 // is scoped by guildId so the site works for many families, not just one.
@@ -42,6 +42,17 @@ export const afkSessions = pgTable(
   },
   (t) => [primaryKey({ columns: [t.guildId, t.discordUserId] })],
 );
+
+// Not guild-scoped - this is the same live GTA RP project population data
+// regardless of which family's dashboard is looking at it. A snapshot is
+// recorded at most once per ~15min per project (see recordOnlineSnapshot),
+// piggybacking on real page views rather than a dedicated scheduled worker.
+export const onlineSnapshots = pgTable("online_snapshots", {
+  id: serial("id").primaryKey(),
+  project: text("project").notNull(), // "majestic" | "russiaonline" | "gta5rp"
+  totalPlayers: integer("total_players").notNull(),
+  recordedAt: timestamp("recorded_at").defaultNow().notNull(),
+});
 
 export const tickets = pgTable("tickets", {
   id: text("id").primaryKey(), // "<type>-<10 digits>", set by the bot

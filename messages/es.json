@@ -317,7 +317,8 @@
       "peakToday": "Pico de hoy",
       "peakAllTime": "Pico histórico",
       "unavailable": "No se pudieron obtener los datos. Intenta actualizar la página más tarde.",
-      "russiaOnlineName": "Rusia Online"
+      "russiaOnlineName": "Rusia Online",
+      "historyEmpty": "Recopilando historial - el gráfico aparecerá en cuanto se acumulen más datos."
     }
   },
   "LanguageSwitcher": {

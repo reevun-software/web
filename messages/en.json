@@ -317,7 +317,8 @@
       "peakToday": "Peak today",
       "peakAllTime": "All-time peak",
       "unavailable": "Couldn't fetch this data. Try refreshing the page later.",
-      "russiaOnlineName": "Russia Online"
+      "russiaOnlineName": "Russia Online",
+      "historyEmpty": "Building history - the chart will appear once more data has accumulated."
     }
   },
   "LanguageSwitcher": {
