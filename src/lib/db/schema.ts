@@ -1,11 +1,4 @@
-import {
-  pgTable,
-  text,
-  integer,
-  boolean,
-  timestamp,
-  primaryKey,
-} from "drizzle-orm/pg-core";
+import { pgTable, text, integer, timestamp, primaryKey } from "drizzle-orm/pg-core";
 
 // A "family" = one Discord server running the bot. Every domain table below
 // is scoped by guildId so the site works for many families, not just one.
@@ -28,8 +21,24 @@ export const guildMembers = pgTable(
     avatar: text("avatar"),
     rank: integer("rank").default(1).notNull(),
     warnings: integer("warnings").default(0).notNull(),
-    isAfk: boolean("is_afk").default(false).notNull(),
     joinedAt: timestamp("joined_at").defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.guildId, t.discordUserId] })],
+);
+
+// A member is AFK exactly while a row exists here for them - the bot deletes
+// the row (or lets it stand past expiresAt) when they're back, rather than
+// the site tracking AFK as a stale boolean flag on guild_members.
+export const afkSessions = pgTable(
+  "afk_sessions",
+  {
+    guildId: text("guild_id")
+      .notNull()
+      .references(() => guilds.id, { onDelete: "cascade" }),
+    discordUserId: text("discord_user_id").notNull(),
+    reason: text("reason"),
+    startedAt: timestamp("started_at").defaultNow().notNull(),
+    expiresAt: timestamp("expires_at"),
   },
   (t) => [primaryKey({ columns: [t.guildId, t.discordUserId] })],
 );

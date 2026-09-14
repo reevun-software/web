@@ -237,9 +237,12 @@
     "chooseFamilyTitle": "Choose a family",
     "noBot": "no bot",
     "nav": {
+      "dashboard": "Dashboard",
       "members": "Members",
-      "ranks": "Ranks & warnings",
+      "ranks": "Ranks",
+      "warnings": "Warnings",
       "tickets": "Tickets",
+      "afk": "AFK list",
       "settings": "Settings"
     },
     "members": {
@@ -255,8 +258,11 @@
       "afk": "AFK"
     },
     "ranks": {
-      "title": "Ranks & warnings",
-      "body": "The rank chain and warning log will show up here once members start getting them through the bot."
+      "heading": "Ranks",
+      "emptyTitle": "No ranks yet",
+      "emptyBody": "Once members start getting ranks through the bot, their distribution will appear here.",
+      "rank": "Rank {n}",
+      "memberCount": "{n, plural, one {# member} other {# members}}"
     },
     "tickets": {
       "emptyTitle": "No tickets yet",
@@ -274,6 +280,29 @@
       "name": "Name",
       "serverId": "Discord server ID",
       "note": "Changing the bot's name and settings is done through Discord. Dashboard-specific settings will appear here once they're needed."
+    },
+    "overview": {
+      "heading": "Dashboard",
+      "members": "Members",
+      "openTickets": "Open tickets",
+      "warnings": "Warnings",
+      "afk": "AFK"
+    },
+    "warnings": {
+      "heading": "Warnings",
+      "emptyTitle": "No warnings",
+      "emptyBody": "Once members start getting warnings through the bot, they'll appear here.",
+      "colMember": "Member",
+      "colWarnings": "Warnings"
+    },
+    "afk": {
+      "heading": "AFK list",
+      "emptyTitle": "No one is AFK",
+      "emptyBody": "Members marked AFK by the bot will appear here.",
+      "colMember": "Member",
+      "colReason": "Reason",
+      "colSince": "Since",
+      "noReason": "No reason given"
     }
   },
   "LanguageSwitcher": {

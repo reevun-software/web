@@ -237,9 +237,12 @@
     "chooseFamilyTitle": "Bir aile seç",
     "noBot": "bot yok",
     "nav": {
+      "dashboard": "Panel",
       "members": "Üyeler",
-      "ranks": "Rütbeler ve uyarılar",
+      "ranks": "Rütbeler",
+      "warnings": "Uyarılar",
       "tickets": "Talepler",
+      "afk": "AFK Listesi",
       "settings": "Ayarlar"
     },
     "members": {
@@ -255,8 +258,11 @@
       "afk": "AFK"
     },
     "ranks": {
-      "title": "Rütbeler ve uyarılar",
-      "body": "Üyeler bot üzerinden almaya başladığında rütbe zinciri ve uyarı günlüğü burada görünecek."
+      "heading": "Rütbeler",
+      "emptyTitle": "Henüz rütbe yok",
+      "emptyBody": "Üyeler bot aracılığıyla rütbe almaya başladığında dağılımları burada görünecek.",
+      "rank": "Rütbe {n}",
+      "memberCount": "{n, plural, other {# üye}}"
     },
     "tickets": {
       "emptyTitle": "Henüz talep yok",
@@ -274,6 +280,29 @@
       "name": "Ad",
       "serverId": "Discord sunucu kimliği",
       "note": "Bot adı ve ayarları Discord üzerinden değiştirilir. Panele özel ayarlar ihtiyaç duyulduğunda burada görünecek."
+    },
+    "overview": {
+      "heading": "Panel",
+      "members": "Üyeler",
+      "openTickets": "Açık talepler",
+      "warnings": "Uyarılar",
+      "afk": "AFK"
+    },
+    "warnings": {
+      "heading": "Uyarılar",
+      "emptyTitle": "Uyarı yok",
+      "emptyBody": "Üyeler bot aracılığıyla uyarı almaya başladığında burada görünecekler.",
+      "colMember": "Üye",
+      "colWarnings": "Uyarılar"
+    },
+    "afk": {
+      "heading": "AFK Listesi",
+      "emptyTitle": "AFK olan kimse yok",
+      "emptyBody": "Bot tarafından AFK olarak işaretlenen üyeler burada görünecek.",
+      "colMember": "Üye",
+      "colReason": "Sebep",
+      "colSince": "Ne zamandan beri",
+      "noReason": "Sebep belirtilmedi"
     }
   },
   "LanguageSwitcher": {

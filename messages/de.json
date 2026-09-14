@@ -237,9 +237,12 @@
     "chooseFamilyTitle": "Familie auswählen",
     "noBot": "kein Bot",
     "nav": {
+      "dashboard": "Dashboard",
       "members": "Mitglieder",
-      "ranks": "Ränge & Verwarnungen",
+      "ranks": "Ränge",
+      "warnings": "Verwarnungen",
       "tickets": "Anfragen",
+      "afk": "AFK-Liste",
       "settings": "Einstellungen"
     },
     "members": {
@@ -255,8 +258,11 @@
       "afk": "AFK"
     },
     "ranks": {
-      "title": "Ränge & Verwarnungen",
-      "body": "Hier erscheinen die Rangkette und das Verwarnungsprotokoll, sobald Mitglieder sie über den Bot erhalten."
+      "heading": "Ränge",
+      "emptyTitle": "Noch keine Ränge",
+      "emptyBody": "Sobald Mitglieder über den Bot Ränge erhalten, erscheint hier ihre Verteilung.",
+      "rank": "Rang {n}",
+      "memberCount": "{n, plural, one {# Mitglied} other {# Mitglieder}}"
     },
     "tickets": {
       "emptyTitle": "Noch keine Anfragen",
@@ -274,6 +280,29 @@
       "name": "Name",
       "serverId": "Discord-Server-ID",
       "note": "Name und Bot-Einstellungen werden über Discord geändert. Dashboard-spezifische Einstellungen erscheinen hier, sobald sie benötigt werden."
+    },
+    "overview": {
+      "heading": "Dashboard",
+      "members": "Mitglieder",
+      "openTickets": "Offene Anfragen",
+      "warnings": "Verwarnungen",
+      "afk": "AFK"
+    },
+    "warnings": {
+      "heading": "Verwarnungen",
+      "emptyTitle": "Keine Verwarnungen",
+      "emptyBody": "Sobald Mitglieder über den Bot Verwarnungen erhalten, erscheinen sie hier.",
+      "colMember": "Mitglied",
+      "colWarnings": "Verwarnungen"
+    },
+    "afk": {
+      "heading": "AFK-Liste",
+      "emptyTitle": "Niemand ist AFK",
+      "emptyBody": "Vom Bot als AFK markierte Mitglieder erscheinen hier.",
+      "colMember": "Mitglied",
+      "colReason": "Grund",
+      "colSince": "Seit",
+      "noReason": "Kein Grund angegeben"
     }
   },
   "LanguageSwitcher": {

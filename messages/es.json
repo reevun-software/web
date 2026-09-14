@@ -237,9 +237,12 @@
     "chooseFamilyTitle": "Elige una familia",
     "noBot": "sin bot",
     "nav": {
+      "dashboard": "Panel",
       "members": "Miembros",
-      "ranks": "Rangos y advertencias",
+      "ranks": "Rangos",
+      "warnings": "Advertencias",
       "tickets": "Tickets",
+      "afk": "Lista de AFK",
       "settings": "Ajustes"
     },
     "members": {
@@ -255,8 +258,11 @@
       "afk": "Ausente"
     },
     "ranks": {
-      "title": "Rangos y advertencias",
-      "body": "Aquí aparecerán la cadena de rangos y el registro de advertencias en cuanto los miembros empiecen a recibirlos a través del bot."
+      "heading": "Rangos",
+      "emptyTitle": "Aún no hay rangos",
+      "emptyBody": "En cuanto los miembros empiecen a recibir rangos a través del bot, su distribución aparecerá aquí.",
+      "rank": "Rango {n}",
+      "memberCount": "{n, plural, one {# miembro} other {# miembros}}"
     },
     "tickets": {
       "emptyTitle": "Todavía no hay tickets",
@@ -274,6 +280,29 @@
       "name": "Nombre",
       "serverId": "ID del servidor de Discord",
       "note": "El nombre y los parámetros del bot se cambian desde Discord. Aquí aparecerán los ajustes específicos del panel cuando sean necesarios."
+    },
+    "overview": {
+      "heading": "Panel",
+      "members": "Miembros",
+      "openTickets": "Tickets abiertos",
+      "warnings": "Advertencias",
+      "afk": "En AFK"
+    },
+    "warnings": {
+      "heading": "Advertencias",
+      "emptyTitle": "Sin advertencias",
+      "emptyBody": "En cuanto los miembros empiecen a recibir advertencias a través del bot, aparecerán aquí.",
+      "colMember": "Miembro",
+      "colWarnings": "Advertencias"
+    },
+    "afk": {
+      "heading": "Lista de AFK",
+      "emptyTitle": "Nadie está AFK",
+      "emptyBody": "Los miembros marcados como AFK por el bot aparecerán aquí.",
+      "colMember": "Miembro",
+      "colReason": "Motivo",
+      "colSince": "Desde",
+      "noReason": "Sin motivo especificado"
     }
   },
   "LanguageSwitcher": {

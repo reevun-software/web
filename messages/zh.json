@@ -237,9 +237,12 @@
     "chooseFamilyTitle": "选择一个家族",
     "noBot": "未安装机器人",
     "nav": {
+      "dashboard": "仪表盘",
       "members": "成员",
-      "ranks": "军衔与警告",
+      "ranks": "军衔",
+      "warnings": "警告",
       "tickets": "工单",
+      "afk": "AFK 列表",
       "settings": "设置"
     },
     "members": {
@@ -255,8 +258,11 @@
       "afk": "AFK"
     },
     "ranks": {
-      "title": "军衔与警告",
-      "body": "一旦成员开始通过机器人获得军衔和警告，军衔链和警告日志就会显示在这里。"
+      "heading": "军衔",
+      "emptyTitle": "暂无军衔",
+      "emptyBody": "一旦成员通过机器人获得军衔，其分布将显示在此处。",
+      "rank": "军衔 {n}",
+      "memberCount": "{n, plural, other {# 名成员}}"
     },
     "tickets": {
       "emptyTitle": "暂时还没有工单",
@@ -274,6 +280,29 @@
       "name": "名称",
       "serverId": "Discord 服务器 ID",
       "note": "机器人的名称和参数需通过 Discord 修改。面板专属设置会在需要时出现在这里。"
+    },
+    "overview": {
+      "heading": "仪表盘",
+      "members": "成员",
+      "openTickets": "待处理工单",
+      "warnings": "警告",
+      "afk": "AFK 中"
+    },
+    "warnings": {
+      "heading": "警告",
+      "emptyTitle": "暂无警告",
+      "emptyBody": "一旦成员通过机器人收到警告，将显示在此处。",
+      "colMember": "成员",
+      "colWarnings": "警告"
+    },
+    "afk": {
+      "heading": "AFK 列表",
+      "emptyTitle": "当前没有人处于 AFK 状态",
+      "emptyBody": "被机器人标记为 AFK 的成员将显示在此处。",
+      "colMember": "成员",
+      "colReason": "原因",
+      "colSince": "开始时间",
+      "noReason": "未说明原因"
     }
   },
   "LanguageSwitcher": {
