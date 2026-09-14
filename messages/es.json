@@ -336,5 +336,14 @@
         "body": "Podemos actualizar esta página a medida que cambien las tecnologías que utilizamos. La versión vigente siempre está disponible aquí."
       }
     ]
+  },
+  "Settings": {
+    "metaTitle": "Ajustes — Reevun",
+    "heading": "Ajustes",
+    "profileTitle": "Perfil",
+    "profileNote": "Los datos de tu perfil se sincronizan con Discord y no se pueden editar aquí.",
+    "languageTitle": "Idioma de la interfaz",
+    "accountTitle": "Cuenta",
+    "revokeAccess": "Gestionar acceso de Discord"
   }
 }

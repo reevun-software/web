@@ -336,5 +336,14 @@
         "body": "Wir können diese Seite aktualisieren, wenn sich die von uns verwendeten Technologien ändern. Die aktuelle Version ist immer hier verfügbar."
       }
     ]
+  },
+  "Settings": {
+    "metaTitle": "Einstellungen — Reevun",
+    "heading": "Einstellungen",
+    "profileTitle": "Profil",
+    "profileNote": "Deine Profildaten werden mit Discord synchronisiert und können hier nicht bearbeitet werden.",
+    "languageTitle": "Sprache der Oberfläche",
+    "accountTitle": "Konto",
+    "revokeAccess": "Discord-Zugriff verwalten"
   }
 }

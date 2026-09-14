@@ -336,5 +336,14 @@
         "body": "随着我们所使用技术的变化，本页面可能会更新。最新版本始终发布于此。"
       }
     ]
+  },
+  "Settings": {
+    "metaTitle": "设置 — Reevun",
+    "heading": "设置",
+    "profileTitle": "个人资料",
+    "profileNote": "您的个人资料数据与 Discord 同步，无法在此处编辑。",
+    "languageTitle": "界面语言",
+    "accountTitle": "账号",
+    "revokeAccess": "管理 Discord 访问权限"
   }
 }

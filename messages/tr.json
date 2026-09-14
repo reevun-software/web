@@ -336,5 +336,14 @@
         "body": "Kullandığımız teknolojiler değiştikçe bu sayfayı güncelleyebiliriz. Güncel sürüm her zaman burada bulunur."
       }
     ]
+  },
+  "Settings": {
+    "metaTitle": "Ayarlar — Reevun",
+    "heading": "Ayarlar",
+    "profileTitle": "Profil",
+    "profileNote": "Profil bilgileriniz Discord ile senkronize edilir ve burada düzenlenemez.",
+    "languageTitle": "Arayüz dili",
+    "accountTitle": "Hesap",
+    "revokeAccess": "Discord erişimini yönet"
   }
 }

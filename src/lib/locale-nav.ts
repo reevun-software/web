@@ -1,4 +1,6 @@
-import { getPathname } from "@/i18n/navigation";
+import { useRouter as useNextRouter, useParams } from "next/navigation";
+import { useLocale } from "next-intl";
+import { usePathname, getPathname } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 
 // Mirrors next-intl's own cookie sync (not exported publicly) - needed
@@ -43,4 +45,29 @@ export function localeHref(
     href: { pathname, params },
     locale,
   });
+}
+
+// Shared by every place that lets a signed-in-or-not visitor pick a locale
+// (the account menu's submenu, the personal settings page) so the
+// prefetch/cookie/redirect fixes above only ever live in one place.
+export function useLocaleSwitcher() {
+  const locale = useLocale() as Locale;
+  const nextRouter = useNextRouter();
+  const pathname = usePathname();
+  const params = useParams();
+
+  function hrefFor(l: Locale) {
+    return localeHref(pathname, params, l);
+  }
+
+  return {
+    locale,
+    switchTo(l: Locale) {
+      syncLocaleCookie(l);
+      nextRouter.replace(hrefFor(l));
+    },
+    prefetch(l: Locale) {
+      if (shouldPrefetchLocale(l)) nextRouter.prefetch(hrefFor(l));
+    },
+  };
 }

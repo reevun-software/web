@@ -29,18 +29,25 @@ export async function SiteHeader() {
           <span className="text-lg font-semibold tracking-tight">Reevun</span>
         </Link>
         <div className="flex items-center gap-2">
-          <LanguageSwitcher />
           {session?.user ? (
+            // Once signed in, the language picker moves into the account
+            // menu (it already needs a place for the rest of the profile
+            // settings) instead of sitting next to the avatar as its own
+            // control. Signed-out visitors have no account menu yet, so they
+            // still get the standalone switcher.
             <AccountMenu
               name={session.user.name}
               image={session.user.image}
               username={session.discordUsername}
             />
           ) : (
-            <DiscordSignInButton size="sm" className="btn-glass">
-              <LogIn className="size-4" />
-              {t("Header.signIn")}
-            </DiscordSignInButton>
+            <>
+              <LanguageSwitcher />
+              <DiscordSignInButton size="sm" className="btn-glass">
+                <LogIn className="size-4" />
+                {t("Header.signIn")}
+              </DiscordSignInButton>
+            </>
           )}
         </div>
       </div>

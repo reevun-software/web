@@ -1,4 +1,4 @@
-import { LayoutDashboard, LogOut, LifeBuoy } from "lucide-react";
+import { LayoutDashboard, Settings, LogOut, LifeBuoy } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { signOut } from "@/lib/auth";
@@ -58,6 +58,10 @@ export async function AccountMenu({
         <DropdownMenuItem render={<Link href="/dashboard" />} className="cursor-pointer">
           <LayoutDashboard className="size-4" strokeWidth={1.5} />
           {t("dashboardAria")}
+        </DropdownMenuItem>
+        <DropdownMenuItem render={<Link href="/settings" />} className="cursor-pointer">
+          <Settings className="size-4" strokeWidth={1.5} />
+          {tRoot("Settings.heading")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <LanguageSubmenu />

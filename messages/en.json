@@ -336,5 +336,14 @@
         "body": "We may update this page as the technology we use changes. The current version is always available here."
       }
     ]
+  },
+  "Settings": {
+    "metaTitle": "Settings — Reevun",
+    "heading": "Settings",
+    "profileTitle": "Profile",
+    "profileNote": "Your profile data is synced from Discord and can't be edited here.",
+    "languageTitle": "Interface language",
+    "accountTitle": "Account",
+    "revokeAccess": "Manage Discord access"
   }
 }
