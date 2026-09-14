@@ -243,7 +243,8 @@
       "warnings": "Uyarılar",
       "tickets": "Talepler",
       "afk": "AFK Listesi",
-      "settings": "Ayarlar"
+      "settings": "Ayarlar",
+      "monitoring": "Çevrimiçi İzleme"
     },
     "members": {
       "emptyTitle": "Henüz üye yok",
@@ -286,7 +287,13 @@
       "members": "Üyeler",
       "openTickets": "Açık talepler",
       "warnings": "Uyarılar",
-      "afk": "AFK"
+      "afk": "AFK",
+      "recentTickets": "Son talepler",
+      "noTickets": "Henüz talep yok",
+      "ticketOpen": "açık",
+      "ticketClosed": "kapalı",
+      "topWarned": "En çok uyarı alanlar",
+      "noWarnings": "Henüz uyarı yok"
     },
     "warnings": {
       "heading": "Uyarılar",
@@ -303,6 +310,14 @@
       "colReason": "Sebep",
       "colSince": "Ne zamandan beri",
       "noReason": "Sebep belirtilmedi"
+    },
+    "monitoring": {
+      "heading": "Çevrimiçi İzleme",
+      "current": "Şu anda çevrimiçi",
+      "peakToday": "Bugünkü zirve",
+      "peakAllTime": "Tüm zamanların zirvesi",
+      "unavailable": "Veriler alınamadı. Lütfen sayfayı daha sonra yenileyin.",
+      "russiaOnlineName": "Rusya Online"
     }
   },
   "LanguageSwitcher": {

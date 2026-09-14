@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import {
   LayoutDashboard,
+  Activity,
   Users,
   ShieldCheck,
   ShieldAlert,
@@ -39,7 +40,10 @@ export function DashboardSidebar({
   // Groups render with a divider between them: overview, then day-to-day
   // family management, then account-level stuff pinned toward the bottom.
   const navGroups = [
-    [{ label: t("nav.dashboard"), icon: LayoutDashboard, segment: "" }],
+    [
+      { label: t("nav.dashboard"), icon: LayoutDashboard, segment: "" },
+      { label: t("nav.monitoring"), icon: Activity, segment: "monitoring" },
+    ],
     [
       { label: t("nav.members"), icon: Users, segment: "members" },
       { label: t("nav.ranks"), icon: ShieldCheck, segment: "ranks" },

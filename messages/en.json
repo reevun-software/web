@@ -243,7 +243,8 @@
       "warnings": "Warnings",
       "tickets": "Tickets",
       "afk": "AFK list",
-      "settings": "Settings"
+      "settings": "Settings",
+      "monitoring": "Online Monitoring"
     },
     "members": {
       "emptyTitle": "No members yet",
@@ -286,7 +287,13 @@
       "members": "Members",
       "openTickets": "Open tickets",
       "warnings": "Warnings",
-      "afk": "AFK"
+      "afk": "AFK",
+      "recentTickets": "Recent tickets",
+      "noTickets": "No tickets yet",
+      "ticketOpen": "open",
+      "ticketClosed": "closed",
+      "topWarned": "Most warned",
+      "noWarnings": "No warnings yet"
     },
     "warnings": {
       "heading": "Warnings",
@@ -303,6 +310,14 @@
       "colReason": "Reason",
       "colSince": "Since",
       "noReason": "No reason given"
+    },
+    "monitoring": {
+      "heading": "Online Monitoring",
+      "current": "Currently online",
+      "peakToday": "Peak today",
+      "peakAllTime": "All-time peak",
+      "unavailable": "Couldn't fetch this data. Try refreshing the page later.",
+      "russiaOnlineName": "Russia Online"
     }
   },
   "LanguageSwitcher": {

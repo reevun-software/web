@@ -243,7 +243,8 @@
       "warnings": "Предупреждения",
       "tickets": "Обращения",
       "afk": "AFK-лист",
-      "settings": "Настройки"
+      "settings": "Настройки",
+      "monitoring": "Мониторинг онлайна"
     },
     "members": {
       "emptyTitle": "Пока нет участников",
@@ -286,7 +287,13 @@
       "members": "Участники",
       "openTickets": "Открытые обращения",
       "warnings": "Предупреждения",
-      "afk": "На AFK"
+      "afk": "На AFK",
+      "recentTickets": "Последние обращения",
+      "noTickets": "Пока нет обращений",
+      "ticketOpen": "открыт",
+      "ticketClosed": "закрыт",
+      "topWarned": "Больше всего предупреждений",
+      "noWarnings": "Пока нет предупреждений"
     },
     "warnings": {
       "heading": "Предупреждения",
@@ -303,6 +310,14 @@
       "colReason": "Причина",
       "colSince": "С какого времени",
       "noReason": "Без причины"
+    },
+    "monitoring": {
+      "heading": "Мониторинг онлайна",
+      "current": "Сейчас онлайн",
+      "peakToday": "Пик за сегодня",
+      "peakAllTime": "Пик за всё время",
+      "unavailable": "Не удалось получить данные. Попробуйте обновить страницу позже.",
+      "russiaOnlineName": "Россия Онлайн"
     }
   },
   "LanguageSwitcher": {

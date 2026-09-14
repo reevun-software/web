@@ -243,7 +243,8 @@
       "warnings": "警告",
       "tickets": "工单",
       "afk": "AFK 列表",
-      "settings": "设置"
+      "settings": "设置",
+      "monitoring": "在线监控"
     },
     "members": {
       "emptyTitle": "暂时还没有成员",
@@ -286,7 +287,13 @@
       "members": "成员",
       "openTickets": "待处理工单",
       "warnings": "警告",
-      "afk": "AFK 中"
+      "afk": "AFK 中",
+      "recentTickets": "最近的工单",
+      "noTickets": "暂无工单",
+      "ticketOpen": "进行中",
+      "ticketClosed": "已关闭",
+      "topWarned": "警告最多",
+      "noWarnings": "暂无警告"
     },
     "warnings": {
       "heading": "警告",
@@ -303,6 +310,14 @@
       "colReason": "原因",
       "colSince": "开始时间",
       "noReason": "未说明原因"
+    },
+    "monitoring": {
+      "heading": "在线监控",
+      "current": "当前在线",
+      "peakToday": "今日峰值",
+      "peakAllTime": "历史峰值",
+      "unavailable": "无法获取数据，请稍后刷新页面重试。",
+      "russiaOnlineName": "俄罗斯在线"
     }
   },
   "LanguageSwitcher": {

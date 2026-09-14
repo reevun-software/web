@@ -243,7 +243,8 @@
       "warnings": "Advertencias",
       "tickets": "Tickets",
       "afk": "Lista de AFK",
-      "settings": "Ajustes"
+      "settings": "Ajustes",
+      "monitoring": "Monitoreo en línea"
     },
     "members": {
       "emptyTitle": "Todavía no hay miembros",
@@ -286,7 +287,13 @@
       "members": "Miembros",
       "openTickets": "Tickets abiertos",
       "warnings": "Advertencias",
-      "afk": "En AFK"
+      "afk": "En AFK",
+      "recentTickets": "Tickets recientes",
+      "noTickets": "Aún no hay tickets",
+      "ticketOpen": "abierto",
+      "ticketClosed": "cerrado",
+      "topWarned": "Con más advertencias",
+      "noWarnings": "Aún no hay advertencias"
     },
     "warnings": {
       "heading": "Advertencias",
@@ -303,6 +310,14 @@
       "colReason": "Motivo",
       "colSince": "Desde",
       "noReason": "Sin motivo especificado"
+    },
+    "monitoring": {
+      "heading": "Monitoreo en línea",
+      "current": "En línea ahora",
+      "peakToday": "Pico de hoy",
+      "peakAllTime": "Pico histórico",
+      "unavailable": "No se pudieron obtener los datos. Intenta actualizar la página más tarde.",
+      "russiaOnlineName": "Rusia Online"
     }
   },
   "LanguageSwitcher": {

@@ -243,7 +243,8 @@
       "warnings": "Verwarnungen",
       "tickets": "Anfragen",
       "afk": "AFK-Liste",
-      "settings": "Einstellungen"
+      "settings": "Einstellungen",
+      "monitoring": "Online-Monitoring"
     },
     "members": {
       "emptyTitle": "Noch keine Mitglieder",
@@ -286,7 +287,13 @@
       "members": "Mitglieder",
       "openTickets": "Offene Anfragen",
       "warnings": "Verwarnungen",
-      "afk": "AFK"
+      "afk": "AFK",
+      "recentTickets": "Neueste Anfragen",
+      "noTickets": "Noch keine Anfragen",
+      "ticketOpen": "offen",
+      "ticketClosed": "geschlossen",
+      "topWarned": "Meiste Verwarnungen",
+      "noWarnings": "Noch keine Verwarnungen"
     },
     "warnings": {
       "heading": "Verwarnungen",
@@ -303,6 +310,14 @@
       "colReason": "Grund",
       "colSince": "Seit",
       "noReason": "Kein Grund angegeben"
+    },
+    "monitoring": {
+      "heading": "Online-Monitoring",
+      "current": "Aktuell online",
+      "peakToday": "Höchststand heute",
+      "peakAllTime": "Höchststand insgesamt",
+      "unavailable": "Daten konnten nicht abgerufen werden. Bitte die Seite später neu laden.",
+      "russiaOnlineName": "Russland Online"
     }
   },
   "LanguageSwitcher": {
