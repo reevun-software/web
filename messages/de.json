@@ -7,7 +7,10 @@
     "signIn": "Mit Discord anmelden",
     "dashboardAria": "Meine Server",
     "accountMenu": "Kontomenü",
-    "signOut": "Abmelden"
+    "signOut": "Abmelden",
+    "supportDiscord": "Discord",
+    "supportChat": "Live-Chat",
+    "supportEmail": "E-Mail"
   },
   "Hero": {
     "title": "Verwalte deine Discord-Community",
@@ -439,7 +442,9 @@
         "ignoredChannelsHint": "Gilt nie in diesen Kanälen",
         "addChannel": "Kanal hinzufügen",
         "channelsUnavailable": "Die Kanäle des Servers konnten nicht geladen werden. Stelle sicher, dass der Reevun-Bot diesem Server hinzugefügt wurde."
-      }
+      },
+      "muteModeHint": "Discord-Timeout schaltet ohne zusätzliche Rolle stumm. „Rolle vergeben“ nutzt eine von dir eingerichtete Mute-Rolle. „Beides“ macht beides gleichzeitig.",
+      "muteRoleIdHint": "Die Rolle, die der Bot beim Stummschalten vergibt und wieder entfernt."
     }
   },
   "LanguageSwitcher": {

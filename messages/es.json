@@ -7,7 +7,10 @@
     "signIn": "Iniciar sesión con Discord",
     "dashboardAria": "Mis servidores",
     "accountMenu": "Menú de la cuenta",
-    "signOut": "Cerrar sesión"
+    "signOut": "Cerrar sesión",
+    "supportDiscord": "Discord",
+    "supportChat": "Chat en vivo",
+    "supportEmail": "Correo"
   },
   "Hero": {
     "title": "Gestiona tu comunidad de Discord",
@@ -439,7 +442,9 @@
         "ignoredChannelsHint": "Nunca se aplica en estos canales",
         "addChannel": "Añadir canal",
         "channelsUnavailable": "No se pudieron obtener los canales del servidor. Asegúrate de que el bot Reevun se haya añadido a este servidor."
-      }
+      },
+      "muteModeHint": "El tiempo de espera de Discord silencia sin necesitar un rol adicional. \"Asignar rol\" aplica un rol de silencio que hayas configurado. \"Ambos\" hace las dos cosas a la vez.",
+      "muteRoleIdHint": "El rol que el bot asigna y retira al silenciar a un miembro."
     }
   },
   "LanguageSwitcher": {

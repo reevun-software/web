@@ -7,7 +7,10 @@
     "signIn": "使用 Discord 登录",
     "dashboardAria": "我的服务器",
     "accountMenu": "账号菜单",
-    "signOut": "退出登录"
+    "signOut": "退出登录",
+    "supportDiscord": "Discord",
+    "supportChat": "在线聊天",
+    "supportEmail": "邮箱"
   },
   "Hero": {
     "title": "在一个面板里管理你的 Discord 社区",
@@ -439,7 +442,9 @@
         "ignoredChannelsHint": "在这些频道中永不生效",
         "addChannel": "添加频道",
         "channelsUnavailable": "无法获取服务器频道。请确认 Reevun 机器人已添加到此服务器。"
-      }
+      },
+      "muteModeHint": "Discord 超时无需额外身份组即可禁言。「授予身份组」会应用你设置的禁言身份组。「两者都」会同时执行两种操作。",
+      "muteRoleIdHint": "机器人在禁言成员时会授予并在解除时移除的身份组。"
     }
   },
   "LanguageSwitcher": {

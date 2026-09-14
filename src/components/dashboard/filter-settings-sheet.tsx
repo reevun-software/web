@@ -81,9 +81,13 @@ export function FilterSettingsSheet({
       >
         <Settings2 className="size-4" />
       </SheetTrigger>
-      <SheetContent className="flex flex-col gap-0 overflow-y-auto p-0">
-        <form action={handleSubmit} className="flex flex-1 flex-col gap-6 overflow-y-auto p-4">
-          <SheetHeader className="p-0">
+      {/* Juniper opens this as effectively its own full-width screen, not a
+          narrow side panel - overriding the Sheet's default w-3/4/max-w-sm
+          to fill the viewport matches that instead of feeling like a
+          cramped drawer bolted onto a much bigger form. */}
+      <SheetContent className="flex flex-col gap-0 overflow-y-auto p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-none">
+        <form action={handleSubmit} className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 overflow-y-auto p-6">
+          <SheetHeader className="sticky top-0 z-10 -mx-6 border-b border-border/60 bg-popover px-6 py-4">
             <SheetTitle>{filterLabel}</SheetTitle>
           </SheetHeader>
 

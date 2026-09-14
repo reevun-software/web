@@ -229,10 +229,12 @@ export default async function SecurityPage({
             botRolePosition={botRolePosition}
             labels={{
               muteMode: t("muteMode"),
+              muteModeHint: t("muteModeHint"),
               muteModeTimeout: t("muteModeTimeout"),
               muteModeRole: t("muteModeRole"),
               muteModeBoth: t("muteModeBoth"),
               muteRoleId: t("muteRoleId"),
+              muteRoleIdHint: t("muteRoleIdHint"),
               muteRoleIdPlaceholder: t("muteRoleIdPlaceholder"),
               rolesUnavailable: t("rolesUnavailable"),
               hierarchyWarning: t("hierarchyWarning"),

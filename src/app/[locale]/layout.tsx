@@ -6,9 +6,6 @@ import { getMessages, getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
-import { IntercomWidget } from "@/components/intercom-widget";
-import { auth } from "@/lib/auth";
-import { signIntercomJwt } from "@/lib/intercom";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -41,8 +38,6 @@ export default async function RootLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
 
   const messages = await getMessages();
-  const session = await auth();
-  const intercomJwt = session?.discordId ? signIntercomJwt({ user_id: session.discordId }) : null;
 
   return (
     <html
@@ -54,11 +49,6 @@ export default async function RootLayout({
           <TooltipProvider>
             {children}
             <Toaster position="top-center" />
-            <IntercomWidget
-              userId={session?.discordId}
-              name={session?.discordUsername}
-              userJwt={intercomJwt ?? undefined}
-            />
           </TooltipProvider>
         </NextIntlClientProvider>
       </body>

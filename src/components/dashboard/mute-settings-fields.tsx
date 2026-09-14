@@ -24,10 +24,12 @@ export function MuteSettingsFields({
   botRolePosition: number;
   labels: {
     muteMode: string;
+    muteModeHint: string;
     muteModeTimeout: string;
     muteModeRole: string;
     muteModeBoth: string;
     muteRoleId: string;
+    muteRoleIdHint: string;
     muteRoleIdPlaceholder: string;
     rolesUnavailable: string;
     hierarchyWarning: string;
@@ -50,6 +52,7 @@ export function MuteSettingsFields({
             <SelectItem value="both">{labels.muteModeBoth}</SelectItem>
           </SelectContent>
         </Select>
+        <p className="text-xs text-muted-foreground">{labels.muteModeHint}</p>
       </div>
       {showRoleField && (
         <div className="flex flex-col gap-1.5 animate-in fade-in slide-in-from-top-1 duration-150 ease-out">
@@ -63,6 +66,7 @@ export function MuteSettingsFields({
             placeholder={labels.muteRoleIdPlaceholder}
             emptyLabel={labels.rolesUnavailable}
           />
+          <p className="text-xs text-muted-foreground">{labels.muteRoleIdHint}</p>
         </div>
       )}
     </>

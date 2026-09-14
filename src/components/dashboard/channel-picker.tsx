@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { DiscordChannel } from "@/lib/discord-guild";
@@ -36,10 +36,13 @@ export function ChannelPicker({
   const selected = selectedIds
     .map((id) => channels.find((c) => c.id === id))
     .filter((c): c is DiscordChannel => !!c);
-  const available = channels.filter((c) => !selectedIds.includes(c.id));
 
   if (channels.length === 0) {
     return <p className="text-sm text-muted-foreground">{emptyLabel}</p>;
+  }
+
+  function toggle(channelId: string, checked: boolean) {
+    setSelectedIds((ids) => (checked ? [...ids, channelId] : ids.filter((id) => id !== channelId)));
   }
 
   return (
@@ -54,7 +57,7 @@ export function ChannelPicker({
           {channel.name}
           <button
             type="button"
-            onClick={() => setSelectedIds((ids) => ids.filter((id) => id !== channel.id))}
+            onClick={() => toggle(channel.id, false)}
             className="cursor-pointer rounded p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             <X className="size-3" />
@@ -62,30 +65,32 @@ export function ChannelPicker({
         </span>
       ))}
 
-      {available.length > 0 && (
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button variant="outline" size="sm" className="cursor-pointer gap-1">
-                <Plus className="size-3.5" />
-                {addLabel}
-              </Button>
-            }
-          />
-          <DropdownMenuContent align="start" className="max-h-64 w-56">
-            {available.map((channel) => (
-              <DropdownMenuItem
-                key={channel.id}
-                className="cursor-pointer"
-                onClick={() => setSelectedIds((ids) => [...ids, channel.id])}
-              >
-                <ChannelTypeIcon type={channel.type} />
-                {channel.name}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
+      {/* Checklist that stays open across multiple toggles - see RolePicker
+          for why a click-to-add item that closes the menu each time reads
+          as broken (only one selectable). */}
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          render={
+            <Button variant="outline" size="sm" className="cursor-pointer gap-1">
+              <Plus className="size-3.5" />
+              {addLabel}
+            </Button>
+          }
+        />
+        <DropdownMenuContent align="start" className="max-h-64 w-56">
+          {channels.map((channel) => (
+            <DropdownMenuCheckboxItem
+              key={channel.id}
+              className="cursor-pointer"
+              checked={selectedIds.includes(channel.id)}
+              onCheckedChange={(checked) => toggle(channel.id, checked === true)}
+            >
+              <ChannelTypeIcon type={channel.type} />
+              {channel.name}
+            </DropdownMenuCheckboxItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

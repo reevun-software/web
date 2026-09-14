@@ -7,7 +7,10 @@
     "signIn": "Sign in with Discord",
     "dashboardAria": "My servers",
     "accountMenu": "Account menu",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "supportDiscord": "Discord",
+    "supportChat": "Live chat",
+    "supportEmail": "Email"
   },
   "Hero": {
     "title": "Run your Discord community",
@@ -439,7 +442,9 @@
         "ignoredChannelsHint": "Never applies in these channels",
         "addChannel": "Add channel",
         "channelsUnavailable": "Couldn't load the server's channels. Make sure the Reevun bot has been added to this server."
-      }
+      },
+      "muteModeHint": "Discord timeout mutes without needing a role. \"Assign a role\" applies a mute role you've set up. \"Both\" does both at once.",
+      "muteRoleIdHint": "The role the bot assigns and removes when muting a member."
     }
   },
   "LanguageSwitcher": {

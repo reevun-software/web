@@ -7,7 +7,10 @@
     "signIn": "Discord ile giriş yap",
     "dashboardAria": "Sunucularım",
     "accountMenu": "Hesap menüsü",
-    "signOut": "Çıkış yap"
+    "signOut": "Çıkış yap",
+    "supportDiscord": "Discord",
+    "supportChat": "Canlı sohbet",
+    "supportEmail": "E-posta"
   },
   "Hero": {
     "title": "Discord topluluğunu tek panelden yönet",
@@ -439,7 +442,9 @@
         "ignoredChannelsHint": "Bu kanallarda asla uygulanmaz",
         "addChannel": "Kanal ekle",
         "channelsUnavailable": "Sunucunun kanalları alınamadı. Reevun botunun bu sunucuya eklendiğinden emin olun."
-      }
+      },
+      "muteModeHint": "Discord zaman aşımı, ek bir role gerek kalmadan susturur. \"Rol ver\" senin oluşturduğun susturma rolünü uygular. \"İkisi de\" ikisini birden yapar.",
+      "muteRoleIdHint": "Botun bir üyeyi susturduğunda vereceği ve kaldıracağı rol."
     }
   },
   "LanguageSwitcher": {

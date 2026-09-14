@@ -1,10 +1,11 @@
-import { LayoutDashboard, Settings, LifeBuoy } from "lucide-react";
+import { LayoutDashboard, Settings } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { signOut } from "@/lib/auth";
-import { SUPPORT_DISCORD_URL } from "@/lib/discord";
+import { signIntercomJwt } from "@/lib/intercom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LanguageSubmenu } from "@/components/language-submenu";
+import { SupportSubmenu } from "@/components/support-submenu";
 import { SignOutMenuItem } from "@/components/sign-out-menu-item";
 import {
   DropdownMenu,
@@ -18,13 +19,16 @@ export async function AccountMenu({
   name,
   image,
   username,
+  discordId,
 }: {
   name: string | null | undefined;
   image: string | null | undefined;
   username?: string | null | undefined;
+  discordId?: string;
 }) {
   const [t, tRoot] = await Promise.all([getTranslations("Header"), getTranslations()]);
   const initial = name?.[0] ?? "?";
+  const intercomJwt = discordId ? signIntercomJwt({ user_id: discordId }) : null;
 
   return (
     <DropdownMenu>
@@ -66,13 +70,14 @@ export async function AccountMenu({
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <LanguageSubmenu />
-        <DropdownMenuItem
-          render={<Link href={SUPPORT_DISCORD_URL} target="_blank" rel="noopener noreferrer" />}
-          className="cursor-pointer"
-        >
-          <LifeBuoy className="size-4" strokeWidth={1.5} />
-          {tRoot("Footer.support")}
-        </DropdownMenuItem>
+        <SupportSubmenu
+          label={tRoot("Footer.support")}
+          discordLabel={t("supportDiscord")}
+          chatLabel={t("supportChat")}
+          userId={discordId}
+          name={name ?? undefined}
+          userJwt={intercomJwt ?? undefined}
+        />
         <DropdownMenuSeparator />
         <SignOutMenuItem
           label={t("signOut")}

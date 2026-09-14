@@ -34,6 +34,7 @@ export default async function GuildLayout({
             name={session.user?.name}
             image={session.user?.image}
             username={session.discordUsername}
+            discordId={session.discordId}
           />
         </header>
         <main className="flex-1 p-6">{children}</main>

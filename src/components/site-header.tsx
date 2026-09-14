@@ -39,6 +39,7 @@ export async function SiteHeader() {
               name={session.user.name}
               image={session.user.image}
               username={session.discordUsername}
+              discordId={session.discordId}
             />
           ) : (
             <>
