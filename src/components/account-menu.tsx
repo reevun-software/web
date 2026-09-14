@@ -1,8 +1,9 @@
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { LayoutDashboard, LogOut, LifeBuoy } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { signOut } from "@/lib/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LanguageSubmenu } from "@/components/language-submenu";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +21,7 @@ export async function AccountMenu({
   image: string | null | undefined;
   username?: string | null | undefined;
 }) {
-  const t = await getTranslations("Header");
+  const [t, tRoot] = await Promise.all([getTranslations("Header"), getTranslations()]);
   const initial = name?.[0] ?? "?";
 
   return (
@@ -56,6 +57,12 @@ export async function AccountMenu({
         <DropdownMenuItem render={<Link href="/dashboard" />} className="cursor-pointer">
           <LayoutDashboard className="size-4" strokeWidth={1.5} />
           {t("dashboardAria")}
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <LanguageSubmenu />
+        <DropdownMenuItem render={<Link href="/" />} className="cursor-pointer">
+          <LifeBuoy className="size-4" strokeWidth={1.5} />
+          {tRoot("Footer.support")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <form
