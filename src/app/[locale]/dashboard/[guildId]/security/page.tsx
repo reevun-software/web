@@ -3,20 +3,15 @@ import { ShieldCheck } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { guildSecuritySettings } from "@/lib/db/schema";
-import { getGuildRoles } from "@/lib/discord-guild";
+import { guildSecuritySettings, automodFilterConfig } from "@/lib/db/schema";
+import { getGuildRoles, getGuildChannels, getBotHighestRolePosition } from "@/lib/discord-guild";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
 import { RolePicker } from "@/components/dashboard/role-picker";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
+import { MuteSettingsFields } from "@/components/dashboard/mute-settings-fields";
+import { SubmitButton } from "@/components/dashboard/submit-button";
+import { FilterSettingsSheet, type FilterConfig } from "@/components/dashboard/filter-settings-sheet";
 
 const AUTOMOD_FILTERS = [
   "filterLinks",
@@ -27,18 +22,35 @@ const AUTOMOD_FILTERS = [
   "filterMentionSpam",
 ] as const;
 
+const DEFAULT_FILTER_CONFIG: FilterConfig = {
+  deleteMessage: true,
+  punishment: "none",
+  strategy: "blocklist",
+  list: [],
+  notifyUser: false,
+  ignoreAdminsAndMods: false,
+  ignoreSlashCommands: false,
+  targetRoleIds: [],
+  ignoredRoleIds: [],
+  targetChannelIds: [],
+  ignoredChannelIds: [],
+};
+
 export default async function SecurityPage({
   params,
 }: PageProps<"/[locale]/dashboard/[guildId]/security">) {
   const { guildId } = await params;
   const t = await getTranslations("Dashboard.security");
-  const [[settings], roles] = await Promise.all([
+  const [[settings], roles, channels, botRolePosition, filterConfigRows] = await Promise.all([
     db
       .select()
       .from(guildSecuritySettings)
       .where(eq(guildSecuritySettings.guildId, guildId))
       .limit(1),
     getGuildRoles(guildId),
+    getGuildChannels(guildId),
+    getBotHighestRolePosition(guildId),
+    db.select().from(automodFilterConfig).where(eq(automodFilterConfig.guildId, guildId)),
   ]);
 
   const current = settings ?? {
@@ -52,6 +64,8 @@ export default async function SecurityPage({
     muteMode: "timeout",
     muteRoleId: null as string | null,
   };
+
+  const filterConfigs = new Map(filterConfigRows.map((row) => [row.filterType, row]));
 
   async function save(formData: FormData) {
     "use server";
@@ -80,6 +94,79 @@ export default async function SecurityPage({
     revalidatePath(`/dashboard/${guildId}/security`);
   }
 
+  async function saveFilterConfig(filterType: string, formData: FormData) {
+    "use server";
+    const list = (formData.get("list") as string | null)
+      ?.split("\n")
+      .map((s) => s.trim())
+      .filter(Boolean) ?? [];
+
+    const values = {
+      guildId,
+      filterType,
+      deleteMessage: formData.get("deleteMessage") === "on",
+      punishment: (formData.get("punishment") as string) || "none",
+      strategy: (formData.get("strategy") as string) || "blocklist",
+      list,
+      notifyUser: formData.get("notifyUser") === "on",
+      ignoreAdminsAndMods: formData.get("ignoreAdminsAndMods") === "on",
+      ignoreSlashCommands: formData.get("ignoreSlashCommands") === "on",
+      targetRoleIds: formData.getAll("targetRoleIds") as string[],
+      ignoredRoleIds: formData.getAll("ignoredRoleIds") as string[],
+      targetChannelIds: formData.getAll("targetChannelIds") as string[],
+      ignoredChannelIds: formData.getAll("ignoredChannelIds") as string[],
+      updatedAt: new Date(),
+    };
+
+    await db
+      .insert(automodFilterConfig)
+      .values(values)
+      .onConflictDoUpdate({
+        target: [automodFilterConfig.guildId, automodFilterConfig.filterType],
+        set: values,
+      });
+    revalidatePath(`/dashboard/${guildId}/security`);
+  }
+
+  const filterSheetLabels = {
+    deleteMessage: t("filterSettings.deleteMessage"),
+    punishment: t("filterSettings.punishment"),
+    punishmentHint: t("filterSettings.punishmentHint"),
+    punishmentNone: t("filterSettings.punishmentNone"),
+    punishmentWarn: t("filterSettings.punishmentWarn"),
+    punishmentMute: t("filterSettings.punishmentMute"),
+    punishmentKick: t("filterSettings.punishmentKick"),
+    punishmentBan: t("filterSettings.punishmentBan"),
+    strategy: t("filterSettings.strategy"),
+    strategyBlocklist: t("filterSettings.strategyBlocklist"),
+    strategyAllowlist: t("filterSettings.strategyAllowlist"),
+    listLinks: t("filterSettings.listLinks"),
+    listBadWords: t("filterSettings.listBadWords"),
+    listHint: t("filterSettings.listHint"),
+    listPlaceholder: t("filterSettings.listPlaceholder"),
+    notifyTitle: t("filterSettings.notifyTitle"),
+    notifyUser: t("filterSettings.notifyUser"),
+    scopeTitle: t("filterSettings.scopeTitle"),
+    ignoreAdminsAndMods: t("filterSettings.ignoreAdminsAndMods"),
+    ignoreSlashCommands: t("filterSettings.ignoreSlashCommands"),
+    targetRoles: t("filterSettings.targetRoles"),
+    targetRolesHint: t("filterSettings.targetRolesHint"),
+    ignoredRoles: t("filterSettings.ignoredRoles"),
+    ignoredRolesHint: t("filterSettings.ignoredRolesHint"),
+    targetChannels: t("filterSettings.targetChannels"),
+    targetChannelsHint: t("filterSettings.targetChannelsHint"),
+    ignoredChannels: t("filterSettings.ignoredChannels"),
+    ignoredChannelsHint: t("filterSettings.ignoredChannelsHint"),
+    addRole: t("addRole"),
+    addChannel: t("filterSettings.addChannel"),
+    rolesUnavailable: t("rolesUnavailable"),
+    channelsUnavailable: t("filterSettings.channelsUnavailable"),
+    hierarchyWarning: t("hierarchyWarning"),
+    save: t("save"),
+    saving: t("saving"),
+    settingsButtonLabel: t("filterSettings.settingsButtonLabel"),
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
@@ -96,6 +183,8 @@ export default async function SecurityPage({
               name="moderatorRoleIds"
               roles={roles}
               defaultSelectedIds={current.moderatorRoleIds}
+              botRolePosition={botRolePosition}
+              hierarchyWarningLabel={t("hierarchyWarning")}
               addLabel={t("addRole")}
               emptyLabel={t("rolesUnavailable")}
             />
@@ -107,61 +196,53 @@ export default async function SecurityPage({
             <span className="text-sm font-medium">{t("automodTitle")}</span>
           </div>
           {AUTOMOD_FILTERS.map((key) => (
-            <label
-              key={key}
-              htmlFor={key}
-              className="flex cursor-pointer items-center justify-between gap-4 px-6 py-3"
-            >
-              <span className="flex flex-col gap-0.5">
+            <div key={key} className="flex items-center justify-between gap-4 px-6 py-3">
+              <label htmlFor={key} className="flex flex-1 cursor-pointer flex-col gap-0.5">
                 <span className="text-sm">{t(`filters.${key}.label`)}</span>
                 <span className="text-xs text-muted-foreground">
                   {t(`filters.${key}.description`)}
                 </span>
-              </span>
-              <Switch id={key} name={key} defaultChecked={current[key]} />
-            </label>
+              </label>
+              <div className="flex items-center gap-1">
+                <FilterSettingsSheet
+                  filterType={key}
+                  filterLabel={t(`filters.${key}.label`)}
+                  config={filterConfigs.get(key) ?? DEFAULT_FILTER_CONFIG}
+                  roles={roles}
+                  channels={channels}
+                  botRolePosition={botRolePosition}
+                  action={saveFilterConfig.bind(null, key)}
+                  labels={filterSheetLabels}
+                />
+                <Switch id={key} name={key} defaultChecked={current[key]} />
+              </div>
+            </div>
           ))}
         </Card>
 
         <Card className="flex flex-col gap-3 p-6">
           <span className="text-sm font-medium">{t("muteTitle")}</span>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="muteMode">{t("muteMode")}</Label>
-            <Select name="muteMode" defaultValue={current.muteMode}>
-              <SelectTrigger id="muteMode" className="w-full sm:w-64">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="timeout">{t("muteModeTimeout")}</SelectItem>
-                <SelectItem value="role">{t("muteModeRole")}</SelectItem>
-                <SelectItem value="both">{t("muteModeBoth")}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="muteRoleId">{t("muteRoleId")}</Label>
-            {roles.length > 0 ? (
-              <Select name="muteRoleId" defaultValue={current.muteRoleId ?? undefined}>
-                <SelectTrigger id="muteRoleId" className="w-full sm:w-64">
-                  <SelectValue placeholder={t("muteRoleIdPlaceholder")} />
-                </SelectTrigger>
-                <SelectContent>
-                  {roles.map((role) => (
-                    <SelectItem key={role.id} value={role.id}>
-                      {role.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            ) : (
-              <p className="text-sm text-muted-foreground">{t("rolesUnavailable")}</p>
-            )}
-          </div>
+          <MuteSettingsFields
+            roles={roles}
+            defaultMuteMode={current.muteMode}
+            defaultMuteRoleId={current.muteRoleId}
+            botRolePosition={botRolePosition}
+            labels={{
+              muteMode: t("muteMode"),
+              muteModeTimeout: t("muteModeTimeout"),
+              muteModeRole: t("muteModeRole"),
+              muteModeBoth: t("muteModeBoth"),
+              muteRoleId: t("muteRoleId"),
+              muteRoleIdPlaceholder: t("muteRoleIdPlaceholder"),
+              rolesUnavailable: t("rolesUnavailable"),
+              hierarchyWarning: t("hierarchyWarning"),
+            }}
+          />
         </Card>
 
-        <Button type="submit" className="w-fit cursor-pointer">
+        <SubmitButton pendingLabel={t("saving")} className="w-fit">
           {t("save")}
-        </Button>
+        </SubmitButton>
       </form>
     </div>
   );

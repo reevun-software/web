@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { X, Plus } from "lucide-react";
+import { X, Plus, TriangleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,16 +22,34 @@ function RoleDot({ color }: { color: string }) {
   );
 }
 
+// Shown next to a role the bot can't actually manage (its own role sits at
+// or below that role in the hierarchy) - matches Discord's own role-list
+// warning so picking one here doesn't silently fail bot-side later.
+export function RoleHierarchyWarning({ label }: { label: string }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger
+        render={<TriangleAlert className="size-3.5 shrink-0 text-amber-500" aria-hidden />}
+      />
+      <TooltipContent>{label}</TooltipContent>
+    </Tooltip>
+  );
+}
+
 export function RolePicker({
   name,
   roles,
   defaultSelectedIds,
+  botRolePosition = 0,
+  hierarchyWarningLabel,
   addLabel,
   emptyLabel,
 }: {
   name: string;
   roles: DiscordRole[];
   defaultSelectedIds: string[];
+  botRolePosition?: number;
+  hierarchyWarningLabel?: string;
   addLabel: string;
   emptyLabel: string;
 }) {
@@ -56,6 +75,9 @@ export function RolePicker({
           <input type="hidden" name={name} value={role.id} />
           <RoleDot color={role.color} />
           {role.name}
+          {role.position >= botRolePosition && hierarchyWarningLabel && (
+            <RoleHierarchyWarning label={hierarchyWarningLabel} />
+          )}
           <button
             type="button"
             onClick={() => setSelectedIds((ids) => ids.filter((id) => id !== role.id))}
@@ -85,6 +107,9 @@ export function RolePicker({
               >
                 <RoleDot color={role.color} />
                 {role.name}
+                {role.position >= botRolePosition && hierarchyWarningLabel && (
+                  <RoleHierarchyWarning label={hierarchyWarningLabel} />
+                )}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>

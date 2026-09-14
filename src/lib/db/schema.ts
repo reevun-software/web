@@ -105,10 +105,9 @@ export const news = pgTable("news", {
   publishedAt: timestamp("published_at").defaultNow().notNull(),
 });
 
-// One row per guild. Discord role/channel IDs are stored as plain text the
-// owner pastes in (Developer Mode -> Copy ID) rather than picked from a live
-// role list - fetching a guild's roles needs the bot's own token, which the
-// site doesn't have yet (only the signed-in user's OAuth token).
+// One row per guild. Role/channel fields hold live Discord IDs picked from
+// the bot's own role/channel list (see src/lib/discord-guild.ts), not
+// hand-pasted.
 export const guildSecuritySettings = pgTable("guild_security_settings", {
   guildId: text("guild_id")
     .primaryKey()
@@ -124,3 +123,31 @@ export const guildSecuritySettings = pgTable("guild_security_settings", {
   muteRoleId: text("mute_role_id"),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+// Per-filter advanced settings, opened via the gear icon next to each
+// automod toggle above. Kept separate from guild_security_settings rather
+// than adding a dozen more columns there - one row per (guild, filter type)
+// that only exists once someone actually opens and saves that filter's
+// settings; a filter with no row here just runs with defaults.
+export const automodFilterConfig = pgTable(
+  "automod_filter_config",
+  {
+    guildId: text("guild_id")
+      .notNull()
+      .references(() => guilds.id, { onDelete: "cascade" }),
+    filterType: text("filter_type").notNull(), // matches an AUTOMOD_FILTERS key, e.g. "filterLinks"
+    deleteMessage: boolean("delete_message").default(true).notNull(),
+    punishment: text("punishment").default("none").notNull(), // "none" | "warn" | "mute" | "kick" | "ban"
+    strategy: text("strategy").default("blocklist").notNull(), // "blocklist" | "allowlist"
+    list: text("list").array().notNull().default([]), // domains/words, only meaningful for list-based filters
+    notifyUser: boolean("notify_user").default(false).notNull(),
+    ignoreAdminsAndMods: boolean("ignore_admins_and_mods").default(false).notNull(),
+    ignoreSlashCommands: boolean("ignore_slash_commands").default(false).notNull(),
+    targetRoleIds: text("target_role_ids").array().notNull().default([]),
+    ignoredRoleIds: text("ignored_role_ids").array().notNull().default([]),
+    targetChannelIds: text("target_channel_ids").array().notNull().default([]),
+    ignoredChannelIds: text("ignored_channel_ids").array().notNull().default([]),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.guildId, t.filterType] })],
+);
