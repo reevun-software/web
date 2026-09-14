@@ -5,6 +5,7 @@ declare module "next-auth" {
   interface Session {
     accessToken?: string;
     discordId?: string;
+    discordUsername?: string;
   }
 }
 
@@ -29,12 +30,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async jwt({ token, account, profile }) {
       if (account) token.accessToken = account.access_token;
-      if (profile) token.discordId = profile.id as string;
+      if (profile) {
+        token.discordId = profile.id as string;
+        token.discordUsername = profile.username as string;
+      }
       return token;
     },
     async session({ session, token }) {
       session.accessToken = token.accessToken as string | undefined;
       session.discordId = token.discordId as string | undefined;
+      session.discordUsername = token.discordUsername as string | undefined;
       return session;
     },
   },

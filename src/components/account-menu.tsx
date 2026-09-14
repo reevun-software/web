@@ -14,9 +14,11 @@ import {
 export async function AccountMenu({
   name,
   image,
+  username,
 }: {
   name: string | null | undefined;
   image: string | null | undefined;
+  username?: string | null | undefined;
 }) {
   const t = await getTranslations("Header");
   const initial = name?.[0] ?? "?";
@@ -38,12 +40,17 @@ export async function AccountMenu({
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-64">
-        <div className="flex items-center gap-3 p-1.5">
-          <Avatar className="size-9">
+        <div className="flex items-center gap-3 p-2">
+          <Avatar className="size-10">
             <AvatarImage src={image ?? undefined} />
             <AvatarFallback className="text-xs">{initial}</AvatarFallback>
           </Avatar>
-          <span className="truncate text-sm font-medium">{name}</span>
+          <div className="flex min-w-0 flex-col">
+            <span className="truncate text-sm font-medium">{name}</span>
+            {username ? (
+              <span className="truncate text-xs text-muted-foreground">@{username}</span>
+            ) : null}
+          </div>
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem render={<Link href="/dashboard" />} className="cursor-pointer">

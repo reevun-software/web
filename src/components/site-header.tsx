@@ -31,7 +31,11 @@ export async function SiteHeader() {
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
           {session?.user ? (
-            <AccountMenu name={session.user.name} image={session.user.image} />
+            <AccountMenu
+              name={session.user.name}
+              image={session.user.image}
+              username={session.discordUsername}
+            />
           ) : (
             <DiscordSignInButton size="sm" className="btn-glass">
               <LogIn className="size-4" />

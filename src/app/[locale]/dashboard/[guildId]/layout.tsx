@@ -1,12 +1,10 @@
 import { notFound } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
-import { auth, signOut } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { getManageableGuilds } from "@/lib/guilds";
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { AccountMenu } from "@/components/account-menu";
 
 export default async function GuildLayout({
   children,
@@ -32,26 +30,11 @@ export default async function GuildLayout({
       />
       <div className="flex flex-1 flex-col">
         <header className="flex h-14 items-center justify-end gap-3 border-b border-border/60 px-6">
-          <Avatar className="size-7">
-            <AvatarFallback className="text-xs">
-              {session.user?.name?.[0] ?? "?"}
-            </AvatarFallback>
-          </Avatar>
-          <form
-            action={async () => {
-              "use server";
-              await signOut();
-            }}
-          >
-            <Button
-              type="submit"
-              variant="ghost"
-              size="icon"
-              className="size-7"
-            >
-              <LogOut className="size-4" strokeWidth={1.5} />
-            </Button>
-          </form>
+          <AccountMenu
+            name={session.user?.name}
+            image={session.user?.image}
+            username={session.discordUsername}
+          />
         </header>
         <main className="flex-1 p-6">{children}</main>
       </div>
