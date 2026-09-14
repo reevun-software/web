@@ -26,6 +26,7 @@ export function OnlineMonitoringTabs({
   current,
   peakToday,
   peakAllTime,
+  peakInRange,
   unavailable,
   historyEmpty,
   rangeLabels,
@@ -34,6 +35,7 @@ export function OnlineMonitoringTabs({
   current: string;
   peakToday: string;
   peakAllTime: string;
+  peakInRange: string;
   unavailable: string;
   historyEmpty: string;
   rangeLabels: Record<(typeof RANGE_OPTIONS)[number], string>;
@@ -98,7 +100,7 @@ export function OnlineMonitoringTabs({
               <div key={s.label} className="flex flex-col gap-1 px-5 py-4">
                 <span className="text-xs text-muted-foreground">{s.label}</span>
                 <span className="text-2xl font-semibold tracking-tight">
-                  {s.value != null ? <OdometerNumber value={s.value} /> : "—"}
+                  {s.value != null ? <OdometerNumber value={s.value} locale={locale} /> : "—"}
                 </span>
               </div>
             ))}
@@ -118,7 +120,13 @@ export function OnlineMonitoringTabs({
                 </Button>
               ))}
             </div>
-            <OnlineHistoryChart points={visibleHistory} emptyLabel={historyEmpty} locale={locale} />
+            <OnlineHistoryChart
+              points={visibleHistory}
+              emptyLabel={historyEmpty}
+              peakLabel={peakInRange}
+              locale={locale}
+              rangeKey={rangeDays}
+            />
           </Card>
 
           <div className="grid grid-cols-1 gap-px overflow-hidden rounded-lg bg-border/60 sm:grid-cols-2 lg:grid-cols-3">
@@ -132,7 +140,7 @@ export function OnlineMonitoringTabs({
                   <span className="truncate">{c.name}</span>
                 </span>
                 <span className="flex shrink-0 items-center gap-2 text-sm text-muted-foreground">
-                  <OdometerNumber value={c.players} />
+                  <OdometerNumber value={c.players} locale={locale} />
                   {c.online !== false && (
                     <span className="size-1.5 shrink-0 rounded-full bg-emerald-500" aria-hidden />
                   )}

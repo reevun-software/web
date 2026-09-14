@@ -326,7 +326,8 @@
       "range1": "1 gün",
       "range7": "7 gün",
       "range30": "30 gün",
-      "range90": "90 gün"
+      "range90": "90 gün",
+      "peakInRange": "Dönem zirvesi"
     },
     "blacklist": {
       "heading": "Kara Liste",

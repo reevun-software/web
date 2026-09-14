@@ -326,7 +326,8 @@
       "range1": "1 天",
       "range7": "7 天",
       "range30": "30 天",
-      "range90": "90 天"
+      "range90": "90 天",
+      "peakInRange": "该时段峰值"
     },
     "blacklist": {
       "heading": "黑名单",

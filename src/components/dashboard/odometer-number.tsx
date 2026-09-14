@@ -25,15 +25,31 @@ function DigitColumn({ digit }: { digit: number }) {
 // every ~60s (see OnlineMonitoringTabs), so a silent value swap read as
 // broken/stale. State-indication motion, not decoration: it's the one signal
 // that the page is actually live.
-export function OdometerNumber({ value, className }: { value: number; className?: string }) {
-  const formatted = value.toLocaleString();
+//
+// `locale` picks the thousands separator (toLocaleString() with no locale
+// falls back to the runtime default, which showed English commas even on
+// the Russian UI) and must match the separator character the digit columns
+// don't cover.
+export function OdometerNumber({
+  value,
+  locale,
+  className,
+}: {
+  value: number;
+  locale: string;
+  className?: string;
+}) {
+  const formatted = value.toLocaleString(locale);
   return (
     <span className={cn("inline-flex tabular-nums", className)}>
       {formatted.split("").map((char, i) =>
         /\d/.test(char) ? (
           <DigitColumn key={i} digit={Number(char)} />
         ) : (
-          <span key={i} className="inline-block">
+          // Matches the digit column's own box (1em tall, align-bottom) so
+          // separators sit on the same baseline instead of floating relative
+          // to the rolling digits.
+          <span key={i} className="inline-block h-[1em] leading-[1em] align-bottom">
             {char}
           </span>
         ),

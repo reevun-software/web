@@ -60,7 +60,7 @@ export default async function MonitoringPage() {
           {
             key: "gta5rp",
             label: "GTA5RP",
-            logo: "https://gta5rp.com/images/logo/main.png",
+            logo: "https://gta5rp.com/favicon/android-icon-192x192.png",
             data: gta5rp,
             history: gta5rpHistory,
           },
@@ -68,6 +68,7 @@ export default async function MonitoringPage() {
         current={t("current")}
         peakToday={t("peakToday")}
         peakAllTime={t("peakAllTime")}
+        peakInRange={t("peakInRange")}
         unavailable={t("unavailable")}
         historyEmpty={t("historyEmpty")}
         rangeLabels={{
