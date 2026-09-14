@@ -11,7 +11,7 @@ import { OdometerNumber } from "@/components/dashboard/odometer-number";
 import type { OnlineProjectData, OnlineHistoryPoint } from "@/lib/online-monitoring";
 
 const LIVE_REFRESH_MS = 60_000;
-const RANGE_OPTIONS = [1, 7, 30, 90] as const;
+const RANGE_OPTIONS = [1, 7, 30, 90, 180, 365] as const;
 
 type Project = {
   key: string;
@@ -94,7 +94,10 @@ export function OnlineMonitoringTabs({
       {!data ? (
         <Card className="p-6 text-sm text-muted-foreground">{unavailable}</Card>
       ) : (
-        <>
+        // Keyed by project so switching tabs (a plain client-side state
+        // flip, not a network fetch - all three projects' data is already
+        // loaded) crossfades instead of snapping between values.
+        <div key={project?.key} className="flex flex-col gap-4 animate-in fade-in duration-200 ease-out">
           <Card className="grid grid-cols-1 divide-y divide-border/60 p-0 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {stats.map((s) => (
               <div key={s.label} className="flex flex-col gap-1 px-5 py-4">
@@ -148,7 +151,7 @@ export function OnlineMonitoringTabs({
               </div>
             ))}
           </div>
-        </>
+        </div>
       )}
     </div>
   );

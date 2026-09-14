@@ -327,7 +327,9 @@
       "range7": "7 Tage",
       "range30": "30 Tage",
       "range90": "90 Tage",
-      "peakInRange": "Höchststand im Zeitraum"
+      "peakInRange": "Höchststand im Zeitraum",
+      "range180": "180 Tage",
+      "range365": "365 Tage"
     },
     "blacklist": {
       "heading": "Schwarze Liste",

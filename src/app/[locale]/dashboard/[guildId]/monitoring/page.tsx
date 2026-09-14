@@ -28,10 +28,10 @@ export default async function MonitoringPage() {
       .map(([project, data]) => recordOnlineSnapshot(project, data!.totalPlayers)),
   );
 
-  // Fetched once at the widest range the UI offers (90 days) - the range
+  // Fetched once at the widest range the UI offers (365 days) - the range
   // buttons in OnlineMonitoringTabs just filter this client-side instead of
   // re-fetching per click.
-  const HISTORY_HOURS = 90 * 24;
+  const HISTORY_HOURS = 365 * 24;
   const [majesticHistory, russiaOnlineHistory, gta5rpHistory] = await Promise.all([
     getOnlineHistory("majestic", HISTORY_HOURS),
     getOnlineHistory("russiaonline", HISTORY_HOURS),
@@ -76,6 +76,8 @@ export default async function MonitoringPage() {
           7: t("range7"),
           30: t("range30"),
           90: t("range90"),
+          180: t("range180"),
+          365: t("range365"),
         }}
       />
     </div>

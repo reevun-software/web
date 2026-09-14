@@ -8,6 +8,17 @@ const HEIGHT = 220;
 const PADDING_Y = 10;
 const GRID_ROWS = 4;
 const X_LABELS = 6;
+const TWO_DAYS_MS = 2 * 24 * 60 * 60 * 1000;
+
+// Rounds a raw span to a "nice" 1/2/5-times-a-power-of-ten step, so the
+// y-axis reads 0/7,500/15,000/... instead of whatever the actual min/max of
+// the data happened to be.
+function niceStep(roughStep: number) {
+  const exponent = Math.floor(Math.log10(roughStep));
+  const fraction = roughStep / 10 ** exponent;
+  const niceFraction = fraction < 1.5 ? 1 : fraction < 3 ? 2 : fraction < 7 ? 5 : 10;
+  return niceFraction * 10 ** exponent;
+}
 
 export function OnlineHistoryChart({
   points,
@@ -35,15 +46,18 @@ export function OnlineHistoryChart({
   }
 
   const values = points.map((p) => p.totalPlayers);
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const peak = max;
-  const range = max - min || 1;
+  const peak = Math.max(...values);
+  const rawMax = peak || 1;
+  // Zero-based, "nice" axis (0 / 7,500 / 15,000 / ...) instead of an axis
+  // tied exactly to the data's own min/max, which produced ugly values like
+  // 28,985 / 28,806 and made the line look arbitrary rather than gridded.
+  const step = niceStep(rawMax / GRID_ROWS);
+  const axisMax = Math.ceil(rawMax / step) * step;
   const usableHeight = HEIGHT - PADDING_Y * 2;
 
   const coords = points.map((p, i) => {
     const x = (i / (points.length - 1)) * WIDTH;
-    const y = PADDING_Y + usableHeight - ((p.totalPlayers - min) / range) * usableHeight;
+    const y = PADDING_Y + usableHeight - (p.totalPlayers / axisMax) * usableHeight;
     return [x, y] as const;
   });
 
@@ -52,19 +66,28 @@ export function OnlineHistoryChart({
   const hovered = hoverIndex != null ? points[hoverIndex] : null;
   const hoveredCoord = hoverIndex != null ? coords[hoverIndex] : null;
 
-  const gridLines = Array.from({ length: GRID_ROWS + 1 }, (_, i) => {
-    const t = i / GRID_ROWS;
-    const y = PADDING_Y + usableHeight * t;
-    const value = Math.round(max - t * (max - min));
+  const rows = Math.round(axisMax / step);
+  const gridLines = Array.from({ length: rows + 1 }, (_, i) => {
+    const value = axisMax - i * step;
+    const y = PADDING_Y + usableHeight * (i / rows);
     return { y, value };
   });
+
+  // Repeating the same date across every tick (all points fall on "14.09")
+  // read as broken - switch to a time-of-day format once the visible span
+  // is short enough that the date alone stops being useful.
+  const spanMs = points[points.length - 1].recordedAt.getTime() - points[0].recordedAt.getTime();
+  const showTime = spanMs < TWO_DAYS_MS;
 
   const xLabels = Array.from({ length: X_LABELS }, (_, i) => {
     const t = i / (X_LABELS - 1);
     const index = Math.round(t * (points.length - 1));
+    const recordedAt = points[index].recordedAt;
     return {
       x: (index / (points.length - 1)) * WIDTH,
-      label: points[index].recordedAt.toLocaleDateString(locale, { day: "2-digit", month: "2-digit" }),
+      label: showTime
+        ? recordedAt.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })
+        : recordedAt.toLocaleDateString(locale, { day: "2-digit", month: "2-digit" }),
     };
   });
 
