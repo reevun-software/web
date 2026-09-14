@@ -4,12 +4,16 @@ import { useTranslations } from "next-intl";
 import {
   LayoutDashboard,
   Activity,
+  Newspaper,
   Users,
   ShieldCheck,
   ShieldAlert,
   Ticket,
   Moon,
+  Ban,
+  Lock,
   Settings,
+  History,
   ChevronsUpDown,
   Check,
 } from "lucide-react";
@@ -43,6 +47,7 @@ export function DashboardSidebar({
     [
       { label: t("nav.dashboard"), icon: LayoutDashboard, segment: "" },
       { label: t("nav.monitoring"), icon: Activity, segment: "monitoring" },
+      { label: t("nav.news"), icon: Newspaper, segment: "news" },
     ],
     [
       { label: t("nav.members"), icon: Users, segment: "members" },
@@ -50,9 +55,14 @@ export function DashboardSidebar({
       { label: t("nav.warnings"), icon: ShieldAlert, segment: "warnings" },
       { label: t("nav.tickets"), icon: Ticket, segment: "tickets" },
       { label: t("nav.afk"), icon: Moon, segment: "afk" },
+      { label: t("nav.blacklist"), icon: Ban, segment: "blacklist" },
     ],
   ];
-  const bottomNav = [{ label: t("nav.settings"), icon: Settings, segment: "settings" }];
+  const bottomNav = [
+    { label: t("nav.security"), icon: Lock, segment: "security" },
+    { label: t("nav.settings"), icon: Settings, segment: "settings" },
+    { label: t("nav.auditLog"), icon: History, segment: "audit-log" },
+  ];
 
   return (
     <aside className="flex min-h-dvh w-64 shrink-0 flex-col border-r border-border/60 bg-card/40">

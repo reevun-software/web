@@ -244,7 +244,11 @@
       "tickets": "Tickets",
       "afk": "AFK list",
       "settings": "Settings",
-      "monitoring": "Online Monitoring"
+      "monitoring": "Online Monitoring",
+      "news": "News",
+      "blacklist": "Blacklist",
+      "security": "Security",
+      "auditLog": "Audit Log"
     },
     "members": {
       "emptyTitle": "No members yet",
@@ -319,6 +323,80 @@
       "unavailable": "Couldn't fetch this data. Try refreshing the page later.",
       "russiaOnlineName": "Russia Online",
       "historyEmpty": "Building history - the chart will appear once more data has accumulated."
+    },
+    "blacklist": {
+      "heading": "Blacklist",
+      "discordId": "Discord ID",
+      "characterName": "Character name",
+      "reason": "Reason",
+      "add": "Add",
+      "emptyTitle": "Blacklist is empty",
+      "emptyBody": "Blocked members will appear here.",
+      "colTarget": "Banned",
+      "colReason": "Reason",
+      "colDate": "Date"
+    },
+    "auditLog": {
+      "heading": "Audit Log",
+      "emptyTitle": "Nothing yet",
+      "emptyBody": "Staff activity will appear here: rank changes, warnings issued and removed, bans.",
+      "colAction": "Action",
+      "colAdmin": "By",
+      "colReason": "Reason",
+      "colDate": "Date",
+      "rankChange": "{target}: rank changed from {oldRank} to {newRank}",
+      "warnIssued": "{target}: warning issued",
+      "warnRemoved": "{target}: warning removed",
+      "banAdded": "{target}: added to blacklist",
+      "banRemoved": "{target}: removed from blacklist",
+      "generic": "{target}: {type}",
+      "systemActor": "System"
+    },
+    "news": {
+      "heading": "News",
+      "emptyTitle": "No news yet",
+      "emptyBody": "Reevun news and updates will appear here."
+    },
+    "security": {
+      "heading": "Security",
+      "moderatorsTitle": "Moderators",
+      "moderatorRoleIds": "Moderator role IDs",
+      "moderatorRoleIdsPlaceholder": "One ID per line or comma-separated",
+      "moderatorRoleIdsNote": "Enable Developer Mode in Discord to copy a role ID (right-click a role -> Copy Role ID).",
+      "automodTitle": "Auto-moderation",
+      "filters": {
+        "filterLinks": {
+          "label": "Links",
+          "description": "Block unwanted links"
+        },
+        "filterInvites": {
+          "label": "Invites",
+          "description": "Block invites to other Discord servers"
+        },
+        "filterScamLinks": {
+          "label": "Scam & phishing",
+          "description": "Block known scam links"
+        },
+        "filterBadWords": {
+          "label": "Bad words",
+          "description": "Block profanity and slurs"
+        },
+        "filterCapsLock": {
+          "label": "Caps Lock",
+          "description": "Limit messages typed in ALL CAPS"
+        },
+        "filterMentionSpam": {
+          "label": "Mention spam",
+          "description": "Limit excessive mentions in a single message"
+        }
+      },
+      "muteTitle": "Mute",
+      "muteMode": "Default mute mode",
+      "muteModeTimeout": "Discord timeout",
+      "muteModeRole": "Assign a role",
+      "muteModeBoth": "Both",
+      "muteRoleId": "Mute role ID",
+      "save": "Save"
     }
   },
   "LanguageSwitcher": {

@@ -244,7 +244,11 @@
       "tickets": "工单",
       "afk": "AFK 列表",
       "settings": "设置",
-      "monitoring": "在线监控"
+      "monitoring": "在线监控",
+      "news": "新闻",
+      "blacklist": "黑名单",
+      "security": "安全",
+      "auditLog": "操作日志"
     },
     "members": {
       "emptyTitle": "暂时还没有成员",
@@ -319,6 +323,80 @@
       "unavailable": "无法获取数据，请稍后刷新页面重试。",
       "russiaOnlineName": "俄罗斯在线",
       "historyEmpty": "正在累积历史数据——数据足够后图表将显示在此处。"
+    },
+    "blacklist": {
+      "heading": "黑名单",
+      "discordId": "Discord ID",
+      "characterName": "角色名称",
+      "reason": "原因",
+      "add": "添加",
+      "emptyTitle": "黑名单为空",
+      "emptyBody": "被封禁的成员将显示在此处。",
+      "colTarget": "封禁对象",
+      "colReason": "原因",
+      "colDate": "日期"
+    },
+    "auditLog": {
+      "heading": "操作日志",
+      "emptyTitle": "暂无记录",
+      "emptyBody": "管理人员的操作记录将显示在此处：军衔变更、发出和取消的警告、封禁。",
+      "colAction": "操作",
+      "colAdmin": "操作人",
+      "colReason": "原因",
+      "colDate": "日期",
+      "rankChange": "{target}：军衔由 {oldRank} 变更为 {newRank}",
+      "warnIssued": "{target}：已发出警告",
+      "warnRemoved": "{target}：已取消警告",
+      "banAdded": "{target}：已加入黑名单",
+      "banRemoved": "{target}：已从黑名单移除",
+      "generic": "{target}：{type}",
+      "systemActor": "系统"
+    },
+    "news": {
+      "heading": "新闻",
+      "emptyTitle": "暂无新闻",
+      "emptyBody": "Reevun 的新闻和更新将显示在此处。"
+    },
+    "security": {
+      "heading": "安全",
+      "moderatorsTitle": "管理人员",
+      "moderatorRoleIds": "管理员身份组 ID",
+      "moderatorRoleIdsPlaceholder": "每行一个 ID，或用逗号分隔",
+      "moderatorRoleIdsNote": "在 Discord 中启用开发者模式以复制身份组 ID（右键身份组 → 复制身份组 ID）。",
+      "automodTitle": "自动管理",
+      "filters": {
+        "filterLinks": {
+          "label": "链接",
+          "description": "屏蔽不需要的链接"
+        },
+        "filterInvites": {
+          "label": "邀请链接",
+          "description": "屏蔽其他 Discord 服务器的邀请链接"
+        },
+        "filterScamLinks": {
+          "label": "诈骗与钓鱼",
+          "description": "屏蔽已知的诈骗链接"
+        },
+        "filterBadWords": {
+          "label": "不良用语",
+          "description": "屏蔽脏话和辱骂"
+        },
+        "filterCapsLock": {
+          "label": "大写锁定",
+          "description": "限制全部使用大写字母的消息"
+        },
+        "filterMentionSpam": {
+          "label": "刷屏提及",
+          "description": "限制单条消息中过多的提及"
+        }
+      },
+      "muteTitle": "禁言",
+      "muteMode": "默认禁言方式",
+      "muteModeTimeout": "Discord 超时",
+      "muteModeRole": "赋予身份组",
+      "muteModeBoth": "两者都用",
+      "muteRoleId": "禁言身份组 ID",
+      "save": "保存"
     }
   },
   "LanguageSwitcher": {

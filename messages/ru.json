@@ -244,7 +244,11 @@
       "tickets": "Обращения",
       "afk": "AFK-лист",
       "settings": "Настройки",
-      "monitoring": "Мониторинг онлайна"
+      "monitoring": "Мониторинг онлайна",
+      "news": "Новости",
+      "blacklist": "Чёрный список",
+      "security": "Безопасность",
+      "auditLog": "Журнал действий"
     },
     "members": {
       "emptyTitle": "Пока нет участников",
@@ -319,6 +323,80 @@
       "unavailable": "Не удалось получить данные. Попробуйте обновить страницу позже.",
       "russiaOnlineName": "Россия Онлайн",
       "historyEmpty": "Собираем историю — график появится, как только накопится больше данных."
+    },
+    "blacklist": {
+      "heading": "Чёрный список",
+      "discordId": "Discord ID",
+      "characterName": "Имя персонажа",
+      "reason": "Причина",
+      "add": "Добавить",
+      "emptyTitle": "Чёрный список пуст",
+      "emptyBody": "Заблокированные участники появятся здесь.",
+      "colTarget": "Кого забанили",
+      "colReason": "Причина",
+      "colDate": "Дата"
+    },
+    "auditLog": {
+      "heading": "Журнал действий",
+      "emptyTitle": "Пока пусто",
+      "emptyBody": "Здесь появится история действий персонала: изменения рангов, выданные и снятые предупреждения, баны.",
+      "colAction": "Действие",
+      "colAdmin": "Кто сделал",
+      "colReason": "Причина",
+      "colDate": "Дата",
+      "rankChange": "{target}: ранг изменён с {oldRank} на {newRank}",
+      "warnIssued": "{target}: выдано предупреждение",
+      "warnRemoved": "{target}: снято предупреждение",
+      "banAdded": "{target}: добавлен в чёрный список",
+      "banRemoved": "{target}: удалён из чёрного списка",
+      "generic": "{target}: {type}",
+      "systemActor": "Система"
+    },
+    "news": {
+      "heading": "Новости",
+      "emptyTitle": "Пока новостей нет",
+      "emptyBody": "Здесь будут появляться новости и обновления Reevun."
+    },
+    "security": {
+      "heading": "Безопасность",
+      "moderatorsTitle": "Модераторы",
+      "moderatorRoleIds": "ID ролей модераторов",
+      "moderatorRoleIdsPlaceholder": "По одному ID на строку или через запятую",
+      "moderatorRoleIdsNote": "Включите Режим разработчика в Discord, чтобы скопировать ID роли (ПКМ по роли → Копировать ID роли).",
+      "automodTitle": "Автомодерация",
+      "filters": {
+        "filterLinks": {
+          "label": "Ссылки",
+          "description": "Блокировать нежелательные ссылки"
+        },
+        "filterInvites": {
+          "label": "Приглашения",
+          "description": "Блокировать приглашения на другие Discord-серверы"
+        },
+        "filterScamLinks": {
+          "label": "Скам и фишинг",
+          "description": "Блокировать известные мошеннические ссылки"
+        },
+        "filterBadWords": {
+          "label": "Нежелательные слова",
+          "description": "Блокировать мат и оскорбления"
+        },
+        "filterCapsLock": {
+          "label": "Caps Lock",
+          "description": "Ограничивать сообщения, написанные КАПСОМ"
+        },
+        "filterMentionSpam": {
+          "label": "Спам упоминаниями",
+          "description": "Ограничивать чрезмерное количество упоминаний в одном сообщении"
+        }
+      },
+      "muteTitle": "Мьют",
+      "muteMode": "Режим мьюта по умолчанию",
+      "muteModeTimeout": "Таймаут Discord",
+      "muteModeRole": "Выдавать роль",
+      "muteModeBoth": "И то, и другое",
+      "muteRoleId": "ID роли мьюта",
+      "save": "Сохранить"
     }
   },
   "LanguageSwitcher": {

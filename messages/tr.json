@@ -244,7 +244,11 @@
       "tickets": "Talepler",
       "afk": "AFK Listesi",
       "settings": "Ayarlar",
-      "monitoring": "Çevrimiçi İzleme"
+      "monitoring": "Çevrimiçi İzleme",
+      "news": "Haberler",
+      "blacklist": "Kara Liste",
+      "security": "Güvenlik",
+      "auditLog": "İşlem Günlüğü"
     },
     "members": {
       "emptyTitle": "Henüz üye yok",
@@ -319,6 +323,80 @@
       "unavailable": "Veriler alınamadı. Lütfen sayfayı daha sonra yenileyin.",
       "russiaOnlineName": "Rusya Online",
       "historyEmpty": "Geçmiş verisi toplanıyor - yeterli veri birikince grafik burada görünecek."
+    },
+    "blacklist": {
+      "heading": "Kara Liste",
+      "discordId": "Discord ID",
+      "characterName": "Karakter adı",
+      "reason": "Sebep",
+      "add": "Ekle",
+      "emptyTitle": "Kara liste boş",
+      "emptyBody": "Engellenen üyeler burada görünecek.",
+      "colTarget": "Yasaklanan",
+      "colReason": "Sebep",
+      "colDate": "Tarih"
+    },
+    "auditLog": {
+      "heading": "İşlem Günlüğü",
+      "emptyTitle": "Henüz bir şey yok",
+      "emptyBody": "Personel etkinlikleri burada görünecek: rütbe değişiklikleri, verilen ve kaldırılan uyarılar, yasaklamalar.",
+      "colAction": "İşlem",
+      "colAdmin": "Yapan",
+      "colReason": "Sebep",
+      "colDate": "Tarih",
+      "rankChange": "{target}: rütbe {oldRank} konumundan {newRank} konumuna değişti",
+      "warnIssued": "{target}: uyarı verildi",
+      "warnRemoved": "{target}: uyarı kaldırıldı",
+      "banAdded": "{target}: kara listeye eklendi",
+      "banRemoved": "{target}: kara listeden çıkarıldı",
+      "generic": "{target}: {type}",
+      "systemActor": "Sistem"
+    },
+    "news": {
+      "heading": "Haberler",
+      "emptyTitle": "Henüz haber yok",
+      "emptyBody": "Reevun haberleri ve güncellemeleri burada görünecek."
+    },
+    "security": {
+      "heading": "Güvenlik",
+      "moderatorsTitle": "Moderatörler",
+      "moderatorRoleIds": "Moderatör rol ID'leri",
+      "moderatorRoleIdsPlaceholder": "Her satıra bir ID veya virgülle ayırın",
+      "moderatorRoleIdsNote": "Bir rol ID'sini kopyalamak için Discord'da Geliştirici Modunu etkinleştirin (role sağ tıklayın -> Rol ID'sini Kopyala).",
+      "automodTitle": "Otomatik moderasyon",
+      "filters": {
+        "filterLinks": {
+          "label": "Bağlantılar",
+          "description": "İstenmeyen bağlantıları engelle"
+        },
+        "filterInvites": {
+          "label": "Davetler",
+          "description": "Diğer Discord sunucularına davetleri engelle"
+        },
+        "filterScamLinks": {
+          "label": "Dolandırıcılık ve kimlik avı",
+          "description": "Bilinen dolandırıcılık bağlantılarını engelle"
+        },
+        "filterBadWords": {
+          "label": "Uygunsuz kelimeler",
+          "description": "Küfür ve hakaretleri engelle"
+        },
+        "filterCapsLock": {
+          "label": "Büyük Harf Kilidi",
+          "description": "BÜYÜK HARFLERLE yazılan mesajları sınırla"
+        },
+        "filterMentionSpam": {
+          "label": "Etiket spamı",
+          "description": "Tek bir mesajdaki aşırı etiketlemeyi sınırla"
+        }
+      },
+      "muteTitle": "Susturma",
+      "muteMode": "Varsayılan susturma modu",
+      "muteModeTimeout": "Discord zaman aşımı",
+      "muteModeRole": "Rol ata",
+      "muteModeBoth": "İkisi de",
+      "muteRoleId": "Susturma rolü ID'si",
+      "save": "Kaydet"
     }
   },
   "LanguageSwitcher": {

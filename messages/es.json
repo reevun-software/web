@@ -244,7 +244,11 @@
       "tickets": "Tickets",
       "afk": "Lista de AFK",
       "settings": "Ajustes",
-      "monitoring": "Monitoreo en línea"
+      "monitoring": "Monitoreo en línea",
+      "news": "Noticias",
+      "blacklist": "Lista negra",
+      "security": "Seguridad",
+      "auditLog": "Registro de actividad"
     },
     "members": {
       "emptyTitle": "Todavía no hay miembros",
@@ -319,6 +323,80 @@
       "unavailable": "No se pudieron obtener los datos. Intenta actualizar la página más tarde.",
       "russiaOnlineName": "Rusia Online",
       "historyEmpty": "Recopilando historial - el gráfico aparecerá en cuanto se acumulen más datos."
+    },
+    "blacklist": {
+      "heading": "Lista negra",
+      "discordId": "ID de Discord",
+      "characterName": "Nombre del personaje",
+      "reason": "Motivo",
+      "add": "Añadir",
+      "emptyTitle": "La lista negra está vacía",
+      "emptyBody": "Los miembros bloqueados aparecerán aquí.",
+      "colTarget": "Baneado",
+      "colReason": "Motivo",
+      "colDate": "Fecha"
+    },
+    "auditLog": {
+      "heading": "Registro de actividad",
+      "emptyTitle": "Aún no hay nada",
+      "emptyBody": "Aquí aparecerá la actividad del personal: cambios de rango, advertencias emitidas y eliminadas, baneos.",
+      "colAction": "Acción",
+      "colAdmin": "Realizado por",
+      "colReason": "Motivo",
+      "colDate": "Fecha",
+      "rankChange": "{target}: rango cambiado de {oldRank} a {newRank}",
+      "warnIssued": "{target}: advertencia emitida",
+      "warnRemoved": "{target}: advertencia eliminada",
+      "banAdded": "{target}: añadido a la lista negra",
+      "banRemoved": "{target}: eliminado de la lista negra",
+      "generic": "{target}: {type}",
+      "systemActor": "Sistema"
+    },
+    "news": {
+      "heading": "Noticias",
+      "emptyTitle": "Aún no hay noticias",
+      "emptyBody": "Aquí aparecerán las noticias y novedades de Reevun."
+    },
+    "security": {
+      "heading": "Seguridad",
+      "moderatorsTitle": "Moderadores",
+      "moderatorRoleIds": "ID de roles de moderador",
+      "moderatorRoleIdsPlaceholder": "Un ID por línea o separados por comas",
+      "moderatorRoleIdsNote": "Activa el modo desarrollador en Discord para copiar el ID de un rol (clic derecho en el rol -> Copiar ID de rol).",
+      "automodTitle": "Automoderación",
+      "filters": {
+        "filterLinks": {
+          "label": "Enlaces",
+          "description": "Bloquear enlaces no deseados"
+        },
+        "filterInvites": {
+          "label": "Invitaciones",
+          "description": "Bloquear invitaciones a otros servidores de Discord"
+        },
+        "filterScamLinks": {
+          "label": "Estafas y phishing",
+          "description": "Bloquear enlaces de estafa conocidos"
+        },
+        "filterBadWords": {
+          "label": "Palabras inapropiadas",
+          "description": "Bloquear groserías e insultos"
+        },
+        "filterCapsLock": {
+          "label": "Bloq Mayús",
+          "description": "Limitar mensajes escritos en MAYÚSCULAS"
+        },
+        "filterMentionSpam": {
+          "label": "Spam de menciones",
+          "description": "Limitar menciones excesivas en un mismo mensaje"
+        }
+      },
+      "muteTitle": "Silenciar",
+      "muteMode": "Modo de silencio predeterminado",
+      "muteModeTimeout": "Tiempo de espera de Discord",
+      "muteModeRole": "Asignar un rol",
+      "muteModeBoth": "Ambos",
+      "muteRoleId": "ID del rol de silencio",
+      "save": "Guardar"
     }
   },
   "LanguageSwitcher": {
