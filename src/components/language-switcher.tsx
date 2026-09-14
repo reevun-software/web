@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { ChevronDown, Check } from "lucide-react";
 import { usePathname } from "@/i18n/navigation";
 import { LOCALES, LOCALE_META, type Locale } from "@/i18n/routing";
-import { syncLocaleCookie, localeHref } from "@/lib/locale-nav";
+import { syncLocaleCookie, localeHref, shouldPrefetchLocale } from "@/lib/locale-nav";
 import { FlagIcon } from "@/components/flag-icon";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,7 +31,9 @@ export function LanguageSwitcher() {
         // Warm every other locale's route the moment the menu opens instead.
         if (!open) return;
         for (const l of LOCALES) {
-          if (l !== locale) nextRouter.prefetch(localeHref(pathname, params, l));
+          if (l !== locale && shouldPrefetchLocale(l)) {
+            nextRouter.prefetch(localeHref(pathname, params, l));
+          }
         }
       }}
     >

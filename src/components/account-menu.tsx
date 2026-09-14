@@ -2,6 +2,7 @@ import { LayoutDashboard, LogOut, LifeBuoy } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { signOut } from "@/lib/auth";
+import { SUPPORT_DISCORD_URL } from "@/lib/discord";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LanguageSubmenu } from "@/components/language-submenu";
 import {
@@ -60,7 +61,10 @@ export async function AccountMenu({
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <LanguageSubmenu />
-        <DropdownMenuItem render={<Link href="/" />} className="cursor-pointer">
+        <DropdownMenuItem
+          render={<Link href={SUPPORT_DISCORD_URL} target="_blank" rel="noopener noreferrer" />}
+          className="cursor-pointer"
+        >
           <LifeBuoy className="size-4" strokeWidth={1.5} />
           {tRoot("Footer.support")}
         </DropdownMenuItem>

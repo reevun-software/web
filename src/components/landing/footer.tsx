@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { SUPPORT_DISCORD_URL } from "@/lib/discord";
 import { StatusPill } from "@/components/landing/status-pill";
 
 export function Footer() {
@@ -59,7 +60,9 @@ export function Footer() {
             {t("commands")}
           </Link>
           <Link
-            href="/"
+            href={SUPPORT_DISCORD_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             {t("support")}

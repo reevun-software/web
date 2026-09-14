@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Check } from "lucide-react";
 import { usePathname } from "@/i18n/navigation";
 import { LOCALES, LOCALE_META, type Locale } from "@/i18n/routing";
-import { syncLocaleCookie, localeHref } from "@/lib/locale-nav";
+import { syncLocaleCookie, localeHref, shouldPrefetchLocale } from "@/lib/locale-nav";
 import { FlagIcon } from "@/components/flag-icon";
 import {
   DropdownMenuSub,
@@ -27,7 +27,9 @@ export function LanguageSubmenu() {
         className="cursor-pointer"
         onFocus={() => {
           for (const l of LOCALES) {
-            if (l !== locale) nextRouter.prefetch(localeHref(pathname, params, l));
+            if (l !== locale && shouldPrefetchLocale(l)) {
+              nextRouter.prefetch(localeHref(pathname, params, l));
+            }
           }
         }}
       >
