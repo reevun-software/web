@@ -226,7 +226,7 @@ export default async function SecurityPage({
           {AUTOMOD_FILTERS.map((key) => (
             <div
               key={key}
-              className="flex min-h-16 items-center justify-between gap-4 px-6 py-3"
+              className="flex min-h-16 items-start justify-between gap-4 px-6 py-3"
             >
               <label htmlFor={key} className="flex flex-1 cursor-pointer flex-col gap-0.5">
                 <span className="text-sm">{t(`filters.${key}.label`)}</span>
@@ -234,7 +234,7 @@ export default async function SecurityPage({
                   {t(`filters.${key}.description`)}
                 </span>
               </label>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 pt-0.5">
                 <FilterSettingsSheet
                   filterType={key}
                   filterLabel={t(`filters.${key}.label`)}
@@ -255,7 +255,7 @@ export default async function SecurityPage({
           <span className="text-sm font-medium">{t("muteTitle")}</span>
           <label
             htmlFor="muteBlocksReactions"
-            className="flex cursor-pointer items-center justify-between gap-4"
+            className="flex cursor-pointer items-start justify-between gap-4"
           >
             <span className="flex flex-col gap-0.5">
               <span className="text-sm">{t("muteBlocksReactions")}</span>
@@ -267,6 +267,7 @@ export default async function SecurityPage({
               id="muteBlocksReactions"
               name="muteBlocksReactions"
               defaultChecked={current.muteBlocksReactions}
+              className="mt-0.5"
             />
           </label>
           <MuteSettingsFields
