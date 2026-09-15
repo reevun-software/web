@@ -65,7 +65,15 @@ function SelectContent({
   sideOffset = 4,
   align = "center",
   alignOffset = 0,
-  alignItemWithTrigger = true,
+  // Base UI's native-select-style positioning: it shifts the whole popup so
+  // the SELECTED item's text lines up over the trigger, not so the popup's
+  // own edges line up with the trigger's edges. Since the popup width
+  // already matches the trigger (w-(--anchor-width)), that shift pushed the
+  // box sideways whenever the selected item's label wasn't flush with the
+  // trigger's own edge - the trigger's own text ended up peeking out from
+  // behind the popup. Plain edge-aligned positioning doesn't have this
+  // failure mode.
+  alignItemWithTrigger = false,
   ...props
 }: SelectPrimitive.Popup.Props &
   Pick<
