@@ -73,6 +73,8 @@ export async function AccountMenu({
         <SupportSubmenu
           label={tRoot("Footer.support")}
           discordLabel={t("supportDiscord")}
+          docsLabel={t("supportDocs")}
+          emailLabel={t("supportEmail")}
           chatLabel={t("supportChat")}
           userId={discordId}
           name={name ?? undefined}

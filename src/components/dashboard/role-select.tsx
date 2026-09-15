@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, ChevronsUpDown, TriangleAlert } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -52,56 +52,46 @@ export function RoleSelect({
     return <p className="text-sm text-muted-foreground">{emptyLabel}</p>;
   }
 
-  const selectedHasWarning = !!selected && selected.position >= botRolePosition;
-
   return (
-    <div className="flex flex-col gap-1.5">
-      <DropdownMenu>
-        <input type="hidden" name={name} value={selectedId ?? ""} />
-        <DropdownMenuTrigger
-          render={
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full cursor-pointer justify-between gap-1.5 sm:w-64"
-            >
-              <span className="flex min-w-0 items-center gap-1.5">
-                {selected ? (
-                  <>
-                    <RoleDot color={selected.color} />
-                    <span className="truncate">{selected.name}</span>
-                  </>
-                ) : (
-                  <span className="text-muted-foreground">{placeholder}</span>
-                )}
-              </span>
-              <ChevronsUpDown className="size-3.5 shrink-0 text-muted-foreground" />
-            </Button>
-          }
-        />
-        <DropdownMenuContent align="start" className="max-h-64 w-56">
-          {roles.map((role) => (
-            <DropdownMenuItem
-              key={role.id}
-              className="cursor-pointer"
-              onClick={() => setSelectedId(role.id)}
-            >
-              <RoleDot color={role.color} />
-              <span className="flex-1 truncate">{role.name}</span>
-              {role.position >= botRolePosition && hierarchyWarningLabel && (
-                <RoleHierarchyWarning label={hierarchyWarningLabel} />
+    <DropdownMenu>
+      <input type="hidden" name={name} value={selectedId ?? ""} />
+      <DropdownMenuTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full cursor-pointer justify-between gap-1.5 sm:w-64"
+          >
+            <span className="flex min-w-0 items-center gap-1.5">
+              {selected ? (
+                <>
+                  <RoleDot color={selected.color} />
+                  <span className="truncate">{selected.name}</span>
+                </>
+              ) : (
+                <span className="text-muted-foreground">{placeholder}</span>
               )}
-              {role.id === selectedId && <Check className="size-3.5 shrink-0" />}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-      {selectedHasWarning && hierarchyWarningLabel && (
-        <p className="flex items-center gap-1 text-xs text-amber-500">
-          <TriangleAlert className="size-3.5 shrink-0" aria-hidden />
-          {hierarchyWarningLabel}
-        </p>
-      )}
-    </div>
+            </span>
+            <ChevronsUpDown className="size-3.5 shrink-0 text-muted-foreground" />
+          </Button>
+        }
+      />
+      <DropdownMenuContent align="start" className="max-h-64 w-56">
+        {roles.map((role) => (
+          <DropdownMenuItem
+            key={role.id}
+            className="cursor-pointer"
+            onClick={() => setSelectedId(role.id)}
+          >
+            <RoleDot color={role.color} />
+            <span className="flex-1 truncate">{role.name}</span>
+            {role.position >= botRolePosition && hierarchyWarningLabel && (
+              <RoleHierarchyWarning label={hierarchyWarningLabel} />
+            )}
+            {role.id === selectedId && <Check className="size-3.5 shrink-0" />}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

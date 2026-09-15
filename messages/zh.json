@@ -10,7 +10,8 @@
     "signOut": "退出登录",
     "supportDiscord": "Discord",
     "supportChat": "在线聊天",
-    "supportEmail": "邮箱"
+    "supportEmail": "邮箱",
+    "supportDocs": "帮助中心"
   },
   "Hero": {
     "title": "在一个面板里管理你的 Discord 社区",
@@ -332,7 +333,8 @@
       "range90": "90 天",
       "peakInRange": "该时段峰值",
       "range180": "180 天",
-      "range365": "365 天"
+      "range365": "365 天",
+      "shortHistory": "数据自 {date} 起开始收集——目前还没有更早的历史记录。"
     },
     "blacklist": {
       "heading": "黑名单",
@@ -444,7 +446,12 @@
         "channelsUnavailable": "无法获取服务器频道。请确认 Reevun 机器人已添加到此服务器。"
       },
       "muteModeHint": "Discord 超时无需额外身份组即可禁言。「授予身份组」会应用你设置的禁言身份组。「两者都」会同时执行两种操作。",
-      "muteRoleIdHint": "机器人在禁言成员时会授予并在解除时移除的身份组。"
+      "muteRoleIdHint": "机器人在禁言成员时会授予并在解除时移除的身份组。",
+      "ignoreCommandCooldownForMods": "不对管理员和版主应用指令冷却时间",
+      "allowHigherModsToModerateLower": "允许身份组更高的版主处罚身份组更低的版主",
+      "muteBlocksReactions": "屏蔽表情回应",
+      "muteBlocksReactionsHint": "禁言同时也会阻止成员为消息添加表情回应",
+      "timeoutLimitNotice": "基于超时的禁言最长为 28 天——该限制由 Discord 自身设定。"
     }
   },
   "LanguageSwitcher": {

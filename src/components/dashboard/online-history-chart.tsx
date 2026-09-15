@@ -24,15 +24,19 @@ export function OnlineHistoryChart({
   points,
   emptyLabel,
   peakLabel,
+  shortHistoryLabel,
   locale,
   rangeKey,
 }: {
   points: OnlineHistoryPoint[];
   emptyLabel: string;
   peakLabel: string;
+  // "{date}" placeholder replaced with the oldest point's formatted date/time.
+  shortHistoryLabel: string;
   locale: string;
-  // Changes whenever the caller's day-range selection changes, purely to key
-  // the chart body and retrigger the crossfade below.
+  // Also the selected day-range count itself (see OnlineMonitoringTabs) -
+  // used both to key the crossfade below and to tell whether the actual
+  // recorded history is shorter than the range that was asked for.
   rangeKey: number;
 }) {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
@@ -79,6 +83,15 @@ export function OnlineHistoryChart({
   const spanMs = points[points.length - 1].recordedAt.getTime() - points[0].recordedAt.getTime();
   const showTime = spanMs < TWO_DAYS_MS;
 
+  // Every range button (1d/7d/30d/...) filters the same underlying history,
+  // so once the range asked for is wider than what's actually been recorded
+  // so far, every button shows the identical, full dataset - which reads as
+  // "the range picker does nothing". Surfacing how far back real data goes
+  // makes that self-explanatory instead of looking broken.
+  const requestedSpanMs = rangeKey * 24 * 60 * 60 * 1000;
+  const oldestPoint = points[0].recordedAt;
+  const hasShortHistory = spanMs < requestedSpanMs * 0.95;
+
   const xLabels = Array.from({ length: X_LABELS }, (_, i) => {
     const t = i / (X_LABELS - 1);
     const index = Math.round(t * (points.length - 1));
@@ -100,6 +113,11 @@ export function OnlineHistoryChart({
 
   return (
     <div className="flex flex-col gap-2">
+      <div className="flex items-baseline justify-between">
+        <span className="text-xs text-muted-foreground">{peakLabel}</span>
+        <span className="text-sm font-semibold tabular-nums">{peak.toLocaleString(locale)}</span>
+      </div>
+
       <div className="relative">
         <svg
           key={rangeKey}
@@ -203,10 +221,19 @@ export function OnlineHistoryChart({
         ))}
       </div>
 
-      <div className="flex items-center gap-1.5 pl-9 text-xs text-muted-foreground">
-        <span className="size-1.5 rounded-full bg-foreground/70" aria-hidden />
-        {peakLabel} {peak.toLocaleString(locale)}
-      </div>
+      {hasShortHistory && (
+        <p className="pl-9 text-xs text-muted-foreground">
+          {shortHistoryLabel.replace(
+            "{date}",
+            oldestPoint.toLocaleString(locale, {
+              day: "2-digit",
+              month: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          )}
+        </p>
+      )}
     </div>
   );
 }

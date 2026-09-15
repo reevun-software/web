@@ -10,7 +10,8 @@
     "signOut": "Abmelden",
     "supportDiscord": "Discord",
     "supportChat": "Live-Chat",
-    "supportEmail": "E-Mail"
+    "supportEmail": "E-Mail",
+    "supportDocs": "Hilfe-Center"
   },
   "Hero": {
     "title": "Verwalte deine Discord-Community",
@@ -332,7 +333,8 @@
       "range90": "90 Tage",
       "peakInRange": "Höchststand im Zeitraum",
       "range180": "180 Tage",
-      "range365": "365 Tage"
+      "range365": "365 Tage",
+      "shortHistory": "Daten werden seit {date} erfasst - ältere Historie gibt es noch nicht."
     },
     "blacklist": {
       "heading": "Schwarze Liste",
@@ -444,7 +446,12 @@
         "channelsUnavailable": "Die Kanäle des Servers konnten nicht geladen werden. Stelle sicher, dass der Reevun-Bot diesem Server hinzugefügt wurde."
       },
       "muteModeHint": "Discord-Timeout schaltet ohne zusätzliche Rolle stumm. „Rolle vergeben“ nutzt eine von dir eingerichtete Mute-Rolle. „Beides“ macht beides gleichzeitig.",
-      "muteRoleIdHint": "Die Rolle, die der Bot beim Stummschalten vergibt und wieder entfernt."
+      "muteRoleIdHint": "Die Rolle, die der Bot beim Stummschalten vergibt und wieder entfernt.",
+      "ignoreCommandCooldownForMods": "Befehls-Cooldowns nicht auf Administratoren und Moderatoren anwenden",
+      "allowHigherModsToModerateLower": "Moderatoren mit höherer Rolle dürfen niedrigere Moderatoren bestrafen",
+      "muteBlocksReactions": "Reaktionen blockieren",
+      "muteBlocksReactionsHint": "Stummschaltung verhindert auch, dass Mitglieder auf Nachrichten reagieren",
+      "timeoutLimitNotice": "Timeout-basierte Stummschaltungen sind auf 28 Tage begrenzt - dieses Limit setzt Discord selbst."
     }
   },
   "LanguageSwitcher": {

@@ -42,7 +42,18 @@ export function MuteSettingsFields({
     <>
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="muteMode">{labels.muteMode}</Label>
-        <Select name="muteMode" value={muteMode} onValueChange={(v) => setMuteMode(v as string)}>
+        {/* Uncontrolled (defaultValue, not value) - Base UI's SelectValue
+            only resolves the selected item's rendered label text once its
+            items have registered, and a controlled `value` set on first
+            render beat that registration, so the trigger showed the raw
+            "timeout" instead of "Таймаут Discord". onValueChange still
+            fires either way, which is all this needs to drive the
+            conditional role field below. */}
+        <Select
+          name="muteMode"
+          defaultValue={defaultMuteMode}
+          onValueChange={(v) => setMuteMode(v as string)}
+        >
           <SelectTrigger id="muteMode" className="w-full sm:w-64">
             <SelectValue />
           </SelectTrigger>

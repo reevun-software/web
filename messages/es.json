@@ -10,7 +10,8 @@
     "signOut": "Cerrar sesión",
     "supportDiscord": "Discord",
     "supportChat": "Chat en vivo",
-    "supportEmail": "Correo"
+    "supportEmail": "Correo",
+    "supportDocs": "Centro de ayuda"
   },
   "Hero": {
     "title": "Gestiona tu comunidad de Discord",
@@ -332,7 +333,8 @@
       "range90": "90 días",
       "peakInRange": "Pico del período",
       "range180": "180 días",
-      "range365": "365 días"
+      "range365": "365 días",
+      "shortHistory": "Los datos se recopilan desde {date}; todavía no hay historial anterior."
     },
     "blacklist": {
       "heading": "Lista negra",
@@ -444,7 +446,12 @@
         "channelsUnavailable": "No se pudieron obtener los canales del servidor. Asegúrate de que el bot Reevun se haya añadido a este servidor."
       },
       "muteModeHint": "El tiempo de espera de Discord silencia sin necesitar un rol adicional. \"Asignar rol\" aplica un rol de silencio que hayas configurado. \"Ambos\" hace las dos cosas a la vez.",
-      "muteRoleIdHint": "El rol que el bot asigna y retira al silenciar a un miembro."
+      "muteRoleIdHint": "El rol que el bot asigna y retira al silenciar a un miembro.",
+      "ignoreCommandCooldownForMods": "No aplicar el tiempo de espera de comandos a Administradores y Moderadores",
+      "allowHigherModsToModerateLower": "Permitir que moderadores con un rol superior sancionen a moderadores inferiores",
+      "muteBlocksReactions": "Bloquear reacciones",
+      "muteBlocksReactionsHint": "Silenciar también impedirá que los miembros añadan reacciones a los mensajes",
+      "timeoutLimitNotice": "Los silencios por tiempo de espera están limitados a 28 días - ese límite lo establece el propio Discord."
     }
   },
   "LanguageSwitcher": {

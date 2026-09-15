@@ -29,6 +29,7 @@ export function OnlineMonitoringTabs({
   peakInRange,
   unavailable,
   historyEmpty,
+  shortHistory,
   rangeLabels,
 }: {
   projects: Project[];
@@ -38,6 +39,7 @@ export function OnlineMonitoringTabs({
   peakInRange: string;
   unavailable: string;
   historyEmpty: string;
+  shortHistory: string;
   rangeLabels: Record<(typeof RANGE_OPTIONS)[number], string>;
 }) {
   const [active, setActive] = useState(projects[0]?.key);
@@ -127,6 +129,7 @@ export function OnlineMonitoringTabs({
               points={visibleHistory}
               emptyLabel={historyEmpty}
               peakLabel={peakInRange}
+              shortHistoryLabel={shortHistory}
               locale={locale}
               rangeKey={rangeDays}
             />

@@ -71,6 +71,7 @@ export default async function MonitoringPage() {
         peakInRange={t("peakInRange")}
         unavailable={t("unavailable")}
         historyEmpty={t("historyEmpty")}
+        shortHistory={t("shortHistory")}
         rangeLabels={{
           1: t("range1"),
           7: t("range7"),

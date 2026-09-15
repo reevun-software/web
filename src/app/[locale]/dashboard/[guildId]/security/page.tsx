@@ -55,6 +55,8 @@ export default async function SecurityPage({
 
   const current = settings ?? {
     moderatorRoleIds: [] as string[],
+    ignoreCommandCooldownForMods: false,
+    allowHigherModsToModerateLower: false,
     filterLinks: false,
     filterInvites: true,
     filterScamLinks: true,
@@ -63,6 +65,7 @@ export default async function SecurityPage({
     filterMentionSpam: false,
     muteMode: "timeout",
     muteRoleId: null as string | null,
+    muteBlocksReactions: false,
   };
 
   const filterConfigs = new Map(filterConfigRows.map((row) => [row.filterType, row]));
@@ -76,6 +79,8 @@ export default async function SecurityPage({
     const values = {
       guildId,
       moderatorRoleIds,
+      ignoreCommandCooldownForMods: formData.get("ignoreCommandCooldownForMods") === "on",
+      allowHigherModsToModerateLower: formData.get("allowHigherModsToModerateLower") === "on",
       filterLinks: formData.get("filterLinks") === "on",
       filterInvites: formData.get("filterInvites") === "on",
       filterScamLinks: formData.get("filterScamLinks") === "on",
@@ -84,6 +89,7 @@ export default async function SecurityPage({
       filterMentionSpam: formData.get("filterMentionSpam") === "on",
       muteMode: muteMode || "timeout",
       muteRoleId,
+      muteBlocksReactions: formData.get("muteBlocksReactions") === "on",
       updatedAt: new Date(),
     };
 
@@ -175,7 +181,7 @@ export default async function SecurityPage({
       </div>
 
       <form action={save} className="flex flex-col gap-4">
-        <Card className="flex flex-col gap-3 p-6">
+        <Card className="flex flex-col gap-4 p-6">
           <span className="text-sm font-medium">{t("moderatorsTitle")}</span>
           <div className="flex flex-col gap-2">
             <Label>{t("moderatorRoleIds")}</Label>
@@ -189,6 +195,28 @@ export default async function SecurityPage({
               emptyLabel={t("rolesUnavailable")}
             />
           </div>
+          <label
+            htmlFor="ignoreCommandCooldownForMods"
+            className="flex cursor-pointer items-center justify-between gap-4"
+          >
+            <span className="text-sm">{t("ignoreCommandCooldownForMods")}</span>
+            <Switch
+              id="ignoreCommandCooldownForMods"
+              name="ignoreCommandCooldownForMods"
+              defaultChecked={current.ignoreCommandCooldownForMods}
+            />
+          </label>
+          <label
+            htmlFor="allowHigherModsToModerateLower"
+            className="flex cursor-pointer items-center justify-between gap-4"
+          >
+            <span className="text-sm">{t("allowHigherModsToModerateLower")}</span>
+            <Switch
+              id="allowHigherModsToModerateLower"
+              name="allowHigherModsToModerateLower"
+              defaultChecked={current.allowHigherModsToModerateLower}
+            />
+          </label>
         </Card>
 
         <Card className="flex flex-col divide-y divide-border/60 p-0">
@@ -222,6 +250,22 @@ export default async function SecurityPage({
 
         <Card className="flex flex-col gap-3 p-6">
           <span className="text-sm font-medium">{t("muteTitle")}</span>
+          <label
+            htmlFor="muteBlocksReactions"
+            className="flex cursor-pointer items-center justify-between gap-4"
+          >
+            <span className="flex flex-col gap-0.5">
+              <span className="text-sm">{t("muteBlocksReactions")}</span>
+              <span className="text-xs text-muted-foreground">
+                {t("muteBlocksReactionsHint")}
+              </span>
+            </span>
+            <Switch
+              id="muteBlocksReactions"
+              name="muteBlocksReactions"
+              defaultChecked={current.muteBlocksReactions}
+            />
+          </label>
           <MuteSettingsFields
             roles={roles}
             defaultMuteMode={current.muteMode}
@@ -240,6 +284,9 @@ export default async function SecurityPage({
               hierarchyWarning: t("hierarchyWarning"),
             }}
           />
+          <p className="rounded-md bg-muted px-3 py-2 text-xs text-muted-foreground">
+            {t("timeoutLimitNotice")}
+          </p>
         </Card>
 
         <SubmitButton pendingLabel={t("saving")} className="w-fit">

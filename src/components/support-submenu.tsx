@@ -1,8 +1,10 @@
 "use client";
 
-import { LifeBuoy, MessageCircle } from "lucide-react";
+import { useEffect } from "react";
+import { LifeBuoy, MessageCircle, Mail, BookOpen } from "lucide-react";
 import Intercom, { show } from "@intercom/messenger-js-sdk";
-import { SUPPORT_DISCORD_URL } from "@/lib/discord";
+import { SUPPORT_DISCORD_URL, DOCS_URL, SUPPORT_EMAIL } from "@/lib/discord";
+import { DiscordIcon } from "@/components/icons/discord-icon";
 import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
@@ -12,15 +14,11 @@ import {
 
 const APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID;
 
-// The Messenger only boots the first time "Online chat" is actually
-// clicked, not on every page load - previously it auto-booted globally with
-// a floating launcher bubble visible to every visitor, which is more than
-// what was asked for ("chat only for signed-in users, only from Support").
-// Intercom() itself only inits once (guarded internally by the SDK), so a
-// second click just re-shows the already-booted messenger.
 export function SupportSubmenu({
   label,
   discordLabel,
+  docsLabel,
+  emailLabel,
   chatLabel,
   userId,
   name,
@@ -28,12 +26,20 @@ export function SupportSubmenu({
 }: {
   label: string;
   discordLabel: string;
+  docsLabel: string;
+  emailLabel: string;
   chatLabel: string;
   userId?: string;
   name?: string;
   userJwt?: string;
 }) {
-  function openChat() {
+  // Boots quietly (hide_default_launcher: true, so no floating bubble) as
+  // soon as this submenu mounts - i.e. once Account menu is opened, a
+  // couple of clicks before "Online chat" is actually pressed. Intercom()
+  // itself only inits once (guarded internally by the SDK), so this just
+  // gives the remote widget script a head start instead of loading it
+  // synchronously on the click itself, which was the slow part.
+  useEffect(() => {
     if (!APP_ID) return;
     Intercom({
       app_id: APP_ID,
@@ -42,8 +48,7 @@ export function SupportSubmenu({
       ...(name && { name }),
       ...(userJwt && { intercom_user_jwt: userJwt }),
     });
-    show();
-  }
+  }, [userId, name, userJwt]);
 
   return (
     <DropdownMenuSub>
@@ -56,9 +61,21 @@ export function SupportSubmenu({
           render={<a href={SUPPORT_DISCORD_URL} target="_blank" rel="noopener noreferrer" />}
           className="cursor-pointer"
         >
+          <DiscordIcon className="size-4 text-white" />
           {discordLabel}
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer" onClick={openChat}>
+        <DropdownMenuItem
+          render={<a href={DOCS_URL} target="_blank" rel="noopener noreferrer" />}
+          className="cursor-pointer"
+        >
+          <BookOpen className="size-4" strokeWidth={1.5} />
+          {docsLabel}
+        </DropdownMenuItem>
+        <DropdownMenuItem render={<a href={`mailto:${SUPPORT_EMAIL}`} />} className="cursor-pointer">
+          <Mail className="size-4" strokeWidth={1.5} />
+          {emailLabel}
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" onClick={() => show()}>
           <MessageCircle className="size-4" strokeWidth={1.5} />
           {chatLabel}
         </DropdownMenuItem>

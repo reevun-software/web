@@ -113,6 +113,10 @@ export const guildSecuritySettings = pgTable("guild_security_settings", {
     .primaryKey()
     .references(() => guilds.id, { onDelete: "cascade" }),
   moderatorRoleIds: text("moderator_role_ids").array().notNull().default([]),
+  ignoreCommandCooldownForMods: boolean("ignore_command_cooldown_for_mods").default(false).notNull(),
+  allowHigherModsToModerateLower: boolean("allow_higher_mods_to_moderate_lower")
+    .default(false)
+    .notNull(),
   filterLinks: boolean("filter_links").default(false).notNull(),
   filterInvites: boolean("filter_invites").default(true).notNull(),
   filterScamLinks: boolean("filter_scam_links").default(true).notNull(),
@@ -121,6 +125,7 @@ export const guildSecuritySettings = pgTable("guild_security_settings", {
   filterMentionSpam: boolean("filter_mention_spam").default(false).notNull(),
   muteMode: text("mute_mode").default("timeout").notNull(), // "role" | "timeout" | "both"
   muteRoleId: text("mute_role_id"),
+  muteBlocksReactions: boolean("mute_blocks_reactions").default(false).notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
