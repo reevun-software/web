@@ -264,14 +264,16 @@
       "colStatus": "Status",
       "rank": "Rang {n}",
       "online": "Online",
-      "afk": "AFK"
+      "afk": "AFK",
+      "searchPlaceholder": "Mitglieder suchen…"
     },
     "ranks": {
       "heading": "Ränge",
       "emptyTitle": "Noch keine Ränge",
       "emptyBody": "Sobald Mitglieder über den Bot Ränge erhalten, erscheint hier ihre Verteilung.",
       "rank": "Rang {n}",
-      "memberCount": "{n, plural, one {# Mitglied} other {# Mitglieder}}"
+      "memberCount": "{n, plural, one {# Mitglied} other {# Mitglieder}}",
+      "note": "Ränge werden über den Bot in Discord konfiguriert. Hier wird ihre Verteilung unter den Mitgliedern angezeigt."
     },
     "tickets": {
       "emptyTitle": "Noch keine Anfragen",
@@ -334,7 +336,10 @@
       "peakInRange": "Höchststand im Zeitraum",
       "range180": "180 Tage",
       "range365": "365 Tage",
-      "shortHistory": "Daten werden seit {date} erfasst - ältere Historie gibt es noch nicht."
+      "shortHistory": "Daten werden seit {date} erfasst - ältere Historie gibt es noch nicht.",
+      "chartLabel": "Online-Verlauf {project}",
+      "colDate": "Datum",
+      "colPlayers": "Spieler"
     },
     "blacklist": {
       "heading": "Schwarze Liste",
@@ -346,7 +351,11 @@
       "emptyBody": "Gesperrte Mitglieder erscheinen hier.",
       "colTarget": "Gesperrt",
       "colReason": "Grund",
-      "colDate": "Datum"
+      "colDate": "Datum",
+      "missingTarget": "Discord-ID oder Charaktername angeben",
+      "added": "Hinzugefügt",
+      "confirmDelete": "Diesen Sperrlisteneintrag entfernen?",
+      "delete": "Löschen"
     },
     "auditLog": {
       "heading": "Aktivitätsprotokoll",
@@ -362,7 +371,9 @@
       "banAdded": "{target}: zur schwarzen Liste hinzugefügt",
       "banRemoved": "{target}: von der schwarzen Liste entfernt",
       "generic": "{target}: {type}",
-      "systemActor": "System"
+      "systemActor": "System",
+      "searchPlaceholder": "Protokoll durchsuchen…",
+      "loadMore": "Mehr laden"
     },
     "news": {
       "heading": "Neuigkeiten",
@@ -455,7 +466,8 @@
       "saved": "Gespeichert",
       "searchRoles": "Rollen suchen…",
       "searchChannels": "Kanäle suchen…"
-    }
+    },
+    "openMenu": "Menü öffnen"
   },
   "LanguageSwitcher": {
     "label": "Sprache"

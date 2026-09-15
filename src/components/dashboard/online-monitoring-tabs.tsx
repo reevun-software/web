@@ -30,6 +30,9 @@ export function OnlineMonitoringTabs({
   unavailable,
   historyEmpty,
   shortHistory,
+  chartLabel,
+  colDate,
+  colPlayers,
   rangeLabels,
 }: {
   projects: Project[];
@@ -40,6 +43,9 @@ export function OnlineMonitoringTabs({
   unavailable: string;
   historyEmpty: string;
   shortHistory: string;
+  chartLabel: string;
+  colDate: string;
+  colPlayers: string;
   rangeLabels: Record<(typeof RANGE_OPTIONS)[number], string>;
 }) {
   const [active, setActive] = useState(projects[0]?.key);
@@ -130,6 +136,9 @@ export function OnlineMonitoringTabs({
               emptyLabel={historyEmpty}
               peakLabel={peakInRange}
               shortHistoryLabel={shortHistory}
+              chartLabel={chartLabel.replace("{project}", project?.label ?? "")}
+              colDate={colDate}
+              colPlayers={colPlayers}
               locale={locale}
               rangeKey={rangeDays}
             />

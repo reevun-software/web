@@ -25,6 +25,9 @@ export function OnlineHistoryChart({
   emptyLabel,
   peakLabel,
   shortHistoryLabel,
+  chartLabel,
+  colDate,
+  colPlayers,
   locale,
   rangeKey,
 }: {
@@ -33,6 +36,12 @@ export function OnlineHistoryChart({
   peakLabel: string;
   // "{date}" placeholder replaced with the oldest point's formatted date/time.
   shortHistoryLabel: string;
+  // The chart itself is pointer-only (hover to read a value) - this table
+  // is the actual accessible path to the data for keyboard/screen-reader
+  // users, not just an aria-label summary of the SVG.
+  chartLabel: string;
+  colDate: string;
+  colPlayers: string;
   locale: string;
   // Also the selected day-range count itself (see OnlineMonitoringTabs) -
   // used both to key the crossfade below and to tell whether the actual
@@ -118,14 +127,40 @@ export function OnlineHistoryChart({
         <span className="text-sm font-semibold tabular-nums">{peak.toLocaleString(locale)}</span>
       </div>
 
+      {/* The SVG below is pointer-only - this table is the real
+          keyboard/screen-reader path to the same data, not decoration. */}
+      <table className="sr-only">
+        <caption>{chartLabel}</caption>
+        <thead>
+          <tr>
+            <th>{colDate}</th>
+            <th>{colPlayers}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {points.map((p, i) => (
+            <tr key={i}>
+              <td>
+                {p.recordedAt.toLocaleString(locale, {
+                  day: "2-digit",
+                  month: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </td>
+              <td>{p.totalPlayers}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
       <div className="relative">
         <svg
           key={rangeKey}
           viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
           preserveAspectRatio="none"
           className="h-56 w-full overflow-visible animate-in fade-in duration-200 ease-out"
-          role="img"
-          aria-label="Online players over time"
+          aria-hidden="true"
           onPointerMove={handleMove}
           onPointerLeave={() => setHoverIndex(null)}
         >

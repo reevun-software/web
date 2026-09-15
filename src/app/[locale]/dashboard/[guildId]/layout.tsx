@@ -22,14 +22,22 @@ export default async function GuildLayout({
   if (!current || !current.botInstalled) notFound();
 
   return (
-    <div className="flex min-h-dvh flex-1">
+    <div className="flex min-h-dvh flex-1 flex-col md:flex-row">
       <DashboardSidebar
         guildId={guildId}
         guildName={current.name}
         guilds={guilds}
+        accountMenu={
+          <AccountMenu
+            name={session.user?.name}
+            image={session.user?.image}
+            username={session.discordUsername}
+            discordId={session.discordId}
+          />
+        }
       />
       <div className="flex flex-1 flex-col">
-        <header className="flex h-14 items-center justify-end gap-3 border-b border-border/60 px-6">
+        <header className="hidden h-14 items-center justify-end gap-3 border-b border-border/60 px-6 md:flex">
           <AccountMenu
             name={session.user?.name}
             image={session.user?.image}

@@ -31,7 +31,10 @@ export default async function RanksPage({
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
+      <div className="flex flex-col gap-1">
+        <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
+        <p className="text-sm text-muted-foreground">{t("note")}</p>
+      </div>
       <Card className="flex flex-col divide-y divide-border/60 p-0">
         {rows.map(([rank, n]) => (
           <div key={rank} className="flex items-center justify-between px-5 py-3">

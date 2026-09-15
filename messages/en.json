@@ -264,14 +264,16 @@
       "colStatus": "Status",
       "rank": "Rank {n}",
       "online": "Online",
-      "afk": "AFK"
+      "afk": "AFK",
+      "searchPlaceholder": "Search members…"
     },
     "ranks": {
       "heading": "Ranks",
       "emptyTitle": "No ranks yet",
       "emptyBody": "Once members start getting ranks through the bot, their distribution will appear here.",
       "rank": "Rank {n}",
-      "memberCount": "{n, plural, one {# member} other {# members}}"
+      "memberCount": "{n, plural, one {# member} other {# members}}",
+      "note": "Ranks are configured through the bot in Discord. This shows their distribution among members."
     },
     "tickets": {
       "emptyTitle": "No tickets yet",
@@ -334,7 +336,10 @@
       "peakInRange": "Peak for period",
       "range180": "180 days",
       "range365": "365 days",
-      "shortHistory": "Data has been collected since {date} - no earlier history exists yet."
+      "shortHistory": "Data has been collected since {date} - no earlier history exists yet.",
+      "chartLabel": "{project} online history",
+      "colDate": "Date",
+      "colPlayers": "Players"
     },
     "blacklist": {
       "heading": "Blacklist",
@@ -346,7 +351,11 @@
       "emptyBody": "Blocked members will appear here.",
       "colTarget": "Banned",
       "colReason": "Reason",
-      "colDate": "Date"
+      "colDate": "Date",
+      "missingTarget": "Enter a Discord ID or a character name",
+      "added": "Added",
+      "confirmDelete": "Remove this blacklist entry?",
+      "delete": "Delete"
     },
     "auditLog": {
       "heading": "Audit Log",
@@ -362,7 +371,9 @@
       "banAdded": "{target}: added to blacklist",
       "banRemoved": "{target}: removed from blacklist",
       "generic": "{target}: {type}",
-      "systemActor": "System"
+      "systemActor": "System",
+      "searchPlaceholder": "Search the log…",
+      "loadMore": "Load more"
     },
     "news": {
       "heading": "News",
@@ -455,7 +466,8 @@
       "saved": "Saved",
       "searchRoles": "Search roles…",
       "searchChannels": "Search channels…"
-    }
+    },
+    "openMenu": "Open menu"
   },
   "LanguageSwitcher": {
     "label": "Language"

@@ -264,14 +264,16 @@
       "colStatus": "Durum",
       "rank": "Rütbe {n}",
       "online": "Çevrim içi",
-      "afk": "AFK"
+      "afk": "AFK",
+      "searchPlaceholder": "Üye ara…"
     },
     "ranks": {
       "heading": "Rütbeler",
       "emptyTitle": "Henüz rütbe yok",
       "emptyBody": "Üyeler bot aracılığıyla rütbe almaya başladığında dağılımları burada görünecek.",
       "rank": "Rütbe {n}",
-      "memberCount": "{n, plural, other {# üye}}"
+      "memberCount": "{n, plural, other {# üye}}",
+      "note": "Rütbeler Discord üzerinden bot ile yapılandırılır. Burada üyeler arasındaki dağılımları gösterilir."
     },
     "tickets": {
       "emptyTitle": "Henüz talep yok",
@@ -334,7 +336,10 @@
       "peakInRange": "Dönem zirvesi",
       "range180": "180 gün",
       "range365": "365 gün",
-      "shortHistory": "Veriler {date} tarihinden beri toplanıyor - henüz daha eski bir geçmiş yok."
+      "shortHistory": "Veriler {date} tarihinden beri toplanıyor - henüz daha eski bir geçmiş yok.",
+      "chartLabel": "{project} çevrimiçi geçmişi",
+      "colDate": "Tarih",
+      "colPlayers": "Oyuncu"
     },
     "blacklist": {
       "heading": "Kara Liste",
@@ -346,7 +351,11 @@
       "emptyBody": "Engellenen üyeler burada görünecek.",
       "colTarget": "Yasaklanan",
       "colReason": "Sebep",
-      "colDate": "Tarih"
+      "colDate": "Tarih",
+      "missingTarget": "Discord ID veya karakter adı girin",
+      "added": "Eklendi",
+      "confirmDelete": "Bu kara liste kaydı silinsin mi?",
+      "delete": "Sil"
     },
     "auditLog": {
       "heading": "İşlem Günlüğü",
@@ -362,7 +371,9 @@
       "banAdded": "{target}: kara listeye eklendi",
       "banRemoved": "{target}: kara listeden çıkarıldı",
       "generic": "{target}: {type}",
-      "systemActor": "Sistem"
+      "systemActor": "Sistem",
+      "searchPlaceholder": "Günlükte ara…",
+      "loadMore": "Daha fazla yükle"
     },
     "news": {
       "heading": "Haberler",
@@ -455,7 +466,8 @@
       "saved": "Kaydedildi",
       "searchRoles": "Rol ara…",
       "searchChannels": "Kanal ara…"
-    }
+    },
+    "openMenu": "Menüyü aç"
   },
   "LanguageSwitcher": {
     "label": "Dil"

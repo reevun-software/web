@@ -264,14 +264,16 @@
       "colStatus": "Статус",
       "rank": "Ранг {n}",
       "online": "На связи",
-      "afk": "AFK"
+      "afk": "AFK",
+      "searchPlaceholder": "Поиск участника…"
     },
     "ranks": {
       "heading": "Ранги",
       "emptyTitle": "Пока нет рангов",
       "emptyBody": "Как только участники начнут получать ранги через бота, здесь появится их распределение.",
       "rank": "Ранг {n}",
-      "memberCount": "{n, plural, one {# участник} few {# участника} many {# участников} other {# участника}}"
+      "memberCount": "{n, plural, one {# участник} few {# участника} many {# участников} other {# участника}}",
+      "note": "Ранги настраиваются через бота в Discord. Здесь отображается их распределение среди участников."
     },
     "tickets": {
       "emptyTitle": "Пока нет обращений",
@@ -334,7 +336,10 @@
       "peakInRange": "Пик за период",
       "range180": "180 дней",
       "range365": "365 дней",
-      "shortHistory": "Данные собираются с {date} — более ранней истории пока нет."
+      "shortHistory": "Данные собираются с {date} — более ранней истории пока нет.",
+      "chartLabel": "История онлайна {project}",
+      "colDate": "Дата",
+      "colPlayers": "Игроков"
     },
     "blacklist": {
       "heading": "Чёрный список",
@@ -346,7 +351,11 @@
       "emptyBody": "Заблокированные участники появятся здесь.",
       "colTarget": "Кого забанили",
       "colReason": "Причина",
-      "colDate": "Дата"
+      "colDate": "Дата",
+      "missingTarget": "Укажите Discord ID или имя персонажа",
+      "added": "Добавлено",
+      "confirmDelete": "Удалить запись из чёрного списка?",
+      "delete": "Удалить"
     },
     "auditLog": {
       "heading": "Журнал действий",
@@ -362,7 +371,9 @@
       "banAdded": "{target}: добавлен в чёрный список",
       "banRemoved": "{target}: удалён из чёрного списка",
       "generic": "{target}: {type}",
-      "systemActor": "Система"
+      "systemActor": "Система",
+      "searchPlaceholder": "Поиск по журналу…",
+      "loadMore": "Показать ещё"
     },
     "news": {
       "heading": "Новости",
@@ -455,7 +466,8 @@
       "saved": "Сохранено",
       "searchRoles": "Поиск роли…",
       "searchChannels": "Поиск канала…"
-    }
+    },
+    "openMenu": "Открыть меню"
   },
   "LanguageSwitcher": {
     "label": "Язык"

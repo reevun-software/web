@@ -3,16 +3,7 @@ import { Users } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { guildMembers, afkSessions } from "@/lib/db/schema";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { MembersTable } from "@/components/dashboard/members-table";
 
 export default async function MembersPage({
   params,
@@ -44,41 +35,25 @@ export default async function MembersPage({
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>{t("colMember")}</TableHead>
-            <TableHead>{t("colRank")}</TableHead>
-            <TableHead>{t("colWarnings")}</TableHead>
-            <TableHead>{t("colStatus")}</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {members.map((m) => (
-            <TableRow key={m.discordUserId}>
-              <TableCell className="flex items-center gap-2.5">
-                <Avatar className="size-7">
-                  <AvatarFallback className="text-xs">
-                    {m.username[0]}
-                  </AvatarFallback>
-                </Avatar>
-                {m.username}
-              </TableCell>
-              <TableCell>{t("rank", { n: m.rank })}</TableCell>
-              <TableCell>
-                {m.warnings > 0 ? (
-                  <Badge variant="destructive">{m.warnings}</Badge>
-                ) : (
-                  <span className="text-muted-foreground">0</span>
-                )}
-              </TableCell>
-              <TableCell className="text-muted-foreground">
-                {afkUserIds.has(m.discordUserId) ? t("afk") : t("online")}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <MembersTable
+        members={members.map((m) => ({
+          discordUserId: m.discordUserId,
+          username: m.username,
+          rank: m.rank,
+          rankLabel: t("rank", { n: m.rank }),
+          warnings: m.warnings,
+          isAfk: afkUserIds.has(m.discordUserId),
+        }))}
+        labels={{
+          colMember: t("colMember"),
+          colRank: t("colRank"),
+          colWarnings: t("colWarnings"),
+          colStatus: t("colStatus"),
+          searchPlaceholder: t("searchPlaceholder"),
+          online: t("online"),
+          afk: t("afk"),
+        }}
+      />
     </div>
   );
 }

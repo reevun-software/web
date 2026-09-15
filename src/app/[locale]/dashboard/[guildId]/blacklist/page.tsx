@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { Ban as BanIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
@@ -9,6 +9,8 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { BlacklistForm } from "@/components/dashboard/blacklist-form";
+import { DeleteBanButton } from "@/components/dashboard/delete-ban-button";
 import {
   Table,
   TableBody,
@@ -32,14 +34,14 @@ export default async function BlacklistPage({
     .where(eq(bans.guildId, guildId))
     .orderBy(desc(bans.createdAt));
 
-  async function addBan(formData: FormData) {
+  async function addBan(formData: FormData): Promise<{ error?: string }> {
     "use server";
     const discordUserId = (formData.get("discordUserId") as string)?.trim() || null;
     const characterName = (formData.get("characterName") as string)?.trim() || null;
     const reason = (formData.get("reason") as string)?.trim();
-    if (!reason || (!discordUserId && !characterName)) return;
+    if (!reason || (!discordUserId && !characterName)) return { error: "missingTarget" };
     const staff = await auth();
-    if (!staff?.discordId) return;
+    if (!staff?.discordId) return { error: "missingTarget" };
 
     await db.insert(bans).values({
       guildId,
@@ -49,6 +51,13 @@ export default async function BlacklistPage({
       issuedBy: staff.discordId,
     });
     revalidatePath(`/dashboard/${guildId}/blacklist`);
+    return {};
+  }
+
+  async function deleteBan(id: number) {
+    "use server";
+    await db.delete(bans).where(and(eq(bans.id, id), eq(bans.guildId, guildId)));
+    revalidatePath(`/dashboard/${guildId}/blacklist`);
   }
 
   return (
@@ -56,7 +65,12 @@ export default async function BlacklistPage({
       <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
 
       <Card className="p-5">
-        <form action={addBan} className="grid gap-3 sm:grid-cols-[1fr_1fr_2fr_auto] sm:items-end">
+        <BlacklistForm
+          action={addBan}
+          missingTargetError={t("missingTarget")}
+          addedMessage={t("added")}
+          className="grid gap-3 sm:grid-cols-[1fr_1fr_2fr_auto] sm:items-end"
+        >
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="discordUserId">{t("discordId")}</Label>
             <Input id="discordUserId" name="discordUserId" />
@@ -72,7 +86,7 @@ export default async function BlacklistPage({
           <Button type="submit" className="cursor-pointer">
             {t("add")}
           </Button>
-        </form>
+        </BlacklistForm>
       </Card>
 
       {rows.length === 0 ? (
@@ -88,6 +102,7 @@ export default async function BlacklistPage({
               <TableHead>{t("colTarget")}</TableHead>
               <TableHead>{t("colReason")}</TableHead>
               <TableHead>{t("colDate")}</TableHead>
+              <TableHead className="w-9" />
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -104,6 +119,13 @@ export default async function BlacklistPage({
                 <TableCell className="text-muted-foreground">{row.reason}</TableCell>
                 <TableCell className="text-muted-foreground">
                   {row.createdAt.toLocaleDateString(locale)}
+                </TableCell>
+                <TableCell>
+                  <DeleteBanButton
+                    action={deleteBan.bind(null, row.id)}
+                    confirmLabel={t("confirmDelete")}
+                    label={t("delete")}
+                  />
                 </TableCell>
               </TableRow>
             ))}

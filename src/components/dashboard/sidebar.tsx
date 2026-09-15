@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   LayoutDashboard,
@@ -16,6 +17,8 @@ import {
   History,
   ChevronsUpDown,
   Check,
+  Menu,
+  type LucideIcon,
 } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -26,55 +29,42 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
 import type { ManageableGuild } from "@/lib/guilds";
 
-export function DashboardSidebar({
+type NavItem = { label: string; icon: LucideIcon; segment: string };
+
+// Shared between the permanent desktop rail and the mobile Sheet - only the
+// outer chrome differs, so the nav itself (and its active-state logic)
+// isn't duplicated between the two render paths. Declared at module scope,
+// not nested inside DashboardSidebar, so React doesn't treat it as a new
+// component on every render (which would reset the Sheet's own state).
+function SidebarNavContent({
   guildId,
   guildName,
   guilds,
+  noBotLabel,
+  navGroups,
+  bottomNav,
+  onNavigate,
 }: {
   guildId: string;
   guildName: string;
   guilds: ManageableGuild[];
+  noBotLabel: string;
+  navGroups: NavItem[][];
+  bottomNav: NavItem[];
+  onNavigate?: () => void;
 }) {
-  const t = useTranslations("Dashboard");
   const pathname = usePathname();
   const base = `/dashboard/${guildId}`;
 
-  // Groups render with a divider between them: overview, then day-to-day
-  // family management, then account-level stuff pinned toward the bottom.
-  const navGroups = [
-    [
-      { label: t("nav.dashboard"), icon: LayoutDashboard, segment: "" },
-      { label: t("nav.monitoring"), icon: Activity, segment: "monitoring" },
-      { label: t("nav.news"), icon: Newspaper, segment: "news" },
-    ],
-    [
-      { label: t("nav.members"), icon: Users, segment: "members" },
-      { label: t("nav.ranks"), icon: ShieldCheck, segment: "ranks" },
-      { label: t("nav.warnings"), icon: ShieldAlert, segment: "warnings" },
-      { label: t("nav.tickets"), icon: Ticket, segment: "tickets" },
-      { label: t("nav.afk"), icon: Moon, segment: "afk" },
-      { label: t("nav.blacklist"), icon: Ban, segment: "blacklist" },
-    ],
-  ];
-  const bottomNav = [
-    { label: t("nav.security"), icon: Lock, segment: "security" },
-    { label: t("nav.settings"), icon: Settings, segment: "settings" },
-    { label: t("nav.auditLog"), icon: History, segment: "audit-log" },
-  ];
-
   return (
-    <aside className="sticky top-0 flex h-dvh w-64 shrink-0 flex-col overflow-y-auto border-r border-border/60 bg-card/40">
+    <>
       <div className="p-3">
         <DropdownMenu>
           <DropdownMenuTrigger
-            render={
-              <Button
-                variant="ghost"
-                className="w-full justify-between px-2 font-medium"
-              />
-            }
+            render={<Button variant="ghost" className="w-full justify-between px-2 font-medium" />}
           >
             <span className="min-w-0 flex-1 truncate text-left">{guildName}</span>
             <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />
@@ -85,14 +75,11 @@ export function DashboardSidebar({
                 key={g.id}
                 render={<Link href={g.botInstalled ? `/dashboard/${g.id}` : "#"} />}
                 disabled={!g.botInstalled}
+                onClick={onNavigate}
               >
                 <span className="flex-1 truncate">{g.name}</span>
                 {g.id === guildId && <Check className="size-4" />}
-                {!g.botInstalled && (
-                  <span className="text-xs text-muted-foreground">
-                    {t("noBot")}
-                  </span>
-                )}
+                {!g.botInstalled && <span className="text-xs text-muted-foreground">{noBotLabel}</span>}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -109,6 +96,7 @@ export function DashboardSidebar({
                 <Link
                   key={item.label}
                   href={href}
+                  onClick={onNavigate}
                   className={cn(
                     "flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
                     active
@@ -133,6 +121,7 @@ export function DashboardSidebar({
             <Link
               key={item.label}
               href={href}
+              onClick={onNavigate}
               className={cn(
                 "flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
                 active
@@ -146,6 +135,86 @@ export function DashboardSidebar({
           );
         })}
       </div>
-    </aside>
+    </>
+  );
+}
+
+export function DashboardSidebar({
+  guildId,
+  guildName,
+  guilds,
+  accountMenu,
+}: {
+  guildId: string;
+  guildName: string;
+  guilds: ManageableGuild[];
+  accountMenu?: React.ReactNode;
+}) {
+  const t = useTranslations("Dashboard");
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Groups render with a divider between them: overview, then day-to-day
+  // family management, then account-level stuff pinned toward the bottom.
+  const navGroups: NavItem[][] = [
+    [
+      { label: t("nav.dashboard"), icon: LayoutDashboard, segment: "" },
+      { label: t("nav.monitoring"), icon: Activity, segment: "monitoring" },
+      { label: t("nav.news"), icon: Newspaper, segment: "news" },
+    ],
+    [
+      { label: t("nav.members"), icon: Users, segment: "members" },
+      { label: t("nav.ranks"), icon: ShieldCheck, segment: "ranks" },
+      { label: t("nav.warnings"), icon: ShieldAlert, segment: "warnings" },
+      { label: t("nav.tickets"), icon: Ticket, segment: "tickets" },
+      { label: t("nav.afk"), icon: Moon, segment: "afk" },
+      { label: t("nav.blacklist"), icon: Ban, segment: "blacklist" },
+    ],
+  ];
+  const bottomNav: NavItem[] = [
+    { label: t("nav.security"), icon: Lock, segment: "security" },
+    { label: t("nav.settings"), icon: Settings, segment: "settings" },
+    { label: t("nav.auditLog"), icon: History, segment: "audit-log" },
+  ];
+
+  return (
+    <>
+      {/* Permanent rail from md up - a 768px+ viewport has room for it. */}
+      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col overflow-y-auto border-r border-border/60 bg-card/40 md:flex">
+        <SidebarNavContent
+          guildId={guildId}
+          guildName={guildName}
+          guilds={guilds}
+          noBotLabel={t("noBot")}
+          navGroups={navGroups}
+          bottomNav={bottomNav}
+        />
+      </aside>
+
+      {/* Below md, the rail would eat the whole viewport, so it collapses
+          into a top bar + Sheet instead of just overflowing. */}
+      <div className="flex h-14 shrink-0 items-center gap-2 border-b border-border/60 px-3 md:hidden">
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <SheetTrigger render={<Button variant="ghost" size="icon-sm" aria-label={t("openMenu")} />}>
+            <Menu className="size-4" />
+          </SheetTrigger>
+          <SheetContent side="left" className="flex w-72 flex-col gap-0 p-0">
+            <SheetHeader className="sr-only">
+              <SheetTitle>{guildName}</SheetTitle>
+            </SheetHeader>
+            <SidebarNavContent
+              guildId={guildId}
+              guildName={guildName}
+              guilds={guilds}
+              noBotLabel={t("noBot")}
+              navGroups={navGroups}
+              bottomNav={bottomNav}
+              onNavigate={() => setMobileOpen(false)}
+            />
+          </SheetContent>
+        </Sheet>
+        <span className="min-w-0 flex-1 truncate text-sm font-medium">{guildName}</span>
+        {accountMenu}
+      </div>
+    </>
   );
 }

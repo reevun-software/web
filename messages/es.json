@@ -264,14 +264,16 @@
       "colStatus": "Estado",
       "rank": "Rango {n}",
       "online": "En línea",
-      "afk": "Ausente"
+      "afk": "Ausente",
+      "searchPlaceholder": "Buscar miembros…"
     },
     "ranks": {
       "heading": "Rangos",
       "emptyTitle": "Aún no hay rangos",
       "emptyBody": "En cuanto los miembros empiecen a recibir rangos a través del bot, su distribución aparecerá aquí.",
       "rank": "Rango {n}",
-      "memberCount": "{n, plural, one {# miembro} other {# miembros}}"
+      "memberCount": "{n, plural, one {# miembro} other {# miembros}}",
+      "note": "Los rangos se configuran a través del bot en Discord. Aquí se muestra su distribución entre los miembros."
     },
     "tickets": {
       "emptyTitle": "Todavía no hay tickets",
@@ -334,7 +336,10 @@
       "peakInRange": "Pico del período",
       "range180": "180 días",
       "range365": "365 días",
-      "shortHistory": "Los datos se recopilan desde {date}; todavía no hay historial anterior."
+      "shortHistory": "Los datos se recopilan desde {date}; todavía no hay historial anterior.",
+      "chartLabel": "Historial en línea de {project}",
+      "colDate": "Fecha",
+      "colPlayers": "Jugadores"
     },
     "blacklist": {
       "heading": "Lista negra",
@@ -346,7 +351,11 @@
       "emptyBody": "Los miembros bloqueados aparecerán aquí.",
       "colTarget": "Baneado",
       "colReason": "Motivo",
-      "colDate": "Fecha"
+      "colDate": "Fecha",
+      "missingTarget": "Introduce un ID de Discord o un nombre de personaje",
+      "added": "Añadido",
+      "confirmDelete": "¿Eliminar esta entrada de la lista negra?",
+      "delete": "Eliminar"
     },
     "auditLog": {
       "heading": "Registro de actividad",
@@ -362,7 +371,9 @@
       "banAdded": "{target}: añadido a la lista negra",
       "banRemoved": "{target}: eliminado de la lista negra",
       "generic": "{target}: {type}",
-      "systemActor": "Sistema"
+      "systemActor": "Sistema",
+      "searchPlaceholder": "Buscar en el registro…",
+      "loadMore": "Cargar más"
     },
     "news": {
       "heading": "Noticias",
@@ -455,7 +466,8 @@
       "saved": "Guardado",
       "searchRoles": "Buscar roles…",
       "searchChannels": "Buscar canales…"
-    }
+    },
+    "openMenu": "Abrir menú"
   },
   "LanguageSwitcher": {
     "label": "Idioma"

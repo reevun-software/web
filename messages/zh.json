@@ -264,14 +264,16 @@
       "colStatus": "状态",
       "rank": "军衔 {n}",
       "online": "在线",
-      "afk": "AFK"
+      "afk": "AFK",
+      "searchPlaceholder": "搜索成员…"
     },
     "ranks": {
       "heading": "军衔",
       "emptyTitle": "暂无军衔",
       "emptyBody": "一旦成员通过机器人获得军衔，其分布将显示在此处。",
       "rank": "军衔 {n}",
-      "memberCount": "{n, plural, other {# 名成员}}"
+      "memberCount": "{n, plural, other {# 名成员}}",
+      "note": "等级通过 Discord 中的机器人配置。此处显示成员之间的等级分布。"
     },
     "tickets": {
       "emptyTitle": "暂时还没有工单",
@@ -334,7 +336,10 @@
       "peakInRange": "该时段峰值",
       "range180": "180 天",
       "range365": "365 天",
-      "shortHistory": "数据自 {date} 起开始收集——目前还没有更早的历史记录。"
+      "shortHistory": "数据自 {date} 起开始收集——目前还没有更早的历史记录。",
+      "chartLabel": "{project} 在线历史",
+      "colDate": "日期",
+      "colPlayers": "在线人数"
     },
     "blacklist": {
       "heading": "黑名单",
@@ -346,7 +351,11 @@
       "emptyBody": "被封禁的成员将显示在此处。",
       "colTarget": "封禁对象",
       "colReason": "原因",
-      "colDate": "日期"
+      "colDate": "日期",
+      "missingTarget": "请输入 Discord ID 或角色名",
+      "added": "已添加",
+      "confirmDelete": "确定要删除此黑名单记录吗？",
+      "delete": "删除"
     },
     "auditLog": {
       "heading": "操作日志",
@@ -362,7 +371,9 @@
       "banAdded": "{target}：已加入黑名单",
       "banRemoved": "{target}：已从黑名单移除",
       "generic": "{target}：{type}",
-      "systemActor": "系统"
+      "systemActor": "系统",
+      "searchPlaceholder": "搜索日志…",
+      "loadMore": "加载更多"
     },
     "news": {
       "heading": "新闻",
@@ -455,7 +466,8 @@
       "saved": "已保存",
       "searchRoles": "搜索身分组…",
       "searchChannels": "搜索频道…"
-    }
+    },
+    "openMenu": "打开菜单"
   },
   "LanguageSwitcher": {
     "label": "语言"
