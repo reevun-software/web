@@ -138,6 +138,24 @@
   }
   html {
     @apply font-sans;
+    /* Applied on html itself (not just the .scrollbar-thin class on
+       specific popups) so the page's own scrollbar - and any scrollable
+       container someone adds later without remembering the class - gets
+       the thin treatment too, not just the containers this was patched
+       onto by hand. */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 9999px;
   }
 }
 
@@ -171,28 +189,6 @@
   .odometer-digit {
     transition: none;
   }
-}
-
-/* The plain OS scrollbar (wide, with up/down arrow buttons on Windows) on a
-   scrollable panel like the filter settings sheet read as an ugly stray
-   "bar" next to the content. `scrollbar-width` covers Firefox/Chrome/Edge;
-   the ::-webkit-scrollbar rules are the equivalent for older WebKit. */
-.scrollbar-thin {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-
-.scrollbar-thin::-webkit-scrollbar {
-  width: 8px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: var(--border);
-  border-radius: 9999px;
 }
 
 @keyframes leaving-ring-deplete {

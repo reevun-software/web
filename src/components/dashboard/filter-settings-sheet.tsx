@@ -96,7 +96,7 @@ export function FilterSettingsSheet({
             <SheetTitle>{filterLabel}</SheetTitle>
           </SheetHeader>
 
-          <div className="scrollbar-thin flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">
+          <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">
             <div className="flex flex-col gap-3">
               <label className="flex cursor-pointer items-center justify-between gap-4">
                 <span className="text-sm">{labels.deleteMessage}</span>
