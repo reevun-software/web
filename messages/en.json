@@ -256,7 +256,8 @@
       "news": "News",
       "blacklist": "Blacklist",
       "security": "Security",
-      "auditLog": "Audit Log"
+      "auditLog": "Audit Log",
+      "moduleLocked": "Disabled by the server owner"
     },
     "members": {
       "emptyTitle": "No members yet",

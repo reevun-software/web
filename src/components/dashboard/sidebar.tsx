@@ -30,9 +30,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { ManageableGuild } from "@/lib/guilds";
+import type { ModuleKey } from "@/lib/modules";
 
-type NavItem = { label: string; icon: LucideIcon; segment: string };
+type NavItem = { label: string; icon: LucideIcon; segment: string; moduleKey?: ModuleKey };
 
 // Shared between the permanent desktop rail and the mobile Sheet - only the
 // outer chrome differs, so the nav itself (and its active-state logic)
@@ -46,6 +48,8 @@ function SidebarNavContent({
   noBotLabel,
   navGroups,
   bottomNav,
+  moduleStates,
+  moduleLockedLabel,
   onNavigate,
 }: {
   guildId: string;
@@ -54,10 +58,52 @@ function SidebarNavContent({
   noBotLabel: string;
   navGroups: NavItem[][];
   bottomNav: NavItem[];
+  moduleStates: Record<ModuleKey, boolean>;
+  moduleLockedLabel: string;
   onNavigate?: () => void;
 }) {
   const pathname = usePathname();
   const base = `/dashboard/${guildId}`;
+
+  function renderNavItem(item: NavItem) {
+    const href = item.segment ? `${base}/${item.segment}` : base;
+    const active = pathname === href;
+    const locked = item.moduleKey ? moduleStates[item.moduleKey] === false : false;
+
+    if (locked) {
+      return (
+        <Tooltip key={item.label}>
+          <TooltipTrigger
+            render={
+              <span className="flex cursor-not-allowed items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-muted-foreground/50" />
+            }
+          >
+            <item.icon className="size-4" strokeWidth={1.5} />
+            <span className="flex-1">{item.label}</span>
+            <Lock className="size-3.5 shrink-0" strokeWidth={1.5} />
+          </TooltipTrigger>
+          <TooltipContent>{moduleLockedLabel}</TooltipContent>
+        </Tooltip>
+      );
+    }
+
+    return (
+      <Link
+        key={item.label}
+        href={href}
+        onClick={onNavigate}
+        className={cn(
+          "flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
+          active
+            ? "bg-accent text-accent-foreground"
+            : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
+        )}
+      >
+        <item.icon className="size-4" strokeWidth={1.5} />
+        {item.label}
+      </Link>
+    );
+  }
 
   return (
     <>
@@ -89,51 +135,13 @@ function SidebarNavContent({
       <nav className="flex flex-1 flex-col gap-0.5 px-2">
         {navGroups.map((group, i) => (
           <div key={i} className={cn("flex flex-col gap-0.5", i > 0 && "mt-2 border-t border-border/60 pt-2")}>
-            {group.map((item) => {
-              const href = item.segment ? `${base}/${item.segment}` : base;
-              const active = pathname === href;
-              return (
-                <Link
-                  key={item.label}
-                  href={href}
-                  onClick={onNavigate}
-                  className={cn(
-                    "flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
-                    active
-                      ? "bg-accent text-accent-foreground"
-                      : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
-                  )}
-                >
-                  <item.icon className="size-4" strokeWidth={1.5} />
-                  {item.label}
-                </Link>
-              );
-            })}
+            {group.map(renderNavItem)}
           </div>
         ))}
       </nav>
 
       <div className="flex flex-col gap-0.5 border-t border-border/60 px-2 py-2">
-        {bottomNav.map((item) => {
-          const href = `${base}/${item.segment}`;
-          const active = pathname === href;
-          return (
-            <Link
-              key={item.label}
-              href={href}
-              onClick={onNavigate}
-              className={cn(
-                "flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
-                active
-                  ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
-              )}
-            >
-              <item.icon className="size-4" strokeWidth={1.5} />
-              {item.label}
-            </Link>
-          );
-        })}
+        {bottomNav.map(renderNavItem)}
       </div>
     </>
   );
@@ -143,11 +151,13 @@ export function DashboardSidebar({
   guildId,
   guildName,
   guilds,
+  moduleStates,
   accountMenu,
 }: {
   guildId: string;
   guildName: string;
   guilds: ManageableGuild[];
+  moduleStates: Record<ModuleKey, boolean>;
   accountMenu?: React.ReactNode;
 }) {
   const t = useTranslations("Dashboard");
@@ -164,10 +174,10 @@ export function DashboardSidebar({
     [
       { label: t("nav.members"), icon: Users, segment: "members" },
       { label: t("nav.ranks"), icon: ShieldCheck, segment: "ranks" },
-      { label: t("nav.warnings"), icon: ShieldAlert, segment: "warnings" },
-      { label: t("nav.tickets"), icon: Ticket, segment: "tickets" },
-      { label: t("nav.afk"), icon: Moon, segment: "afk" },
-      { label: t("nav.blacklist"), icon: Ban, segment: "blacklist" },
+      { label: t("nav.warnings"), icon: ShieldAlert, segment: "warnings", moduleKey: "warnings" },
+      { label: t("nav.tickets"), icon: Ticket, segment: "tickets", moduleKey: "tickets" },
+      { label: t("nav.afk"), icon: Moon, segment: "afk", moduleKey: "afk" },
+      { label: t("nav.blacklist"), icon: Ban, segment: "blacklist", moduleKey: "blacklist" },
     ],
   ];
   const bottomNav: NavItem[] = [
@@ -187,6 +197,8 @@ export function DashboardSidebar({
           noBotLabel={t("noBot")}
           navGroups={navGroups}
           bottomNav={bottomNav}
+          moduleStates={moduleStates}
+          moduleLockedLabel={t("nav.moduleLocked")}
         />
       </aside>
 
@@ -208,6 +220,8 @@ export function DashboardSidebar({
               noBotLabel={t("noBot")}
               navGroups={navGroups}
               bottomNav={bottomNav}
+              moduleStates={moduleStates}
+              moduleLockedLabel={t("nav.moduleLocked")}
               onNavigate={() => setMobileOpen(false)}
             />
           </SheetContent>

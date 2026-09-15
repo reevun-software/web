@@ -256,7 +256,8 @@
       "news": "Noticias",
       "blacklist": "Lista negra",
       "security": "Seguridad",
-      "auditLog": "Registro de actividad"
+      "auditLog": "Registro de actividad",
+      "moduleLocked": "Desactivado por el propietario del servidor"
     },
     "members": {
       "emptyTitle": "Todavía no hay miembros",

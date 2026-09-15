@@ -28,7 +28,7 @@ export default async function MonitoringPage() {
   // A fixed minimum so the loading.tsx transition reads the same every
   // time instead of flickering by in whatever fraction of a second the
   // upstream APIs happened to respond in.
-  const MIN_LOAD_MS = 1500;
+  const MIN_LOAD_MS = 1000;
   const [
     majesticHistory,
     russiaOnlineHistory,

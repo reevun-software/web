@@ -41,7 +41,7 @@ export function OdometerNumber({
 }) {
   const formatted = value.toLocaleString(locale);
   return (
-    <span className={cn("inline-flex tabular-nums", className)}>
+    <span className={cn("inline-flex align-middle tabular-nums", className)}>
       {formatted.split("").map((char, i) =>
         /\d/.test(char) ? (
           <DigitColumn key={i} digit={Number(char)} />

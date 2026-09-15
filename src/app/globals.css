@@ -193,32 +193,6 @@
   }
 }
 
-/* Switching between monitored projects (Majestic/RussiaOnline/GTA5RP) is a
-   plain client-side state flip, not a fetch, so the new data is already
-   there the instant the key changes - but snapping straight to it read as
-   an abrupt swap. Blurring in on mount masks that instantness and reads as
-   the new project "loading in" instead. */
-@keyframes project-switch-in {
-  from {
-    opacity: 0.4;
-    filter: blur(10px);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-.animate-project-switch {
-  animation: project-switch-in 420ms ease-out;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-project-switch {
-    animation: none;
-  }
-}
-
 /* Draws each city line left-to-right on mount instead of just fading in.
    clip-path on an SVG <g> resolves percentages against that group's own
    bounding box (not the full viewBox), so this reveals exactly the line

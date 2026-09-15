@@ -161,7 +161,40 @@ export const guildBotSettings = pgTable("guild_bot_settings", {
   restoreOldRolesOnRejoin: boolean("restore_old_roles_on_rejoin").default(false).notNull(),
   restorableRoleIds: text("restorable_role_ids").array().notNull().default([]),
   exemptRoleIds: text("exempt_role_ids").array().notNull().default([]),
+  // Which RP platform this family plays on (see src/lib/online-monitoring.ts
+  // for the matching project keys) - null means "not linked", and the
+  // Monitoring page falls back to showing all three tabs as it always has.
+  project: text("project"),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// One row per (guild, module). A module absent here is enabled by default -
+// only owner-disabled modules get an explicit row, so turning a module back
+// on is a delete rather than tracking a separate "never touched" state.
+export const guildModules = pgTable(
+  "guild_modules",
+  {
+    guildId: text("guild_id")
+      .notNull()
+      .references(() => guilds.id, { onDelete: "cascade" }),
+    moduleKey: text("module_key").notNull(), // matches a MODULE_KEYS entry, see src/lib/modules.ts
+    enabled: boolean("enabled").default(true).notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.guildId, t.moduleKey] })],
+);
+
+// Only meaningful once the "departments" module itself is enabled - with it
+// off, every member is treated as belonging to one implicit general
+// department instead of any row here.
+export const guildDepartments = pgTable("guild_departments", {
+  id: serial("id").primaryKey(),
+  guildId: text("guild_id")
+    .notNull()
+    .references(() => guilds.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  memberDiscordIds: text("member_discord_ids").array().notNull().default([]),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 // Per-filter advanced settings, opened via the gear icon next to each

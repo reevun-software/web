@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
+import { Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FlagIcon } from "@/components/flag-icon";
@@ -14,6 +15,11 @@ import type { OnlineProjectData, OnlineHistoryPoint, CityHistoryPoint } from "@/
 
 const LIVE_REFRESH_MS = 60_000;
 const RANGE_OPTIONS = [1, 7, 30] as const;
+// Matches the fixed minimum the server-side page.tsx holds its own
+// loading.tsx open for, so switching projects client-side (an instant
+// state flip - every project's data is already loaded) still reads as
+// the same "load" beat as opening the page fresh does.
+const PROJECT_SWITCH_DELAY_MS = 1000;
 
 // Real history is a blend of resolutions - live recording is per-minute,
 // but the 30-day backfill only had hourly/daily data available for its
@@ -91,14 +97,25 @@ export function OnlineMonitoringTabs({
   const [active, setActive] = useState(projects[0]?.key);
   const [rangeDays, setRangeDays] = useState<(typeof RANGE_OPTIONS)[number]>(1);
   const [isolatedCityId, setIsolatedCityId] = useState<string | null>(null);
-  // Toggled (not a key remount) on project switch, so the blur-in transition
-  // replays without unmounting the stat numbers below it - a full remount
-  // there reset OdometerNumber's digit positions on every switch, which
-  // meant the numbers snapped straight to the new value instead of rolling
-  // to it like they do on every other update.
+  // Held for a fixed beat (not a key remount) on project switch: the stat
+  // numbers below stay mounted the whole time, so once `active` actually
+  // flips at the end of the delay, OdometerNumber sees its value prop
+  // change on an already-mounted element and rolls to it - a remount here
+  // would reset its digit positions and make it snap instead.
   const [switching, setSwitching] = useState(false);
+  // Highlights the clicked tab immediately even though the data behind it
+  // (and `active`) doesn't swap until the delay below finishes - without
+  // this the button a person just clicked looked unresponsive for a beat.
+  const [pendingKey, setPendingKey] = useState<string | undefined>(undefined);
+  const switchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const locale = useLocale();
   const router = useRouter();
+
+  useEffect(() => {
+    return () => {
+      if (switchTimeout.current) clearTimeout(switchTimeout.current);
+    };
+  }, []);
 
   // A stable "now" read once per mount rather than inside the memo below -
   // Date.now() is an impure call the React Compiler refuses to run during
@@ -117,9 +134,16 @@ export function OnlineMonitoringTabs({
   const data = project?.data;
 
   function selectProject(key: string) {
-    setActive(key);
-    setIsolatedCityId(null); // a city id from one project means nothing on another
+    if (key === active) return;
+    setPendingKey(key);
     setSwitching(true);
+    if (switchTimeout.current) clearTimeout(switchTimeout.current);
+    switchTimeout.current = setTimeout(() => {
+      setActive(key);
+      setIsolatedCityId(null); // a city id from one project means nothing on another
+      setSwitching(false);
+      setPendingKey(undefined);
+    }, PROJECT_SWITCH_DELAY_MS);
   }
 
   const since = now - rangeDays * 24 * 60 * 60 * 1000;
@@ -153,7 +177,7 @@ export function OnlineMonitoringTabs({
         {projects.map((p) => (
           <Button
             key={p.key}
-            variant={p.key === active ? "default" : "outline"}
+            variant={p.key === (pendingKey ?? active) ? "default" : "outline"}
             size="sm"
             className="cursor-pointer gap-1.5"
             onClick={() => selectProject(p.key)}
@@ -168,16 +192,18 @@ export function OnlineMonitoringTabs({
       {!data ? (
         <Card className="p-6 text-sm text-muted-foreground">{unavailable}</Card>
       ) : (
-        // Keyed by project so switching tabs (a plain client-side state
-        // flip, not a network fetch - all three projects' data is already
-        // loaded) crossfades instead of snapping between values. The stat
-        // numbers themselves roll digit-by-digit via OdometerNumber on top
-        // of this, since it re-triggers on any value change regardless of
-        // why the value changed (live refresh, project switch, or range).
-        <div
-          className={cn("flex flex-col gap-4", switching && "animate-project-switch")}
-          onAnimationEnd={() => setSwitching(false)}
-        >
+        // Not keyed by project - a remount here would reset OdometerNumber's
+        // digit positions on every switch, making it snap to the new value
+        // instead of rolling to it. The blur overlay below covers the old
+        // project's numbers/chart for PROJECT_SWITCH_DELAY_MS; `active` (and
+        // so every value here) only flips once that timer ends, so the
+        // reveal and the digit roll land on the same beat.
+        <div className="relative flex flex-col gap-4">
+          {switching && (
+            <div className="absolute inset-0 z-20 flex items-center justify-center rounded-lg bg-background/40 backdrop-blur-sm">
+              <Loader2 className="size-6 animate-spin text-muted-foreground" />
+            </div>
+          )}
           <Card className="grid grid-cols-1 divide-y divide-border/60 p-0 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {stats.map((s) => (
               <div key={s.label} className="flex flex-col gap-1 px-5 py-4">

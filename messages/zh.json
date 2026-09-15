@@ -256,7 +256,8 @@
       "news": "新闻",
       "blacklist": "黑名单",
       "security": "安全",
-      "auditLog": "操作日志"
+      "auditLog": "操作日志",
+      "moduleLocked": "已被服务器所有者禁用"
     },
     "members": {
       "emptyTitle": "暂时还没有成员",

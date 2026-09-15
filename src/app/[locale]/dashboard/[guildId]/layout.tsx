@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { redirect, Link } from "@/i18n/navigation";
 import { auth } from "@/lib/auth";
 import { getManageableGuilds } from "@/lib/guilds";
+import { getModuleStates } from "@/lib/guild-modules";
 import { SUPPORT_DISCORD_URL } from "@/lib/discord";
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
 import { AccountMenu } from "@/components/account-menu";
@@ -29,12 +30,15 @@ export default async function GuildLayout({
 
   if (!current || !current.botInstalled) notFound();
 
+  const moduleStates = await getModuleStates(guildId);
+
   return (
     <div className="flex min-h-[calc(100dvh-2rem)] flex-1 flex-col md:flex-row">
       <DashboardSidebar
         guildId={guildId}
         guildName={current.name}
         guilds={guilds}
+        moduleStates={moduleStates}
         accountMenu={
           <AccountMenu
             name={session.user?.name}

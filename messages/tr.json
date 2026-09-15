@@ -256,7 +256,8 @@
       "news": "Haberler",
       "blacklist": "Kara Liste",
       "security": "Güvenlik",
-      "auditLog": "İşlem Günlüğü"
+      "auditLog": "İşlem Günlüğü",
+      "moduleLocked": "Sunucu sahibi tarafından devre dışı bırakıldı"
     },
     "members": {
       "emptyTitle": "Henüz üye yok",
