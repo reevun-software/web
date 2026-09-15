@@ -181,44 +181,46 @@ export default async function SecurityPage({
       </div>
 
       <form action={save} className="flex flex-col gap-4">
-        <Card className="flex flex-col gap-4 p-6">
-          <span className="block border-b border-border/60 pb-4 text-sm font-medium">
-            {t("moderatorsTitle")}
-          </span>
-          <div className="flex flex-col gap-2">
-            <Label>{t("moderatorRoleIds")}</Label>
-            <RolePicker
-              name="moderatorRoleIds"
-              roles={roles}
-              defaultSelectedIds={current.moderatorRoleIds}
-              botRolePosition={botRolePosition}
-              hierarchyWarningLabel={t("hierarchyWarning")}
-              addLabel={t("addRole")}
-              emptyLabel={t("rolesUnavailable")}
-            />
+        <Card className="flex flex-col divide-y divide-border/60 p-0">
+          <div className="px-6 py-4">
+            <span className="text-sm font-medium">{t("moderatorsTitle")}</span>
           </div>
-          <label
-            htmlFor="ignoreCommandCooldownForMods"
-            className="flex cursor-pointer items-center justify-between gap-4"
-          >
-            <span className="text-sm">{t("ignoreCommandCooldownForMods")}</span>
-            <Switch
-              id="ignoreCommandCooldownForMods"
-              name="ignoreCommandCooldownForMods"
-              defaultChecked={current.ignoreCommandCooldownForMods}
-            />
-          </label>
-          <label
-            htmlFor="allowHigherModsToModerateLower"
-            className="flex cursor-pointer items-center justify-between gap-4"
-          >
-            <span className="text-sm">{t("allowHigherModsToModerateLower")}</span>
-            <Switch
-              id="allowHigherModsToModerateLower"
-              name="allowHigherModsToModerateLower"
-              defaultChecked={current.allowHigherModsToModerateLower}
-            />
-          </label>
+          <div className="flex flex-col gap-4 px-6 py-4">
+            <div className="flex flex-col gap-2">
+              <Label>{t("moderatorRoleIds")}</Label>
+              <RolePicker
+                name="moderatorRoleIds"
+                roles={roles}
+                defaultSelectedIds={current.moderatorRoleIds}
+                botRolePosition={botRolePosition}
+                hierarchyWarningLabel={t("hierarchyWarning")}
+                addLabel={t("addRole")}
+                emptyLabel={t("rolesUnavailable")}
+              />
+            </div>
+            <label
+              htmlFor="ignoreCommandCooldownForMods"
+              className="flex cursor-pointer items-center justify-between gap-4"
+            >
+              <span className="text-sm">{t("ignoreCommandCooldownForMods")}</span>
+              <Switch
+                id="ignoreCommandCooldownForMods"
+                name="ignoreCommandCooldownForMods"
+                defaultChecked={current.ignoreCommandCooldownForMods}
+              />
+            </label>
+            <label
+              htmlFor="allowHigherModsToModerateLower"
+              className="flex cursor-pointer items-center justify-between gap-4"
+            >
+              <span className="text-sm">{t("allowHigherModsToModerateLower")}</span>
+              <Switch
+                id="allowHigherModsToModerateLower"
+                name="allowHigherModsToModerateLower"
+                defaultChecked={current.allowHigherModsToModerateLower}
+              />
+            </label>
+          </div>
         </Card>
 
         <Card className="flex flex-col divide-y divide-border/60 p-0">
@@ -229,7 +231,7 @@ export default async function SecurityPage({
             <div key={key} className="flex items-center justify-between gap-4 px-6 py-2.5">
               <label
                 htmlFor={key}
-                className="flex flex-1 -translate-y-2 cursor-pointer flex-col gap-1"
+                className="flex flex-1 -translate-y-2 cursor-pointer flex-col gap-1.5"
               >
                 <span className="text-sm leading-none">{t(`filters.${key}.label`)}</span>
                 <span className="text-xs leading-none text-muted-foreground">
@@ -253,48 +255,49 @@ export default async function SecurityPage({
           ))}
         </Card>
 
-        <Card className="flex flex-col gap-3 p-6">
-          <span className="block border-b border-border/60 pb-4 text-sm font-medium">
-            {t("muteTitle")}
-          </span>
-          <label
-            htmlFor="muteBlocksReactions"
-            className="flex cursor-pointer items-center justify-between gap-4"
-          >
-            <span className="flex -translate-y-2 flex-col gap-1">
-              <span className="text-sm leading-none">{t("muteBlocksReactions")}</span>
-              <span className="text-xs leading-none text-muted-foreground">
-                {t("muteBlocksReactionsHint")}
+        <Card className="flex flex-col divide-y divide-border/60 p-0">
+          <div className="px-6 py-4">
+            <span className="text-sm font-medium">{t("muteTitle")}</span>
+          </div>
+          <div className="flex flex-col gap-4 px-6 py-4">
+            <label
+              htmlFor="muteBlocksReactions"
+              className="flex cursor-pointer items-center justify-between gap-4"
+            >
+              <span className="flex flex-col gap-1">
+                <span className="text-sm leading-none">{t("muteBlocksReactions")}</span>
+                <span className="text-xs leading-none text-muted-foreground">
+                  {t("muteBlocksReactionsHint")}
+                </span>
               </span>
-            </span>
-            <Switch
-              id="muteBlocksReactions"
-              name="muteBlocksReactions"
-              defaultChecked={current.muteBlocksReactions}
-              className="-translate-y-2"
+              <Switch
+                id="muteBlocksReactions"
+                name="muteBlocksReactions"
+                defaultChecked={current.muteBlocksReactions}
+              />
+            </label>
+            <MuteSettingsFields
+              roles={roles}
+              defaultMuteMode={current.muteMode}
+              defaultMuteRoleId={current.muteRoleId}
+              botRolePosition={botRolePosition}
+              labels={{
+                muteMode: t("muteMode"),
+                muteModeHint: t("muteModeHint"),
+                muteModeTimeout: t("muteModeTimeout"),
+                muteModeRole: t("muteModeRole"),
+                muteModeBoth: t("muteModeBoth"),
+                muteRoleId: t("muteRoleId"),
+                muteRoleIdHint: t("muteRoleIdHint"),
+                muteRoleIdPlaceholder: t("muteRoleIdPlaceholder"),
+                rolesUnavailable: t("rolesUnavailable"),
+                hierarchyWarning: t("hierarchyWarning"),
+              }}
             />
-          </label>
-          <MuteSettingsFields
-            roles={roles}
-            defaultMuteMode={current.muteMode}
-            defaultMuteRoleId={current.muteRoleId}
-            botRolePosition={botRolePosition}
-            labels={{
-              muteMode: t("muteMode"),
-              muteModeHint: t("muteModeHint"),
-              muteModeTimeout: t("muteModeTimeout"),
-              muteModeRole: t("muteModeRole"),
-              muteModeBoth: t("muteModeBoth"),
-              muteRoleId: t("muteRoleId"),
-              muteRoleIdHint: t("muteRoleIdHint"),
-              muteRoleIdPlaceholder: t("muteRoleIdPlaceholder"),
-              rolesUnavailable: t("rolesUnavailable"),
-              hierarchyWarning: t("hierarchyWarning"),
-            }}
-          />
-          <p className="rounded-md bg-muted px-3 py-2 text-xs text-muted-foreground">
-            {t("timeoutLimitNotice")}
-          </p>
+            <p className="rounded-md bg-muted px-3 py-2 text-xs text-muted-foreground">
+              {t("timeoutLimitNotice")}
+            </p>
+          </div>
         </Card>
 
         <SubmitButton pendingLabel={t("saving")} className="w-fit">
