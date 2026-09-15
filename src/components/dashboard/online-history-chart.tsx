@@ -316,10 +316,15 @@ export function OnlineHistoryChart({
         </svg>
 
         {/* Y-axis labels, positioned as HTML rather than SVG text so they
-            never get stretched by the non-uniform viewBox scale below. */}
+            never get stretched by the non-uniform viewBox scale below. Each
+            one gets its own card-colored backing - every city's line starts
+            at this same left edge, so whichever one happened to cross a
+            grid value there read as the number being crossed out. */}
         <div className="pointer-events-none absolute inset-y-0 left-0 flex flex-col justify-between py-1 text-[10px] text-muted-foreground">
           {gridLines.map((g) => (
-            <span key={g.y}>{g.value.toLocaleString(locale)}</span>
+            <span key={g.y} className="bg-card pr-1">
+              {g.value.toLocaleString(locale)}
+            </span>
           ))}
         </div>
 
