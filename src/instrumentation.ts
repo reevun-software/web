@@ -20,9 +20,10 @@ export async function register() {
         getGta5rpOnline(),
       ]);
       await Promise.all([
-        majestic && recordOnlineSnapshot("majestic", majestic.totalPlayers),
-        russiaOnline && recordOnlineSnapshot("russiaonline", russiaOnline.totalPlayers),
-        gta5rp && recordOnlineSnapshot("gta5rp", gta5rp.totalPlayers),
+        majestic && recordOnlineSnapshot("majestic", majestic.totalPlayers, majestic.cities),
+        russiaOnline &&
+          recordOnlineSnapshot("russiaonline", russiaOnline.totalPlayers, russiaOnline.cities),
+        gta5rp && recordOnlineSnapshot("gta5rp", gta5rp.totalPlayers, gta5rp.cities),
       ]);
     } catch (error) {
       console.error("instrumentation: online snapshot tick failed", error);

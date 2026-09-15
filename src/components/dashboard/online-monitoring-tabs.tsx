@@ -8,10 +8,27 @@ import { Button } from "@/components/ui/button";
 import { FlagIcon } from "@/components/flag-icon";
 import { OnlineHistoryChart } from "@/components/dashboard/online-history-chart";
 import { OdometerNumber } from "@/components/dashboard/odometer-number";
-import type { OnlineProjectData, OnlineHistoryPoint } from "@/lib/online-monitoring";
+import { cn } from "@/lib/utils";
+import type { OnlineProjectData, OnlineHistoryPoint, CityHistoryPoint } from "@/lib/online-monitoring";
 
 const LIVE_REFRESH_MS = 60_000;
-const RANGE_OPTIONS = [1, 7, 30, 90, 180, 365] as const;
+const RANGE_OPTIONS = [1, 7, 30] as const;
+
+// One color per city, assigned from the live city list order (not the
+// historical data's own order, which can drift) so a city's dot in the list
+// below always matches its line in the chart.
+const CITY_COLORS = [
+  "#f97316",
+  "#3b82f6",
+  "#22c55e",
+  "#eab308",
+  "#ec4899",
+  "#a855f7",
+  "#06b6d4",
+  "#ef4444",
+  "#84cc16",
+  "#14b8a6",
+];
 
 type Project = {
   key: string;
@@ -19,6 +36,7 @@ type Project = {
   logo: string;
   data: OnlineProjectData | null;
   history: OnlineHistoryPoint[];
+  cityHistory: CityHistoryPoint[];
 };
 
 export function OnlineMonitoringTabs({
@@ -50,6 +68,7 @@ export function OnlineMonitoringTabs({
 }) {
   const [active, setActive] = useState(projects[0]?.key);
   const [rangeDays, setRangeDays] = useState<(typeof RANGE_OPTIONS)[number]>(1);
+  const [isolatedCityId, setIsolatedCityId] = useState<string | null>(null);
   const locale = useLocale();
   const router = useRouter();
 
@@ -69,11 +88,27 @@ export function OnlineMonitoringTabs({
   const project = projects.find((p) => p.key === active) ?? projects[0];
   const data = project?.data;
 
-  const visibleHistory = useMemo(() => {
+  function selectProject(key: string) {
+    setActive(key);
+    setIsolatedCityId(null); // a city id from one project means nothing on another
+  }
+
+  const since = now - rangeDays * 24 * 60 * 60 * 1000;
+  const visibleCityHistory = useMemo(() => {
     if (!project) return [];
-    const since = now - rangeDays * 24 * 60 * 60 * 1000;
-    return project.history.filter((p) => p.recordedAt.getTime() >= since);
-  }, [project, rangeDays, now]);
+    return project.cityHistory.filter((p) => p.recordedAt.getTime() >= since);
+  }, [project, since]);
+
+  // Colors keyed off the live cities list (data.cities), which is also what
+  // renders the list below - not off visibleCityHistory, whose ordering is
+  // "whichever city's data happened to arrive first" and can disagree.
+  const cityColors = useMemo(() => {
+    const colors: Record<string, string> = {};
+    data?.cities.forEach((c, i) => {
+      colors[c.id] = CITY_COLORS[i % CITY_COLORS.length];
+    });
+    return colors;
+  }, [data]);
 
   const stats = [
     { label: current, value: data?.totalPlayers },
@@ -90,7 +125,7 @@ export function OnlineMonitoringTabs({
             variant={p.key === active ? "default" : "outline"}
             size="sm"
             className="cursor-pointer gap-1.5"
-            onClick={() => setActive(p.key)}
+            onClick={() => selectProject(p.key)}
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- external brand logo, hotlinked from the project's own official domain */}
             <img src={p.logo} alt="" className="size-4 rounded-sm object-contain" />
@@ -104,7 +139,10 @@ export function OnlineMonitoringTabs({
       ) : (
         // Keyed by project so switching tabs (a plain client-side state
         // flip, not a network fetch - all three projects' data is already
-        // loaded) crossfades instead of snapping between values.
+        // loaded) crossfades instead of snapping between values. The stat
+        // numbers themselves roll digit-by-digit via OdometerNumber on top
+        // of this, since it re-triggers on any value change regardless of
+        // why the value changed (live refresh, project switch, or range).
         <div key={project?.key} className="flex flex-col gap-4 animate-in fade-in duration-200 ease-out">
           <Card className="grid grid-cols-1 divide-y divide-border/60 p-0 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {stats.map((s) => (
@@ -118,21 +156,35 @@ export function OnlineMonitoringTabs({
           </Card>
 
           <Card className="flex flex-col gap-3 p-5 text-foreground">
-            <div className="flex flex-wrap gap-1.5">
-              {RANGE_OPTIONS.map((days) => (
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap gap-1.5">
+                {RANGE_OPTIONS.map((days) => (
+                  <Button
+                    key={days}
+                    variant={rangeDays === days ? "default" : "ghost"}
+                    size="sm"
+                    className="cursor-pointer"
+                    onClick={() => setRangeDays(days)}
+                  >
+                    {rangeLabels[days]}
+                  </Button>
+                ))}
+              </div>
+              {isolatedCityId && (
                 <Button
-                  key={days}
-                  variant={rangeDays === days ? "default" : "ghost"}
+                  variant="ghost"
                   size="sm"
-                  className="cursor-pointer"
-                  onClick={() => setRangeDays(days)}
+                  className="cursor-pointer text-muted-foreground"
+                  onClick={() => setIsolatedCityId(null)}
                 >
-                  {rangeLabels[days]}
+                  {data.cities.find((c) => c.id === isolatedCityId)?.name}
+                  <span aria-hidden> ×</span>
                 </Button>
-              ))}
+              )}
             </div>
             <OnlineHistoryChart
-              points={visibleHistory}
+              cityPoints={visibleCityHistory}
+              cityColors={cityColors}
               emptyLabel={historyEmpty}
               peakLabel={peakInRange}
               shortHistoryLabel={shortHistory}
@@ -141,27 +193,42 @@ export function OnlineMonitoringTabs({
               colPlayers={colPlayers}
               locale={locale}
               rangeKey={rangeDays}
+              isolatedCityId={isolatedCityId}
             />
           </Card>
 
           <div className="grid grid-cols-1 gap-px overflow-hidden rounded-lg bg-border/60 sm:grid-cols-2 lg:grid-cols-3">
-            {data.cities.map((c) => (
-              <div
-                key={c.id}
-                className="flex items-center justify-between gap-3 bg-card px-4 py-3 transition-colors hover:bg-accent/60"
-              >
-                <span className="flex min-w-0 items-center gap-2 truncate text-sm font-medium">
-                  {c.countryCode && <FlagIcon code={c.countryCode} />}
-                  <span className="truncate">{c.name}</span>
-                </span>
-                <span className="flex shrink-0 items-center gap-2 text-sm text-muted-foreground">
-                  <OdometerNumber value={c.players} locale={locale} />
-                  {c.online !== false && (
-                    <span className="size-1.5 shrink-0 rounded-full bg-emerald-500" aria-hidden />
+            {data.cities.map((c) => {
+              const isolated = isolatedCityId === c.id;
+              return (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => setIsolatedCityId(isolated ? null : c.id)}
+                  className={cn(
+                    "flex cursor-pointer items-center justify-between gap-3 bg-card px-4 py-3 text-left transition-colors hover:bg-accent/60",
+                    isolatedCityId && !isolated && "opacity-50",
+                    isolated && "bg-accent/60",
                   )}
-                </span>
-              </div>
-            ))}
+                >
+                  <span className="flex min-w-0 items-center gap-2 truncate text-sm font-medium">
+                    <span
+                      className="size-2 shrink-0 rounded-full"
+                      style={{ backgroundColor: cityColors[c.id] }}
+                      aria-hidden
+                    />
+                    {c.countryCode && <FlagIcon code={c.countryCode} />}
+                    <span className="truncate">{c.name}</span>
+                  </span>
+                  <span className="flex shrink-0 items-center gap-2 text-sm text-muted-foreground">
+                    <OdometerNumber value={c.players} locale={locale} />
+                    {c.online !== false && (
+                      <span className="size-1.5 shrink-0 rounded-full bg-emerald-500" aria-hidden />
+                    )}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}

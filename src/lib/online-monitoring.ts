@@ -1,6 +1,6 @@
 import { and, asc, desc, eq, gte } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { onlineSnapshots } from "@/lib/db/schema";
+import { onlineSnapshots, onlineCitySnapshots } from "@/lib/db/schema";
 
 export type OnlineCity = {
   id: string;
@@ -22,6 +22,7 @@ export type OnlineProjectData = {
 export type OnlineProjectKey = "majestic" | "russiaonline" | "gta5rp";
 
 export type OnlineHistoryPoint = { recordedAt: Date; totalPlayers: number };
+export type CityHistoryPoint = { recordedAt: Date; cityId: string; cityName: string; players: number };
 
 type MajesticServer = {
   id: string;
@@ -131,7 +132,11 @@ const SNAPSHOT_MIN_INTERVAL_MS = 60 * 1000;
 // someone happens to have the page open. The throttle below is just a
 // safety net against a near-simultaneous duplicate write, not the pacing
 // mechanism itself.
-export async function recordOnlineSnapshot(project: OnlineProjectKey, totalPlayers: number) {
+export async function recordOnlineSnapshot(
+  project: OnlineProjectKey,
+  totalPlayers: number,
+  cities: OnlineCity[] = [],
+) {
   const [last] = await db
     .select({ recordedAt: onlineSnapshots.recordedAt })
     .from(onlineSnapshots)
@@ -142,6 +147,11 @@ export async function recordOnlineSnapshot(project: OnlineProjectKey, totalPlaye
   if (last && Date.now() - last.recordedAt.getTime() < SNAPSHOT_MIN_INTERVAL_MS) return;
 
   await db.insert(onlineSnapshots).values({ project, totalPlayers });
+  if (cities.length > 0) {
+    await db.insert(onlineCitySnapshots).values(
+      cities.map((c) => ({ project, cityId: c.id, cityName: c.name, players: c.players })),
+    );
+  }
 }
 
 export async function getOnlineHistory(
@@ -157,6 +167,27 @@ export async function getOnlineHistory(
     .from(onlineSnapshots)
     .where(and(eq(onlineSnapshots.project, project), gte(onlineSnapshots.recordedAt, since)))
     .orderBy(asc(onlineSnapshots.recordedAt));
+
+  return rows;
+}
+
+export async function getCityOnlineHistory(
+  project: OnlineProjectKey,
+  hours = 24,
+): Promise<CityHistoryPoint[]> {
+  const since = new Date(Date.now() - hours * 60 * 60 * 1000);
+  const rows = await db
+    .select({
+      recordedAt: onlineCitySnapshots.recordedAt,
+      cityId: onlineCitySnapshots.cityId,
+      cityName: onlineCitySnapshots.cityName,
+      players: onlineCitySnapshots.players,
+    })
+    .from(onlineCitySnapshots)
+    .where(
+      and(eq(onlineCitySnapshots.project, project), gte(onlineCitySnapshots.recordedAt, since)),
+    )
+    .orderBy(asc(onlineCitySnapshots.recordedAt));
 
   return rows;
 }

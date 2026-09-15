@@ -54,6 +54,19 @@ export const onlineSnapshots = pgTable("online_snapshots", {
   recordedAt: timestamp("recorded_at").defaultNow().notNull(),
 });
 
+// Per-city breakdown of the same snapshot tick above - kept as its own
+// table (one row per city per tick) rather than a JSON column on
+// online_snapshots, so a single city's history can be queried directly.
+// History only exists from whenever this table started being written.
+export const onlineCitySnapshots = pgTable("online_city_snapshots", {
+  id: serial("id").primaryKey(),
+  project: text("project").notNull(),
+  cityId: text("city_id").notNull(),
+  cityName: text("city_name").notNull(),
+  players: integer("players").notNull(),
+  recordedAt: timestamp("recorded_at").defaultNow().notNull(),
+});
+
 export const tickets = pgTable("tickets", {
   id: text("id").primaryKey(), // "<type>-<10 digits>", set by the bot
   guildId: text("guild_id")

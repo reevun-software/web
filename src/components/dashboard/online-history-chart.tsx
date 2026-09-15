@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import type { OnlineHistoryPoint } from "@/lib/online-monitoring";
+import { useMemo, useState } from "react";
+import type { CityHistoryPoint } from "@/lib/online-monitoring";
 
 const WIDTH = 600;
 const HEIGHT = 220;
@@ -20,8 +20,29 @@ function niceStep(roughStep: number) {
   return niceFraction * 10 ** exponent;
 }
 
+// Nearest tick to a target time via binary search - the ticks array can run
+// into the tens of thousands at 30 days of per-minute data, and this runs on
+// every pointermove, so a linear scan there would visibly lag.
+function nearestTick<T extends { t: number }>(ticks: T[], target: number): T {
+  let lo = 0;
+  let hi = ticks.length - 1;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (ticks[mid].t < target) lo = mid + 1;
+    else hi = mid;
+  }
+  if (lo > 0 && Math.abs(ticks[lo - 1].t - target) <= Math.abs(ticks[lo].t - target)) {
+    return ticks[lo - 1];
+  }
+  return ticks[lo];
+}
+
+type CityMeta = { id: string; name: string; color: string };
+type Tick = { t: number; values: Map<string, number> };
+
 export function OnlineHistoryChart({
-  points,
+  cityPoints,
+  cityColors,
   emptyLabel,
   peakLabel,
   shortHistoryLabel,
@@ -30,8 +51,13 @@ export function OnlineHistoryChart({
   colPlayers,
   locale,
   rangeKey,
+  isolatedCityId,
 }: {
-  points: OnlineHistoryPoint[];
+  cityPoints: CityHistoryPoint[];
+  // Colors are assigned by the parent from the live (not historical) city
+  // list, so a city's line color matches its dot in the list below even
+  // when the two orderings would otherwise disagree.
+  cityColors: Record<string, string>;
   emptyLabel: string;
   peakLabel: string;
   // "{date}" placeholder replaced with the oldest point's formatted date/time.
@@ -47,10 +73,39 @@ export function OnlineHistoryChart({
   // used both to key the crossfade below and to tell whether the actual
   // recorded history is shorter than the range that was asked for.
   rangeKey: number;
+  // Set by clicking a city in the list below the chart - narrows the chart
+  // (and its tooltip) down to just that one city's line.
+  isolatedCityId: string | null;
 }) {
-  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [hoverT, setHoverT] = useState<number | null>(null);
 
-  if (points.length < 2) {
+  const { cities, ticks } = useMemo(() => {
+    const cityMap = new Map<string, CityMeta>();
+    const tickMap = new Map<number, Map<string, number>>();
+    for (const p of cityPoints) {
+      if (!cityMap.has(p.cityId)) {
+        cityMap.set(p.cityId, {
+          id: p.cityId,
+          name: p.cityName,
+          color: cityColors[p.cityId] ?? "currentColor",
+        });
+      }
+      let values = tickMap.get(p.recordedAt.getTime());
+      if (!values) {
+        values = new Map();
+        tickMap.set(p.recordedAt.getTime(), values);
+      }
+      values.set(p.cityId, p.players);
+    }
+    const ticks: Tick[] = [...tickMap.entries()]
+      .map(([t, values]) => ({ t, values }))
+      .sort((a, b) => a.t - b.t);
+    return { cities: [...cityMap.values()], ticks };
+  }, [cityPoints, cityColors]);
+
+  const visibleCities = isolatedCityId ? cities.filter((c) => c.id === isolatedCityId) : cities;
+
+  if (ticks.length < 2 || visibleCities.length === 0) {
     return (
       <div className="flex h-56 items-center justify-center text-sm text-muted-foreground">
         {emptyLabel}
@@ -58,26 +113,43 @@ export function OnlineHistoryChart({
     );
   }
 
-  const values = points.map((p) => p.totalPlayers);
-  const peak = Math.max(...values);
+  const minT = ticks[0].t;
+  const maxT = ticks[ticks.length - 1].t;
+  const spanT = maxT - minT || 1;
+
+  const peak = Math.max(
+    ...ticks.map((tick) =>
+      visibleCities.reduce((sum, c) => sum + (tick.values.get(c.id) ?? 0), 0),
+    ),
+  );
   const rawMax = peak || 1;
-  // Zero-based, "nice" axis (0 / 7,500 / 15,000 / ...) instead of an axis
-  // tied exactly to the data's own min/max, which produced ugly values like
-  // 28,985 / 28,806 and made the line look arbitrary rather than gridded.
+  // Zero-based, "nice" axis instead of one tied exactly to the data's own
+  // min/max, which produced ugly, seemingly-arbitrary grid values.
   const step = niceStep(rawMax / GRID_ROWS);
   const axisMax = Math.ceil(rawMax / step) * step;
   const usableHeight = HEIGHT - PADDING_Y * 2;
 
-  const coords = points.map((p, i) => {
-    const x = (i / (points.length - 1)) * WIDTH;
-    const y = PADDING_Y + usableHeight - (p.totalPlayers / axisMax) * usableHeight;
-    return [x, y] as const;
-  });
+  function xFor(t: number) {
+    return ((t - minT) / spanT) * WIDTH;
+  }
+  function yFor(players: number) {
+    return PADDING_Y + usableHeight - (players / axisMax) * usableHeight;
+  }
 
-  const linePath = coords.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x},${y}`).join(" ");
-  const areaPath = `${linePath} L${WIDTH},${HEIGHT} L0,${HEIGHT} Z`;
-  const hovered = hoverIndex != null ? points[hoverIndex] : null;
-  const hoveredCoord = hoverIndex != null ? coords[hoverIndex] : null;
+  const linePaths = visibleCities.map((city) => {
+    let d = "";
+    let started = false;
+    for (const tick of ticks) {
+      const players = tick.values.get(city.id);
+      if (players == null) {
+        started = false; // gap in this city's own data - break the line, don't bridge it
+        continue;
+      }
+      d += `${started ? "L" : "M"}${xFor(tick.t)},${yFor(players)} `;
+      started = true;
+    }
+    return { ...city, d };
+  });
 
   const rows = Math.round(axisMax / step);
   const gridLines = Array.from({ length: rows + 1 }, (_, i) => {
@@ -86,39 +158,44 @@ export function OnlineHistoryChart({
     return { y, value };
   });
 
-  // Repeating the same date across every tick (all points fall on "14.09")
-  // read as broken - switch to a time-of-day format once the visible span
-  // is short enough that the date alone stops being useful.
-  const spanMs = points[points.length - 1].recordedAt.getTime() - points[0].recordedAt.getTime();
-  const showTime = spanMs < TWO_DAYS_MS;
+  // Repeating the same date across every tick read as broken - switch to a
+  // time-of-day format once the visible span is short enough for the date
+  // alone to stop being useful.
+  const showTime = spanT < TWO_DAYS_MS;
 
-  // Every range button (1d/7d/30d/...) filters the same underlying history,
-  // so once the range asked for is wider than what's actually been recorded
-  // so far, every button shows the identical, full dataset - which reads as
-  // "the range picker does nothing". Surfacing how far back real data goes
-  // makes that self-explanatory instead of looking broken.
+  // Every range button filters the same underlying history, so once the
+  // range asked for is wider than what's actually been recorded so far,
+  // every button shows the identical, full dataset - surfacing how far back
+  // real data goes makes that self-explanatory instead of looking broken.
   const requestedSpanMs = rangeKey * 24 * 60 * 60 * 1000;
-  const oldestPoint = points[0].recordedAt;
-  const hasShortHistory = spanMs < requestedSpanMs * 0.95;
+  const hasShortHistory = spanT < requestedSpanMs * 0.95;
 
   const xLabels = Array.from({ length: X_LABELS }, (_, i) => {
-    const t = i / (X_LABELS - 1);
-    const index = Math.round(t * (points.length - 1));
-    const recordedAt = points[index].recordedAt;
+    const frac = i / (X_LABELS - 1);
+    const date = new Date(minT + frac * spanT);
     return {
-      x: (index / (points.length - 1)) * WIDTH,
+      x: frac * WIDTH,
       label: showTime
-        ? recordedAt.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })
-        : recordedAt.toLocaleDateString(locale, { day: "2-digit", month: "2-digit" }),
+        ? date.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })
+        : date.toLocaleDateString(locale, { day: "2-digit", month: "2-digit" }),
     };
   });
 
   function handleMove(e: React.PointerEvent<SVGSVGElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
     const ratio = (e.clientX - rect.left) / rect.width;
-    const index = Math.round(ratio * (points.length - 1));
-    setHoverIndex(Math.min(Math.max(index, 0), points.length - 1));
+    setHoverT(nearestTick(ticks, minT + ratio * spanT).t);
   }
+
+  const hoverTick = hoverT != null ? ticks.find((tick) => tick.t === hoverT) : undefined;
+  const hoverEntries = hoverTick
+    ? visibleCities
+        .map((c) => ({ ...c, players: hoverTick.values.get(c.id) }))
+        .filter((e): e is CityMeta & { players: number } => e.players != null)
+        .sort((a, b) => b.players - a.players)
+    : [];
+  const hoverTotal = hoverEntries.reduce((sum, e) => sum + e.players, 0);
+  const hoverX = hoverT != null ? xFor(hoverT) : null;
 
   return (
     <div className="flex flex-col gap-2">
@@ -133,8 +210,7 @@ export function OnlineHistoryChart({
           <table> ignores an explicit 1px height even under overflow-hidden
           (its internal layout algorithm sizes to content regardless), so
           putting the class directly on the table left a 2800px+ invisible
-          box in normal flow - which inflated the whole page's scroll
-          height and broke the sidebar's sticky positioning against it. */}
+          box in normal flow. */}
       <div className="sr-only">
         <table>
           <caption>{chartLabel}</caption>
@@ -145,17 +221,17 @@ export function OnlineHistoryChart({
             </tr>
           </thead>
           <tbody>
-            {points.map((p, i) => (
-              <tr key={i}>
+            {ticks.map((tick) => (
+              <tr key={tick.t}>
                 <td>
-                  {p.recordedAt.toLocaleString(locale, {
+                  {new Date(tick.t).toLocaleString(locale, {
                     day: "2-digit",
                     month: "2-digit",
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
                 </td>
-                <td>{p.totalPlayers}</td>
+                <td>{[...tick.values.values()].reduce((sum, v) => sum + v, 0)}</td>
               </tr>
             ))}
           </tbody>
@@ -164,20 +240,14 @@ export function OnlineHistoryChart({
 
       <div className="relative">
         <svg
-          key={rangeKey}
+          key={`${rangeKey}-${isolatedCityId ?? "all"}`}
           viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
           preserveAspectRatio="none"
           className="h-56 w-full overflow-visible animate-in fade-in duration-200 ease-out"
           aria-hidden="true"
           onPointerMove={handleMove}
-          onPointerLeave={() => setHoverIndex(null)}
+          onPointerLeave={() => setHoverT(null)}
         >
-          <defs>
-            <linearGradient id="online-history-fill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="currentColor" stopOpacity="0.16" />
-              <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-            </linearGradient>
-          </defs>
           {gridLines.map((g) => (
             <line
               key={g.y}
@@ -192,22 +262,23 @@ export function OnlineHistoryChart({
               className="text-border"
             />
           ))}
-          <path d={areaPath} fill="url(#online-history-fill)" className="text-foreground" />
-          <path
-            d={linePath}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            vectorEffect="non-scaling-stroke"
-            className="text-foreground/80"
-          />
-          {hoveredCoord && (
+          {linePaths.map((city) => (
+            <path
+              key={city.id}
+              d={city.d}
+              fill="none"
+              stroke={city.color}
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+            />
+          ))}
+          {hoverX != null && (
             <line
-              x1={hoveredCoord[0]}
+              x1={hoverX}
               y1={0}
-              x2={hoveredCoord[0]}
+              x2={hoverX}
               y2={HEIGHT}
               stroke="currentColor"
               strokeWidth={1}
@@ -225,49 +296,46 @@ export function OnlineHistoryChart({
           ))}
         </div>
 
-        {/* Hover dot as an HTML overlay (percentage-positioned) instead of an
-            SVG circle: the chart's viewBox width (600) rarely matches its
-            rendered pixel width, and preserveAspectRatio="none" scales x/y
-            independently, which stretched a plain SVG <circle> into an
-            oversized ellipse. */}
-        {hoveredCoord && (
-          <span
-            className="pointer-events-none absolute size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground"
-            style={{
-              left: `${(hoveredCoord[0] / WIDTH) * 100}%`,
-              top: `${(hoveredCoord[1] / HEIGHT) * 100}%`,
-            }}
-          />
-        )}
-
-        {hovered && hoveredCoord && (
-          // Centering the tooltip on the hovered point (translateX(-50%))
-          // pushed half of it past the container's edge and out of view
-          // whenever the hover point itself was near the far left or right
-          // (nothing clips it, it's just no longer within the visible
-          // card). Anchor to the near edge instead of centering once the
-          // point is close enough to one.
+        {hoverX != null && hoverEntries.length > 0 && (
+          // Centering the tooltip on the hovered point pushed half of it
+          // past the container's edge whenever the hover point itself was
+          // near the far left or right - anchor to the near edge instead
+          // once close enough to one.
           <div
-            className="pointer-events-none absolute top-0 rounded-md border border-border/60 bg-popover px-2 py-1 text-xs whitespace-nowrap text-popover-foreground shadow-md"
+            className="pointer-events-none absolute top-0 z-10 flex max-h-full w-max flex-col gap-1 overflow-y-auto rounded-md border border-border/60 bg-popover px-2.5 py-1.5 text-xs whitespace-nowrap text-popover-foreground shadow-md"
             style={{
-              left: `${(hoveredCoord[0] / WIDTH) * 100}%`,
+              left: `${(hoverX / WIDTH) * 100}%`,
               transform:
-                hoveredCoord[0] / WIDTH < 0.12
+                hoverX / WIDTH < 0.12
                   ? "translateX(0)"
-                  : hoveredCoord[0] / WIDTH > 0.88
+                  : hoverX / WIDTH > 0.88
                     ? "translateX(-100%)"
                     : "translateX(-50%)",
             }}
           >
-            <span className="font-medium tabular-nums">{hovered.totalPlayers.toLocaleString(locale)}</span>{" "}
-            <span className="text-muted-foreground">
-              {hovered.recordedAt.toLocaleString(locale, {
+            <span className="font-medium text-muted-foreground">
+              {new Date(hoverT!).toLocaleString(locale, {
                 day: "2-digit",
                 month: "2-digit",
                 hour: "2-digit",
                 minute: "2-digit",
               })}
             </span>
+            {!isolatedCityId && hoverEntries.length > 1 && (
+              <span className="font-semibold tabular-nums">
+                {hoverTotal.toLocaleString(locale)}
+              </span>
+            )}
+            {hoverEntries.map((e) => (
+              <span key={e.id} className="flex items-center gap-1.5 tabular-nums">
+                <span
+                  className="size-1.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: e.color }}
+                />
+                <span className="flex-1 text-muted-foreground">{e.name}</span>
+                {e.players.toLocaleString(locale)}
+              </span>
+            ))}
           </div>
         )}
       </div>
@@ -282,7 +350,7 @@ export function OnlineHistoryChart({
         <p className="pl-9 text-xs text-muted-foreground">
           {shortHistoryLabel.replace(
             "{date}",
-            oldestPoint.toLocaleString(locale, {
+            new Date(minT).toLocaleString(locale, {
               day: "2-digit",
               month: "2-digit",
               hour: "2-digit",

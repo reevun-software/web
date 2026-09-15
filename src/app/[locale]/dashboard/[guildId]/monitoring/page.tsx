@@ -4,6 +4,7 @@ import {
   getRussiaOnlineOnline,
   getGta5rpOnline,
   getOnlineHistory,
+  getCityOnlineHistory,
 } from "@/lib/online-monitoring";
 import { OnlineMonitoringTabs } from "@/components/dashboard/online-monitoring-tabs";
 
@@ -18,14 +19,26 @@ export default async function MonitoringPage() {
     getGta5rpOnline(),
   ]);
 
-  // Fetched once at the widest range the UI offers (365 days) - the range
+  // Fetched once at the widest range the UI offers (30 days) - the range
   // buttons in OnlineMonitoringTabs just filter this client-side instead of
-  // re-fetching per click.
-  const HISTORY_HOURS = 365 * 24;
-  const [majesticHistory, russiaOnlineHistory, gta5rpHistory] = await Promise.all([
+  // re-fetching per click. Per-city history is one row per city per tick, so
+  // it's a lot more data than the total-only series - keeping the window to
+  // just what the UI can select keeps that bounded.
+  const HISTORY_HOURS = 30 * 24;
+  const [
+    majesticHistory,
+    russiaOnlineHistory,
+    gta5rpHistory,
+    majesticCityHistory,
+    russiaOnlineCityHistory,
+    gta5rpCityHistory,
+  ] = await Promise.all([
     getOnlineHistory("majestic", HISTORY_HOURS),
     getOnlineHistory("russiaonline", HISTORY_HOURS),
     getOnlineHistory("gta5rp", HISTORY_HOURS),
+    getCityOnlineHistory("majestic", HISTORY_HOURS),
+    getCityOnlineHistory("russiaonline", HISTORY_HOURS),
+    getCityOnlineHistory("gta5rp", HISTORY_HOURS),
   ]);
 
   return (
@@ -39,6 +52,7 @@ export default async function MonitoringPage() {
             logo: "https://majestic-rp.ru/favicon.ico",
             data: majestic,
             history: majesticHistory,
+            cityHistory: majesticCityHistory,
           },
           {
             key: "russiaonline",
@@ -46,6 +60,7 @@ export default async function MonitoringPage() {
             logo: "https://majestic-rp.ru/images/russia-online/ro-logo-icon.svg",
             data: russiaOnline,
             history: russiaOnlineHistory,
+            cityHistory: russiaOnlineCityHistory,
           },
           {
             key: "gta5rp",
@@ -53,6 +68,7 @@ export default async function MonitoringPage() {
             logo: "https://gta5rp.com/favicon/android-icon-192x192.png",
             data: gta5rp,
             history: gta5rpHistory,
+            cityHistory: gta5rpCityHistory,
           },
         ]}
         current={t("current")}
@@ -69,9 +85,6 @@ export default async function MonitoringPage() {
           1: t("range1"),
           7: t("range7"),
           30: t("range30"),
-          90: t("range90"),
-          180: t("range180"),
-          365: t("range365"),
         }}
       />
     </div>
