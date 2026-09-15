@@ -65,15 +65,20 @@ async function getMajesticFamilyOnline(url: string): Promise<OnlineProjectData |
   const data = json?.data;
   if (!data?.servers) return null;
   return {
-    cities: data.servers.map((s) => ({
-      id: s.id,
-      name: s.name,
-      players: s.players,
-      queued: s.queuedPlayers,
-      peak: s.peakAllTime,
-      online: s.status,
-      countryCode: s.country,
-    })),
+    // Sorted by current population, descending - matches how the source
+    // site itself orders its own server list, rather than whatever order
+    // its API happens to return them in (alphabetical by id).
+    cities: data.servers
+      .map((s) => ({
+        id: s.id,
+        name: s.name,
+        players: s.players,
+        queued: s.queuedPlayers,
+        peak: s.peakAllTime,
+        online: s.status,
+        countryCode: s.country,
+      }))
+      .sort((a, b) => b.players - a.players),
     totalPlayers: data.players ?? 0,
     peakToday: data.peakToday,
     peakAllTime: data.peakAllTime,
@@ -106,16 +111,18 @@ export async function getGta5rpOnline(): Promise<OnlineProjectData | null> {
   const entries = Object.entries(json).filter(([key]) => key.includes(".gta5rp.com"));
   if (entries.length === 0) return null;
 
-  const cities = entries.map(([key, v]) => ({
-    id: key,
-    // The raw server name is a long branded string like
-    // "[RolePlay][Voice] GTA5RP.COM | Milton | gta5rp.com/discord [1.1]" -
-    // the city name is reliably the middle "|"-delimited segment.
-    name: v.name?.split("|")[1]?.trim() || key.split(".")[0],
-    players: v.players ?? 0,
-    peak: v.peak,
-    countryCode: v.lang,
-  }));
+  const cities = entries
+    .map(([key, v]) => ({
+      id: key,
+      // The raw server name is a long branded string like
+      // "[RolePlay][Voice] GTA5RP.COM | Milton | gta5rp.com/discord [1.1]" -
+      // the city name is reliably the middle "|"-delimited segment.
+      name: v.name?.split("|")[1]?.trim() || key.split(".")[0],
+      players: v.players ?? 0,
+      peak: v.peak,
+      countryCode: v.lang,
+    }))
+    .sort((a, b) => b.players - a.players);
 
   return {
     cities,

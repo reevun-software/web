@@ -9,26 +9,11 @@ import { FlagIcon } from "@/components/flag-icon";
 import { OnlineHistoryChart } from "@/components/dashboard/online-history-chart";
 import { OdometerNumber } from "@/components/dashboard/odometer-number";
 import { cn } from "@/lib/utils";
+import { OFFICIAL_CITY_COLORS, FALLBACK_CITY_COLORS } from "@/lib/city-colors";
 import type { OnlineProjectData, OnlineHistoryPoint, CityHistoryPoint } from "@/lib/online-monitoring";
 
 const LIVE_REFRESH_MS = 60_000;
 const RANGE_OPTIONS = [1, 7, 30] as const;
-
-// One color per city, assigned from the live city list order (not the
-// historical data's own order, which can drift) so a city's dot in the list
-// below always matches its line in the chart.
-const CITY_COLORS = [
-  "#f97316",
-  "#3b82f6",
-  "#22c55e",
-  "#eab308",
-  "#ec4899",
-  "#a855f7",
-  "#06b6d4",
-  "#ef4444",
-  "#84cc16",
-  "#14b8a6",
-];
 
 type Project = {
   key: string;
@@ -104,8 +89,9 @@ export function OnlineMonitoringTabs({
   // "whichever city's data happened to arrive first" and can disagree.
   const cityColors = useMemo(() => {
     const colors: Record<string, string> = {};
-    data?.cities.forEach((c, i) => {
-      colors[c.id] = CITY_COLORS[i % CITY_COLORS.length];
+    let fallbackIndex = 0;
+    data?.cities.forEach((c) => {
+      colors[c.id] = OFFICIAL_CITY_COLORS[c.id] ?? FALLBACK_CITY_COLORS[fallbackIndex++ % FALLBACK_CITY_COLORS.length];
     });
     return colors;
   }, [data]);

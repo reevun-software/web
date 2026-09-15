@@ -194,17 +194,22 @@ export default async function SecurityPage({
               <Label htmlFor="moderatorRoleIds" className="-translate-y-3">
                 {t("moderatorRoleIds")}
               </Label>
-              <RolePicker
-                id="moderatorRoleIds"
-                name="moderatorRoleIds"
-                roles={roles}
-                defaultSelectedIds={current.moderatorRoleIds}
-                botRolePosition={botRolePosition}
-                hierarchyWarningLabel={t("hierarchyWarning")}
-                addLabel={t("addRole")}
-                emptyLabel={t("rolesUnavailable")}
-                searchPlaceholder={t("searchRoles")}
-              />
+              {/* Matches the label's own -translate-y-3 - shifting only the
+                  label left a gap open between it and this field, since the
+                  field itself hadn't moved. */}
+              <div className="-translate-y-3">
+                <RolePicker
+                  id="moderatorRoleIds"
+                  name="moderatorRoleIds"
+                  roles={roles}
+                  defaultSelectedIds={current.moderatorRoleIds}
+                  botRolePosition={botRolePosition}
+                  hierarchyWarningLabel={t("hierarchyWarning")}
+                  addLabel={t("addRole")}
+                  emptyLabel={t("rolesUnavailable")}
+                  searchPlaceholder={t("searchRoles")}
+                />
+              </div>
             </div>
             <label
               htmlFor="ignoreCommandCooldownForMods"

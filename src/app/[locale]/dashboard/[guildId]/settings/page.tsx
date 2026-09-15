@@ -145,14 +145,16 @@ export default async function SettingsPage({
             <Label htmlFor="trustedAdminRoleIds" className="-translate-y-3">
               {t("trustedAdminRoles")}
             </Label>
-            <RolePicker
-              id="trustedAdminRoleIds"
-              name="trustedAdminRoleIds"
-              roles={roles}
-              defaultSelectedIds={current.trustedAdminRoleIds}
-              addLabel={t("selectRoles")}
-              emptyLabel={t("rolesUnavailable")}
-            />
+            <div className="-translate-y-3">
+              <RolePicker
+                id="trustedAdminRoleIds"
+                name="trustedAdminRoleIds"
+                roles={roles}
+                defaultSelectedIds={current.trustedAdminRoleIds}
+                addLabel={t("selectRoles")}
+                emptyLabel={t("rolesUnavailable")}
+              />
+            </div>
             <p className="text-xs text-muted-foreground">{t("trustedAdminRolesHint")}</p>
           </div>
         </Card>
@@ -166,14 +168,16 @@ export default async function SettingsPage({
               <Label htmlFor="defaultRoleIds" className="-translate-y-3">
                 {t("defaultRoles")}
               </Label>
-              <RolePicker
-                id="defaultRoleIds"
-                name="defaultRoleIds"
-                roles={roles}
-                defaultSelectedIds={current.defaultRoleIds}
-                addLabel={t("selectRoles")}
-                emptyLabel={t("rolesUnavailable")}
-              />
+              <div className="-translate-y-3">
+                <RolePicker
+                  id="defaultRoleIds"
+                  name="defaultRoleIds"
+                  roles={roles}
+                  defaultSelectedIds={current.defaultRoleIds}
+                  addLabel={t("selectRoles")}
+                  emptyLabel={t("rolesUnavailable")}
+                />
+              </div>
               <p className="text-xs text-muted-foreground">{t("defaultRolesHint")}</p>
             </div>
 

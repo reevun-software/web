@@ -200,7 +200,7 @@ export function OnlineHistoryChart({
     };
   });
 
-  function handleMove(e: React.PointerEvent<SVGSVGElement>) {
+  function handleMove(e: React.PointerEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
     const ratio = (e.clientX - rect.left) / rect.width;
     setHoverT(nearestTick(ticks, minT + ratio * spanT).t);
@@ -257,21 +257,23 @@ export function OnlineHistoryChart({
         </table>
       </div>
 
-      {/* onPointerLeave lives here, not on the svg - the tooltip below now
+      {/* onPointerMove/Leave live here, not on the svg - the tooltip below
           takes pointer events (so its own list can be scrolled), and it
-          visually overlaps the svg's own box. Moving the cursor from the
-          svg into the tooltip is a pointerleave on the svg specifically,
-          which would otherwise clear hoverT and yank the tooltip away the
-          instant you tried to reach it. This only clears on leaving the
-          whole chart area, tooltip included. */}
-      <div className="relative" onPointerLeave={() => setHoverT(null)}>
+          visually overlaps the svg's own box near the hovered point. With
+          the handlers on the svg alone, moving the cursor those last few
+          pixels toward the tooltip landed ON the tooltip instead of the
+          svg beneath it: pointermove stopped firing (hover got "stuck"),
+          and pointerleave fired and cleared it entirely. Handling both on
+          the shared wrapper covers the tooltip's own area too, so hover
+          keeps tracking the cursor anywhere over the chart, tooltip
+          included, and only clears on leaving the whole area. */}
+      <div className="relative" onPointerMove={handleMove} onPointerLeave={() => setHoverT(null)}>
         <svg
           key={`${rangeKey}-${isolatedCityId ?? "all"}`}
           viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
           preserveAspectRatio="none"
           className="h-56 w-full overflow-visible animate-in fade-in duration-200 ease-out"
           aria-hidden="true"
-          onPointerMove={handleMove}
         >
           {gridLines.map((g) => (
             <line
