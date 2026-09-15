@@ -90,11 +90,19 @@ export default async function SettingsPage({
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="interfaceLanguage">{t("interfaceLanguage")}</Label>
-              <Select name="interfaceLanguage" defaultValue={current.interfaceLanguage}>
+              {/* This page is a Server Component - a SelectValue children
+                  render-function (the pattern used elsewhere in this
+                  codebase, e.g. mute-settings-fields.tsx) only works from a
+                  "use client" parent, since a plain function can't cross
+                  the server/client boundary as a prop. The `items` map is
+                  plain serializable data, so it works from here instead. */}
+              <Select
+                name="interfaceLanguage"
+                defaultValue={current.interfaceLanguage}
+                items={Object.fromEntries(LOCALES.map((l) => [l, LOCALE_META[l].label]))}
+              >
                 <SelectTrigger id="interfaceLanguage" className="w-full">
-                  <SelectValue>
-                    {(value: string) => LOCALE_META[value as keyof typeof LOCALE_META]?.label ?? value}
-                  </SelectValue>
+                  <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {LOCALES.map((locale) => (
