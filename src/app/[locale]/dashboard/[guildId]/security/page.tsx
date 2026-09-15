@@ -194,10 +194,10 @@ export default async function SecurityPage({
               <Label htmlFor="moderatorRoleIds" className="-translate-y-3">
                 {t("moderatorRoleIds")}
               </Label>
-              {/* Matches the label's own -translate-y-3 - shifting only the
-                  label left a gap open between it and this field, since the
-                  field itself hadn't moved. */}
-              <div className="-translate-y-3">
+              {/* A touch less than the label's own -translate-y-3, so a
+                  small gap remains between label and field instead of
+                  sitting flush. */}
+              <div className="-translate-y-2">
                 <RolePicker
                   id="moderatorRoleIds"
                   name="moderatorRoleIds"
@@ -213,7 +213,7 @@ export default async function SecurityPage({
             </div>
             <label
               htmlFor="ignoreCommandCooldownForMods"
-              className="flex cursor-pointer items-center justify-between gap-4"
+              className="flex -translate-y-1 cursor-pointer items-center justify-between gap-4"
             >
               <span className="text-sm">{t("ignoreCommandCooldownForMods")}</span>
               <Switch
@@ -224,7 +224,7 @@ export default async function SecurityPage({
             </label>
             <label
               htmlFor="allowHigherModsToModerateLower"
-              className="flex cursor-pointer items-center justify-between gap-4"
+              className="flex -translate-y-1 cursor-pointer items-center justify-between gap-4"
             >
               <span className="text-sm">{t("allowHigherModsToModerateLower")}</span>
               <Switch

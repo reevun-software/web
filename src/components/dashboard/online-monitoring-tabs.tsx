@@ -15,6 +15,45 @@ import type { OnlineProjectData, OnlineHistoryPoint, CityHistoryPoint } from "@/
 const LIVE_REFRESH_MS = 60_000;
 const RANGE_OPTIONS = [1, 7, 30] as const;
 
+// Real history is a blend of resolutions - live recording is per-minute,
+// but the 30-day backfill only had hourly/daily data available for its
+// older stretches. Filtering by date alone left a chart where most of the
+// window was coarse and the last day or so suddenly went dense per-minute,
+// which read as broken rather than "we're looking at a month". Each range
+// downsamples to ONE consistent bucket size instead, matching the
+// resolution the source site itself uses for that same range (1d: minute,
+// 7d: hour, 30d: day) - not a live-vs-backfill distinction, a "how zoomed
+// out are we" one.
+const BUCKET_MS: Record<(typeof RANGE_OPTIONS)[number], number> = {
+  1: 60_000,
+  7: 60 * 60_000,
+  30: 24 * 60 * 60_000,
+};
+
+function downsample(points: CityHistoryPoint[], bucketMs: number): CityHistoryPoint[] {
+  const buckets = new Map<
+    string,
+    { cityId: string; cityName: string; sum: number; count: number; t: number }
+  >();
+  for (const p of points) {
+    const t = Math.floor(p.recordedAt.getTime() / bucketMs) * bucketMs;
+    const key = `${p.cityId}:${t}`;
+    const bucket = buckets.get(key);
+    if (bucket) {
+      bucket.sum += p.players;
+      bucket.count += 1;
+    } else {
+      buckets.set(key, { cityId: p.cityId, cityName: p.cityName, sum: p.players, count: 1, t });
+    }
+  }
+  return [...buckets.values()].map((b) => ({
+    cityId: b.cityId,
+    cityName: b.cityName,
+    players: Math.round(b.sum / b.count),
+    recordedAt: new Date(b.t),
+  }));
+}
+
 type Project = {
   key: string;
   label: string;
@@ -81,8 +120,9 @@ export function OnlineMonitoringTabs({
   const since = now - rangeDays * 24 * 60 * 60 * 1000;
   const visibleCityHistory = useMemo(() => {
     if (!project) return [];
-    return project.cityHistory.filter((p) => p.recordedAt.getTime() >= since);
-  }, [project, since]);
+    const filtered = project.cityHistory.filter((p) => p.recordedAt.getTime() >= since);
+    return downsample(filtered, BUCKET_MS[rangeDays]);
+  }, [project, since, rangeDays]);
 
   // Colors keyed off the live cities list (data.cities), which is also what
   // renders the list below - not off visibleCityHistory, whose ordering is

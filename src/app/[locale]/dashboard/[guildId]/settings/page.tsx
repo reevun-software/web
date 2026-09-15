@@ -145,7 +145,7 @@ export default async function SettingsPage({
             <Label htmlFor="trustedAdminRoleIds" className="-translate-y-3">
               {t("trustedAdminRoles")}
             </Label>
-            <div className="-translate-y-3">
+            <div className="-translate-y-2">
               <RolePicker
                 id="trustedAdminRoleIds"
                 name="trustedAdminRoleIds"
@@ -168,7 +168,7 @@ export default async function SettingsPage({
               <Label htmlFor="defaultRoleIds" className="-translate-y-3">
                 {t("defaultRoles")}
               </Label>
-              <div className="-translate-y-3">
+              <div className="-translate-y-2">
                 <RolePicker
                   id="defaultRoleIds"
                   name="defaultRoleIds"
