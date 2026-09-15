@@ -495,7 +495,8 @@
     },
     "openMenu": "Открыть меню",
     "backToSite": "На главную сайта",
-    "footerRights": "© {year} Reevun. Все права защищены."
+    "footerCopyright": "© 2023–{year}. Reevun Software LLC.",
+    "footerRightsReserved": "Все права защищены."
   },
   "LanguageSwitcher": {
     "label": "Язык"

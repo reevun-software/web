@@ -4,5 +4,6 @@ export const DISCORD_BOT_INVITE_URL =
   "https://discord.com/oauth2/authorize?client_id=1548408900007497808&permissions=8&integration_type=0&scope=bot+applications.commands";
 
 export const SUPPORT_DISCORD_URL = "https://discord.gg/reevun";
-export const DOCS_URL = "https://docs.reevun.app/ru";
-export const SUPPORT_EMAIL = "support@ivan.app";
+export const DOCS_URL = "https://docs.reevun.app";
+export const FEEDBACK_URL = "https://feedback.reevun.app";
+export const SUPPORT_EMAIL = "support@reevun.app";

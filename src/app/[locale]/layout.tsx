@@ -48,7 +48,13 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <NextIntlClientProvider messages={messages}>
           <TooltipProvider>
-            <div className="bg-brand px-4 py-1.5 text-center text-xs font-medium text-brand-foreground">
+            {/* Fixed h-8 (not content-sized padding) so its height is a known
+                quantity - every full-viewport layout below (dashboard rail,
+                loading screens) subtracts this exact value from 100dvh,
+                since this bar sits above them in normal flow and would
+                otherwise push their h-dvh/min-h-dvh past the real viewport
+                and force an unwanted page-level scrollbar. */}
+            <div className="flex h-8 shrink-0 items-center justify-center bg-brand px-4 text-center text-xs font-medium text-brand-foreground">
               {t("message")}
             </div>
             {children}

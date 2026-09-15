@@ -495,7 +495,8 @@
     },
     "openMenu": "打开菜单",
     "backToSite": "返回主站",
-    "footerRights": "© {year} Reevun。保留所有权利。"
+    "footerCopyright": "© 2023–{year}。Reevun Software LLC.",
+    "footerRightsReserved": "保留所有权利。"
   },
   "LanguageSwitcher": {
     "label": "语言"

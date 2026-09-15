@@ -495,7 +495,8 @@
     },
     "openMenu": "Menüyü aç",
     "backToSite": "Siteye dön",
-    "footerRights": "© {year} Reevun. Tüm hakları saklıdır."
+    "footerCopyright": "© 2023–{year}. Reevun Software LLC.",
+    "footerRightsReserved": "Tüm hakları saklıdır."
   },
   "LanguageSwitcher": {
     "label": "Dil"

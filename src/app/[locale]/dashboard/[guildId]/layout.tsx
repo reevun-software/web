@@ -1,13 +1,17 @@
 import { notFound } from "next/navigation";
-import { Home, Send, Globe } from "lucide-react";
+import { Home } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { redirect, Link } from "@/i18n/navigation";
 import { auth } from "@/lib/auth";
 import { getManageableGuilds } from "@/lib/guilds";
+import { SUPPORT_DISCORD_URL } from "@/lib/discord";
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
 import { AccountMenu } from "@/components/account-menu";
 import { Button } from "@/components/ui/button";
 import { DiscordIcon } from "@/components/icons/discord-icon";
+import { TelegramIcon } from "@/components/icons/telegram-icon";
+import { XIcon } from "@/components/icons/x-icon";
+import { GithubIcon } from "@/components/icons/github-icon";
 
 export default async function GuildLayout({
   children,
@@ -26,7 +30,7 @@ export default async function GuildLayout({
   if (!current || !current.botInstalled) notFound();
 
   return (
-    <div className="flex min-h-dvh flex-1 flex-col md:flex-row">
+    <div className="flex min-h-[calc(100dvh-2rem)] flex-1 flex-col md:flex-row">
       <DashboardSidebar
         guildId={guildId}
         guildName={current.name}
@@ -60,17 +64,29 @@ export default async function GuildLayout({
         </header>
         <main className="flex-1 p-6">{children}</main>
         <footer className="flex flex-col items-center gap-3 border-t border-border/60 px-6 py-4 text-xs text-muted-foreground sm:flex-row sm:justify-between">
-          <span>{t("footerRights", { year: new Date().getFullYear() })}</span>
-          <div className="flex items-center gap-3">
-            <Link href="/" aria-label="Discord" className="text-muted-foreground hover:text-foreground">
-              <DiscordIcon className="size-4" />
-            </Link>
-            <Link href="/" aria-label="Telegram" className="text-muted-foreground hover:text-foreground">
-              <Send className="size-4" strokeWidth={1.5} />
-            </Link>
-            <Link href="/" aria-label="Reevun" className="text-muted-foreground hover:text-foreground">
-              <Globe className="size-4" strokeWidth={1.5} />
-            </Link>
+          <span>{t("footerCopyright", { year: new Date().getFullYear() })}</span>
+          <div className="flex items-center gap-4">
+            <span>{t("footerRightsReserved")}</span>
+            <div className="flex items-center gap-3">
+              <Link
+                href={SUPPORT_DISCORD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Discord"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <DiscordIcon className="size-4" />
+              </Link>
+              <Link href="/" aria-label="Telegram" className="text-muted-foreground hover:text-foreground">
+                <TelegramIcon className="size-4" />
+              </Link>
+              <Link href="/" aria-label="X" className="text-muted-foreground hover:text-foreground">
+                <XIcon className="size-4" />
+              </Link>
+              <Link href="/" aria-label="GitHub" className="text-muted-foreground hover:text-foreground">
+                <GithubIcon className="size-4" />
+              </Link>
+            </div>
           </div>
         </footer>
       </div>

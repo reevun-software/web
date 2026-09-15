@@ -495,7 +495,8 @@
     },
     "openMenu": "Menü öffnen",
     "backToSite": "Zur Website",
-    "footerRights": "© {year} Reevun. Alle Rechte vorbehalten."
+    "footerCopyright": "© 2023–{year}. Reevun Software LLC.",
+    "footerRightsReserved": "Alle Rechte vorbehalten."
   },
   "LanguageSwitcher": {
     "label": "Sprache"

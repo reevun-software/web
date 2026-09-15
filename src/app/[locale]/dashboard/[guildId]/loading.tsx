@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 // while that fetch (a live Discord API call, only cached for 60s) is pending.
 export default function Loading() {
   return (
-    <div className="flex min-h-dvh flex-1 items-center justify-center">
+    <div className="flex min-h-[calc(100dvh-2rem)] flex-1 items-center justify-center">
       <Loader2 className="size-6 animate-spin text-muted-foreground" />
     </div>
   );

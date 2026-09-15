@@ -179,7 +179,7 @@ export function DashboardSidebar({
   return (
     <>
       {/* Permanent rail from md up - a 768px+ viewport has room for it. */}
-      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col overflow-y-auto border-r border-border/60 bg-card/40 md:flex">
+      <aside className="sticky top-0 hidden h-[calc(100dvh-2rem)] w-64 shrink-0 flex-col overflow-y-auto border-r border-border/60 bg-card/40 md:flex">
         <SidebarNavContent
           guildId={guildId}
           guildName={guildName}
