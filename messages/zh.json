@@ -322,6 +322,8 @@
       "ownerOnlyBody": "只有此 Discord 服务器的所有者才能管理项目、模块和部门。",
       "projectTitle": "项目",
       "projectLabel": "RP 平台",
+      "serverLabel": "服务器",
+      "serverNone": "未选择",
       "projectHint": "在线监控将只显示所选项目。",
       "projectNone": "未选择",
       "projectMajestic": "Majestic RP",

@@ -165,6 +165,11 @@ export const guildBotSettings = pgTable("guild_bot_settings", {
   // for the matching project keys) - null means "not linked", and the
   // Monitoring page falls back to showing all three tabs as it always has.
   project: text("project"),
+  // The specific city/server within `project` (an OnlineCity.id from that
+  // project's live list) - only meaningful once a project is set, and reset
+  // whenever the project itself changes since a city id from one project
+  // means nothing on another.
+  server: text("server"),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 

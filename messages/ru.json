@@ -322,6 +322,8 @@
       "ownerOnlyBody": "Управлять проектом, модулями и отделами может только владелец этого Discord-сервера.",
       "projectTitle": "Проект",
       "projectLabel": "RP-платформа",
+      "serverLabel": "Сервер",
+      "serverNone": "Не выбрано",
       "projectHint": "Мониторинг онлайна будет показывать только выбранный проект.",
       "projectNone": "Не выбрано",
       "projectMajestic": "Majestic RP",

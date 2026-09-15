@@ -322,6 +322,8 @@
       "ownerOnlyBody": "Projeyi, modülleri ve departmanları yalnızca bu Discord sunucusunun sahibi yönetebilir.",
       "projectTitle": "Proje",
       "projectLabel": "RP platformu",
+      "serverLabel": "Sunucu",
+      "serverNone": "Seçilmedi",
       "projectHint": "Çevrimiçi İzleme yalnızca seçilen projeyi gösterecek.",
       "projectNone": "Seçilmedi",
       "projectMajestic": "Majestic RP",

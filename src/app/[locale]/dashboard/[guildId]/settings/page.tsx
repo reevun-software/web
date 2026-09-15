@@ -8,6 +8,7 @@ import { getGuildRoles } from "@/lib/discord-guild";
 import { auth } from "@/lib/auth";
 import { getModuleStates } from "@/lib/guild-modules";
 import { MODULE_KEYS } from "@/lib/modules";
+import { getMajesticOnline, getRussiaOnlineOnline, getGta5rpOnline } from "@/lib/online-monitoring";
 import { LOCALES, LOCALE_META } from "@/i18n/routing";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -19,24 +20,44 @@ import { ColorInput } from "@/components/dashboard/color-input";
 import { SaveForm } from "@/components/dashboard/save-form";
 import { SubmitButton } from "@/components/dashboard/submit-button";
 import { DepartmentsManager } from "@/components/dashboard/departments-manager";
+import { ProjectServerSelector } from "@/components/dashboard/project-server-selector";
 
 export default async function SettingsPage({
   params,
 }: PageProps<"/[locale]/dashboard/[guildId]/settings">) {
   const { guildId } = await params;
   const t = await getTranslations("Dashboard.settings");
-  const [session, [guild], [botSettings], roles, moduleStates, departments, members] =
-    await Promise.all([
-      auth(),
-      db.select().from(guilds).where(eq(guilds.id, guildId)).limit(1),
-      db.select().from(guildBotSettings).where(eq(guildBotSettings.guildId, guildId)).limit(1),
-      getGuildRoles(guildId),
-      getModuleStates(guildId),
-      db.select().from(guildDepartments).where(eq(guildDepartments.guildId, guildId)),
-      db.select().from(guildMembers).where(eq(guildMembers.guildId, guildId)),
-    ]);
+  const [
+    session,
+    [guild],
+    [botSettings],
+    roles,
+    moduleStates,
+    departments,
+    members,
+    majestic,
+    russiaOnline,
+    gta5rp,
+  ] = await Promise.all([
+    auth(),
+    db.select().from(guilds).where(eq(guilds.id, guildId)).limit(1),
+    db.select().from(guildBotSettings).where(eq(guildBotSettings.guildId, guildId)).limit(1),
+    getGuildRoles(guildId),
+    getModuleStates(guildId),
+    db.select().from(guildDepartments).where(eq(guildDepartments.guildId, guildId)),
+    db.select().from(guildMembers).where(eq(guildMembers.guildId, guildId)),
+    getMajesticOnline(),
+    getRussiaOnlineOnline(),
+    getGta5rpOnline(),
+  ]);
 
   const isOwner = !!session?.discordId && session.discordId === guild?.ownerDiscordId;
+
+  const citiesByProject = {
+    majestic: majestic?.cities ?? [],
+    russiaonline: russiaOnline?.cities ?? [],
+    gta5rp: gta5rp?.cities ?? [],
+  };
 
   const current = botSettings ?? {
     interfaceLanguage: "ru",
@@ -51,6 +72,7 @@ export default async function SettingsPage({
     restorableRoleIds: [] as string[],
     exemptRoleIds: [] as string[],
     project: null as string | null,
+    server: null as string | null,
   };
 
   async function save(formData: FormData) {
@@ -82,7 +104,8 @@ export default async function SettingsPage({
     "use server";
     if (!isOwner) return;
     const project = (formData.get("project") as string) || null;
-    const values = { guildId, project, updatedAt: new Date() };
+    const server = project ? (formData.get("server") as string) || null : null;
+    const values = { guildId, project, server, updatedAt: new Date() };
     await db
       .insert(guildBotSettings)
       .values(values)
@@ -147,7 +170,9 @@ export default async function SettingsPage({
         <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
       </div>
 
-      <Card className="flex max-w-2xl flex-col gap-4 p-6">
+      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="flex flex-col gap-4">
+      <Card className="flex flex-col gap-4 p-6">
         <div className="flex flex-col gap-2">
           <Label htmlFor="name">{t("name")}</Label>
           <div className="relative">
@@ -171,7 +196,6 @@ export default async function SettingsPage({
         <p className="text-sm text-muted-foreground">{t("note")}</p>
       </Card>
 
-      <div className="grid gap-4 lg:grid-cols-2">
       <SaveForm action={save} savedMessage={t("saved")} className="flex flex-col gap-4">
         <Card className="flex flex-col gap-4 p-6">
           <div className="grid gap-4 sm:grid-cols-2">
@@ -339,6 +363,7 @@ export default async function SettingsPage({
           {t("save")}
         </SubmitButton>
       </SaveForm>
+      </div>
 
       <div className="flex flex-col gap-4">
         {!isOwner ? (
@@ -352,30 +377,21 @@ export default async function SettingsPage({
             <SaveForm action={saveProject} savedMessage={t("saved")}>
               <Card className="flex flex-col gap-3 p-6">
                 <span className="text-sm font-medium">{t("projectTitle")}</span>
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor="project">{t("projectLabel")}</Label>
-                  <Select
-                    name="project"
-                    defaultValue={current.project ?? "none"}
-                    items={{
-                      none: t("projectNone"),
-                      majestic: t("projectMajestic"),
-                      russiaonline: t("projectRussiaOnline"),
-                      gta5rp: t("projectGta5rp"),
-                    }}
-                  >
-                    <SelectTrigger id="project" className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">{t("projectNone")}</SelectItem>
-                      <SelectItem value="majestic">{t("projectMajestic")}</SelectItem>
-                      <SelectItem value="russiaonline">{t("projectRussiaOnline")}</SelectItem>
-                      <SelectItem value="gta5rp">{t("projectGta5rp")}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <p className="text-xs text-muted-foreground">{t("projectHint")}</p>
-                </div>
+                <ProjectServerSelector
+                  defaultProject={current.project}
+                  defaultServer={current.server}
+                  citiesByProject={citiesByProject}
+                  labels={{
+                    projectLabel: t("projectLabel"),
+                    serverLabel: t("serverLabel"),
+                    projectNone: t("projectNone"),
+                    serverNone: t("serverNone"),
+                    majestic: t("projectMajestic"),
+                    russiaonline: t("projectRussiaOnline"),
+                    gta5rp: t("projectGta5rp"),
+                  }}
+                />
+                <p className="text-xs text-muted-foreground">{t("projectHint")}</p>
                 <SubmitButton pendingLabel={t("saving")} className="w-full">
                   {t("save")}
                 </SubmitButton>

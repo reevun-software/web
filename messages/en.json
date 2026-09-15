@@ -322,6 +322,8 @@
       "ownerOnlyBody": "Only the owner of this Discord server can manage the project, modules, and departments.",
       "projectTitle": "Project",
       "projectLabel": "RP platform",
+      "serverLabel": "Server",
+      "serverNone": "Not selected",
       "projectHint": "Online Monitoring will only show the selected project.",
       "projectNone": "Not selected",
       "projectMajestic": "Majestic RP",
