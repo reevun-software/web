@@ -1,19 +1,14 @@
-// Uptime Kuma's status page slug - set from the dashboard, so it can change
-// whenever someone renames the page there (it already has once: "main" ->
-// "app"). If this starts 404ing again, check what /api/status-page/<slug>
-// the site now redirects to at https://status.reevun.app.
-const STATUS_PAGE_SLUG = "app";
-const STATUS_PAGE_BASE = "https://status.reevun.app";
+// incident.io status page's public Widget API - unauthenticated, returns a
+// summary of ongoing incidents. Same custom domain as the old Uptime Kuma
+// page (status.reevun.app), so nothing in status-pill.tsx needs to change,
+// only how this data gets fetched and shaped.
+const STATUS_WIDGET_URL = "https://status.reevun.app/api/v1/summary";
 
-// https://uptime.kuma.pet - the public status-page JSON API this hits.
-// Heartbeat status codes: 0 = down, 1 = up, 2 = pending, 3 = maintenance.
-type Heartbeat = { status: 0 | 1 | 2 | 3 };
-type Monitor = { id: number };
-type StatusPageResponse = {
-  incidents: { title: string; style: string }[];
-  publicGroupList: { monitorList: Monitor[] }[];
+type WidgetSummary = {
+  page_title: string;
+  page_url: string;
+  ongoing_incidents: { id: string; name: string; status: string; url: string }[];
 };
-type HeartbeatResponse = { heartbeatList: Record<string, Heartbeat[]> };
 
 export type ServiceStatus =
   | { variant: "operational" }
@@ -22,32 +17,13 @@ export type ServiceStatus =
 
 export async function getServiceStatus(): Promise<ServiceStatus> {
   try {
-    const [pageRes, heartbeatRes] = await Promise.all([
-      fetch(`${STATUS_PAGE_BASE}/api/status-page/${STATUS_PAGE_SLUG}`, {
-        next: { revalidate: 60 },
-      }),
-      fetch(
-        `${STATUS_PAGE_BASE}/api/status-page/heartbeat/${STATUS_PAGE_SLUG}`,
-        { next: { revalidate: 60 } },
-      ),
-    ]);
-    if (!pageRes.ok || !heartbeatRes.ok) throw new Error("status page unreachable");
+    const res = await fetch(STATUS_WIDGET_URL, { next: { revalidate: 60 } });
+    if (!res.ok) throw new Error("status page unreachable");
 
-    const page: StatusPageResponse = await pageRes.json();
-    const heartbeats: HeartbeatResponse = await heartbeatRes.json();
-
-    const monitorIds = page.publicGroupList.flatMap((g) =>
-      g.monitorList.map((m) => m.id),
-    );
-    const anyDown = monitorIds.some((id) => {
-      const list = heartbeats.heartbeatList[String(id)];
-      const last = list?.at(-1);
-      return last?.status === 0;
-    });
-
-    if (anyDown) return { variant: "issue" };
-    if (page.incidents.length > 0)
-      return { variant: "issue", incidentTitle: page.incidents[0].title };
+    const summary: WidgetSummary = await res.json();
+    if (summary.ongoing_incidents.length > 0) {
+      return { variant: "issue", incidentTitle: summary.ongoing_incidents[0].name };
+    }
     return { variant: "operational" };
   } catch {
     return { variant: "unavailable" };
