@@ -50,10 +50,13 @@ export default async function GuildLayout({
       />
       <div className="flex flex-1 flex-col">
         <header className="hidden h-14 items-center justify-between gap-3 border-b border-border/60 px-6 md:flex">
+          {/* -ml-2.5 cancels the button's own left padding (size="sm" ->
+              px-2.5) so its icon lines up with the page heading's icon
+              below, which has no such padding in front of it. */}
           <Button
             variant="ghost"
             size="sm"
-            className="cursor-pointer gap-1.5 text-muted-foreground"
+            className="-ml-2.5 cursor-pointer gap-1.5 text-muted-foreground"
             render={<Link href="/" />}
           >
             <Home className="size-4" strokeWidth={1.5} />
