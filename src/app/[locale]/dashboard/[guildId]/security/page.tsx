@@ -228,7 +228,18 @@ export default async function SecurityPage({
               key={key}
               className="flex min-h-16 items-center justify-between gap-4 px-6 py-3"
             >
-              <label htmlFor={key} className="flex flex-1 cursor-pointer flex-col gap-0.5">
+              {/* Box-centering (items-center) puts the label's and the
+                  control's CSS boxes on the same midpoint exactly - verified
+                  by measuring getBoundingClientRect on both. But a stacked
+                  title+description block's visible ink sits lower within its
+                  own box than a switch's ink does in its box (ordinary text
+                  line-box leading vs. a shape that fills its box edge to
+                  edge), so box-centered still reads as visually low. Nudge
+                  the text up to correct for that optical difference. */}
+              <label
+                htmlFor={key}
+                className="flex flex-1 -translate-y-[2px] cursor-pointer flex-col gap-0.5"
+              >
                 <span className="text-sm">{t(`filters.${key}.label`)}</span>
                 <span className="text-xs text-muted-foreground">
                   {t(`filters.${key}.description`)}
@@ -257,7 +268,7 @@ export default async function SecurityPage({
             htmlFor="muteBlocksReactions"
             className="flex cursor-pointer items-center justify-between gap-4"
           >
-            <span className="flex flex-col gap-0.5">
+            <span className="flex -translate-y-[2px] flex-col gap-0.5">
               <span className="text-sm">{t("muteBlocksReactions")}</span>
               <span className="text-xs text-muted-foreground">
                 {t("muteBlocksReactionsHint")}
