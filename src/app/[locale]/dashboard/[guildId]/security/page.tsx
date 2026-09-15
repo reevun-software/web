@@ -191,7 +191,9 @@ export default async function SecurityPage({
           </div>
           <div className="flex flex-col gap-4 px-6 py-4">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="moderatorRoleIds">{t("moderatorRoleIds")}</Label>
+              <Label htmlFor="moderatorRoleIds" className="-translate-y-1">
+                {t("moderatorRoleIds")}
+              </Label>
               <RolePicker
                 id="moderatorRoleIds"
                 name="moderatorRoleIds"
@@ -267,7 +269,7 @@ export default async function SecurityPage({
               htmlFor="muteBlocksReactions"
               className="flex cursor-pointer items-center justify-between gap-4"
             >
-              <span className="flex -translate-y-2 flex-col gap-1">
+              <span className="flex -translate-y-3 flex-col gap-1">
                 <span className="text-sm leading-none">{t("muteBlocksReactions")}</span>
                 <span className="text-xs leading-none text-muted-foreground">
                   {t("muteBlocksReactionsHint")}
@@ -277,7 +279,7 @@ export default async function SecurityPage({
                 id="muteBlocksReactions"
                 name="muteBlocksReactions"
                 defaultChecked={current.muteBlocksReactions}
-                className="-translate-y-2"
+                className="-translate-y-3"
               />
             </label>
             <MuteSettingsFields
