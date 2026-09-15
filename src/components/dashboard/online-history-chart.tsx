@@ -128,31 +128,39 @@ export function OnlineHistoryChart({
       </div>
 
       {/* The SVG below is pointer-only - this table is the real
-          keyboard/screen-reader path to the same data, not decoration. */}
-      <table className="sr-only">
-        <caption>{chartLabel}</caption>
-        <thead>
-          <tr>
-            <th>{colDate}</th>
-            <th>{colPlayers}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {points.map((p, i) => (
-            <tr key={i}>
-              <td>
-                {p.recordedAt.toLocaleString(locale, {
-                  day: "2-digit",
-                  month: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </td>
-              <td>{p.totalPlayers}</td>
+          keyboard/screen-reader path to the same data, not decoration.
+          sr-only has to sit on a wrapping div, not the table itself: a
+          <table> ignores an explicit 1px height even under overflow-hidden
+          (its internal layout algorithm sizes to content regardless), so
+          putting the class directly on the table left a 2800px+ invisible
+          box in normal flow - which inflated the whole page's scroll
+          height and broke the sidebar's sticky positioning against it. */}
+      <div className="sr-only">
+        <table>
+          <caption>{chartLabel}</caption>
+          <thead>
+            <tr>
+              <th>{colDate}</th>
+              <th>{colPlayers}</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {points.map((p, i) => (
+              <tr key={i}>
+                <td>
+                  {p.recordedAt.toLocaleString(locale, {
+                    day: "2-digit",
+                    month: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </td>
+                <td>{p.totalPlayers}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <div className="relative">
         <svg
