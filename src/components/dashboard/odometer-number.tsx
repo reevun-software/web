@@ -11,7 +11,14 @@ function DigitColumn({ digit }: { digit: number }) {
         style={{ transform: `translateY(${-digit * 10}%)` }}
       >
         {Array.from({ length: 10 }, (_, i) => (
-          <span key={i} className="h-[1em] leading-[1em]">
+          // text-center, not the browser's block default (left/start): a
+          // narrow glyph like "1" and a wider one like "6" or "8" don't
+          // fill this fixed-width box the same way, so left-aligning them
+          // reads as the number "starting" at slightly different x
+          // positions depending purely on its first digit - centering
+          // each glyph in its own slot keeps that consistent regardless
+          // of which digit happens to be showing.
+          <span key={i} className="h-[1em] text-center leading-[1em]">
             {i}
           </span>
         ))}

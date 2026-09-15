@@ -370,7 +370,7 @@ export default async function SettingsPage({
               <div className="px-6 py-4">
                 <span className="text-sm font-medium">{t("projectTitle")}</span>
               </div>
-              <div className="flex flex-col gap-1.5 px-6 py-4">
+              <div className="-translate-y-2 flex flex-col gap-1.5 px-6 py-4">
                 <ProjectServerSelector
                   defaultProject={current.project}
                   defaultServer={current.server}
@@ -394,7 +394,7 @@ export default async function SettingsPage({
                 <span className="text-sm font-medium">{t("modulesTitle")}</span>
                 <p className="text-xs text-muted-foreground">{t("modulesHint")}</p>
               </div>
-              <div className="flex flex-col gap-4 px-6 py-4">
+              <div className="-translate-y-2 flex flex-col gap-4 px-6 py-4">
                 {(
                   [
                     ["warnings", t("moduleWarnings")],
@@ -420,7 +420,7 @@ export default async function SettingsPage({
                 </p>
               </div>
               {moduleStates.departments && (
-                <div className="px-6 py-4">
+                <div className="-translate-y-2 px-6 py-4">
                   <DepartmentsManager
                     departments={departments}
                     members={members.map((m) => ({
