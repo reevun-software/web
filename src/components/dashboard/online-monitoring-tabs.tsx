@@ -218,14 +218,19 @@ export function OnlineMonitoringTabs({
               switching && "pointer-events-none blur-sm",
             )}
           >
-          <Card className="grid grid-cols-1 divide-y divide-border/60 p-0 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-            {stats.map((s, i) => (
-              // sm:divide-x puts a 1px border-left on every column but the
-              // first, which eats into that column's own box - the content
-              // inside columns 2/3 sits 1px further right than column 1's
-              // even though both have identical px-5 padding. -ml-px pulls
-              // it back so all three line up on the same left edge.
-              <div key={s.label} className={cn("flex flex-col gap-1 px-5 py-4", i > 0 && "-ml-px")}>
+          {/* gap-0 overrides the Card component's own default gap
+              (--card-spacing, ~16px). Without it, that gap sat between
+              every column *in addition to* the divide-x border, so
+              columns 2/3 had a visible gap-plus-border gutter before
+              their content that column 1 (nothing precedes it) never
+              had - reading as those two columns starting further right
+              than the first, even though every column's own padding is
+              identical. Zeroing the gap makes the columns actually touch,
+              so the divider sits right at the seam with no extra space
+              around it. */}
+          <Card className="grid grid-cols-1 gap-0 divide-y divide-border/60 p-0 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            {stats.map((s) => (
+              <div key={s.label} className="flex flex-col gap-1 px-5 py-4">
                 <span className="text-xs text-muted-foreground">{s.label}</span>
                 <span className="text-2xl font-semibold tracking-tight">
                   {s.value != null ? <OdometerNumber value={s.value} locale={locale} /> : "—"}

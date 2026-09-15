@@ -49,7 +49,14 @@ export function ProjectServerSelector({
   return (
     <>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="project">{labels.projectLabel}</Label>
+        {/* -translate-y-1: the parent content div's own -translate-y-2
+            (see settings/page.tsx) matches "Доверенные роли..." only
+            when that label ALSO has its own -translate-y-3 on top of its
+            wrapper's -translate-y-2 - this is the first field right
+            after the card's divider, so it needs the same extra pull. */}
+        <Label htmlFor="project" className="-translate-y-1">
+          {labels.projectLabel}
+        </Label>
         <Select
           value={project}
           onValueChange={handleProjectChange}
