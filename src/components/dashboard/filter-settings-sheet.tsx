@@ -2,20 +2,14 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { Settings2 } from "lucide-react";
+import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
+import { Settings2, XIcon } from "lucide-react";
+import { cn } from "cn";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetFooter,
-} from "@/components/ui/sheet";
 import { RolePicker } from "@/components/dashboard/role-picker";
 import { ChannelPicker } from "@/components/dashboard/channel-picker";
 import { SubmitButton } from "@/components/dashboard/submit-button";
@@ -69,8 +63,8 @@ export function FilterSettingsSheet({
   }
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger
+    <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
+      <DialogPrimitive.Trigger
         render={
           <Button
             type="button"
@@ -82,23 +76,44 @@ export function FilterSettingsSheet({
         }
       >
         <Settings2 className="size-3.5" />
-      </SheetTrigger>
-      {/* A right-side panel, not a full-width takeover - the Sheet's own
-          default sizing. Header and footer are plain shrink-0 flex
-          siblings around a single scrolling middle section, not
-          position:sticky - the Sheet's own open/close slide animation puts
-          a transform on an ancestor, and a transformed ancestor creates a
-          new containing block that breaks sticky for every descendant
-          (it silently falls back to static positioning). This layout gets
-          the same "always visible" header/footer without depending on
-          sticky at all. */}
-      <SheetContent className="flex flex-col gap-0 p-0">
-        <form action={handleSubmit} className="flex min-h-0 flex-1 flex-col">
-          <SheetHeader className="shrink-0 border-b border-border/60 px-6 py-4">
-            <SheetTitle>{filterLabel}</SheetTitle>
-          </SheetHeader>
+      </DialogPrimitive.Trigger>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Backdrop className="fixed inset-0 z-50 bg-black/10 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-backdrop-filter:backdrop-blur-xs" />
+        {/* A centered modal, not a side panel - matches the Juniper
+            reference. Entrance is a downward slide + fade rather than the
+            shared Dialog's zoom, so it reads as "dropping in from the
+            settings icon" instead of growing from the center. Header and
+            footer are plain shrink-0 flex siblings around a single
+            scrolling middle section, not position:sticky - a transformed
+            ancestor (this popup's own enter/exit transform) breaks sticky
+            for every descendant. */}
+        <DialogPrimitive.Popup
+          className={cn(
+            "fixed top-1/2 left-1/2 z-50 flex max-h-[85vh] w-full max-w-md translate-x-[-50%] translate-y-[-50%] flex-col gap-0 overflow-hidden rounded-xl bg-popover text-sm text-popover-foreground shadow-lg ring-1 ring-foreground/10 outline-none transition-all duration-150 ease-out",
+            "data-starting-style:translate-y-[calc(-50%-1rem)] data-starting-style:opacity-0",
+            "data-ending-style:translate-y-[calc(-50%-1rem)] data-ending-style:opacity-0",
+          )}
+        >
+          <DialogPrimitive.Close
+            render={
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                className="absolute top-3 right-3 cursor-pointer"
+              />
+            }
+          >
+            <XIcon className="size-4" />
+            <span className="sr-only">Close</span>
+          </DialogPrimitive.Close>
+          <form action={handleSubmit} className="flex min-h-0 flex-1 flex-col">
+            <div className="shrink-0 border-b border-border/60 px-6 py-4">
+              <DialogPrimitive.Title className="font-heading text-base font-medium text-foreground">
+                {filterLabel}
+              </DialogPrimitive.Title>
+            </div>
 
-          <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">
+            <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">
             <div className="flex flex-col gap-3">
               <label className="flex cursor-pointer items-center justify-between gap-4">
                 <span className="text-sm">{labels.deleteMessage}</span>
@@ -254,11 +269,12 @@ export function FilterSettingsSheet({
             </div>
           </div>
 
-          <SheetFooter className="shrink-0 border-t border-border/60 p-4">
-            <SubmitButton pendingLabel={labels.saving}>{labels.save}</SubmitButton>
-          </SheetFooter>
-        </form>
-      </SheetContent>
-    </Sheet>
+            <div className="flex shrink-0 justify-end border-t border-border/60 p-4">
+              <SubmitButton pendingLabel={labels.saving}>{labels.save}</SubmitButton>
+            </div>
+          </form>
+        </DialogPrimitive.Popup>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 }

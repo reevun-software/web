@@ -130,14 +130,34 @@
 }
 
 @layer base {
+  /* scrollbar-width does NOT actually inherit down through the tree in
+     Chrome despite the spec listing it as an inherited property - verified
+     live: html computed to "thin" but body and every element below it still
+     computed to "auto". Setting it only on html left every real scroll
+     container (the filter sheet's body, dropdown/select popups, anything
+     else) with the fat default OS scrollbar. Putting it on `*` directly
+     sidesteps relying on inheritance at all. */
   * {
     @apply border-border outline-ring/50;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
   }
   body {
     @apply bg-background text-foreground;
   }
   html {
     @apply font-sans;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 9999px;
   }
 }
 
