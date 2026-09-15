@@ -129,6 +129,28 @@ export const guildSecuritySettings = pgTable("guild_security_settings", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// One row per guild - bot-wide behavior settings (not security-specific,
+// see guild_security_settings for that). Interface language is the bot's
+// own Discord-side language (embeds, replies), independent of this
+// dashboard's own locale.
+export const guildBotSettings = pgTable("guild_bot_settings", {
+  guildId: text("guild_id")
+    .primaryKey()
+    .references(() => guilds.id, { onDelete: "cascade" }),
+  interfaceLanguage: text("interface_language").default("ru").notNull(),
+  systemMessageColor: text("system_message_color").default("#79040C").notNull(),
+  enableSlashCommands: boolean("enable_slash_commands").default(true).notNull(),
+  enableTextCommands: boolean("enable_text_commands").default(true).notNull(),
+  trustedAdminRoleIds: text("trusted_admin_role_ids").array().notNull().default([]),
+  defaultRoleIds: text("default_role_ids").array().notNull().default([]),
+  alwaysAssignDefaultRoles: boolean("always_assign_default_roles").default(false).notNull(),
+  restoreNicknameOnRejoin: boolean("restore_nickname_on_rejoin").default(false).notNull(),
+  restoreOldRolesOnRejoin: boolean("restore_old_roles_on_rejoin").default(false).notNull(),
+  restorableRoleIds: text("restorable_role_ids").array().notNull().default([]),
+  exemptRoleIds: text("exempt_role_ids").array().notNull().default([]),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // Per-filter advanced settings, opened via the gear icon next to each
 // automod toggle above. Kept separate from guild_security_settings rather
 // than adding a dozen more columns there - one row per (guild, filter type)
