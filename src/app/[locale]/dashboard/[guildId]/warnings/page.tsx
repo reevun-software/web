@@ -3,8 +3,10 @@ import { ShieldAlert } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { guildMembers } from "@/lib/db/schema";
+import { getModuleStates } from "@/lib/guild-modules";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { ModuleDisabledNotice } from "@/components/dashboard/module-disabled-notice";
 import {
   Table,
   TableBody,
@@ -18,7 +20,16 @@ export default async function WarningsPage({
   params,
 }: PageProps<"/[locale]/dashboard/[guildId]/warnings">) {
   const { guildId } = await params;
-  const t = await getTranslations("Dashboard.warnings");
+  const [t, tDash, moduleStates] = await Promise.all([
+    getTranslations("Dashboard.warnings"),
+    getTranslations("Dashboard"),
+    getModuleStates(guildId),
+  ]);
+
+  if (!moduleStates.warnings) {
+    return <ModuleDisabledNotice title={tDash("moduleDisabledTitle")} body={tDash("moduleDisabledBody")} />;
+  }
+
   const members = await db
     .select()
     .from(guildMembers)

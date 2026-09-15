@@ -528,7 +528,9 @@
     "footerCopyright": "© 2023–{year}. Reevun Software LLC.",
     "footerRightsReserved": "Todos los derechos reservados.",
     "premium": "Premium",
-    "premiumComingSoon": "Función en desarrollo"
+    "premiumComingSoon": "Función en desarrollo",
+    "moduleDisabledTitle": "Módulo deshabilitado",
+    "moduleDisabledBody": "Esta sección ha sido deshabilitada por el propietario del servidor y no está disponible por ahora."
   },
   "LanguageSwitcher": {
     "label": "Idioma"

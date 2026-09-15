@@ -528,7 +528,9 @@
     "footerCopyright": "© 2023–{year}. Reevun Software LLC.",
     "footerRightsReserved": "Tüm hakları saklıdır.",
     "premium": "Premium",
-    "premiumComingSoon": "Özellik geliştirme aşamasında"
+    "premiumComingSoon": "Özellik geliştirme aşamasında",
+    "moduleDisabledTitle": "Modül devre dışı",
+    "moduleDisabledBody": "Bu bölüm sunucu sahibi tarafından devre dışı bırakıldı ve şu anda kullanılamıyor."
   },
   "LanguageSwitcher": {
     "label": "Dil"

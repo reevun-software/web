@@ -528,7 +528,9 @@
     "footerCopyright": "© 2023–{year}. Reevun Software LLC.",
     "footerRightsReserved": "Все права защищены.",
     "premium": "Premium",
-    "premiumComingSoon": "Функция в разработке"
+    "premiumComingSoon": "Функция в разработке",
+    "moduleDisabledTitle": "Модуль отключён",
+    "moduleDisabledBody": "Этот раздел отключён владельцем сервера и сейчас недоступен."
   },
   "LanguageSwitcher": {
     "label": "Язык"

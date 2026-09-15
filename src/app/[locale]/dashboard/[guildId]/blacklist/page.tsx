@@ -5,12 +5,14 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { bans } from "@/lib/db/schema";
 import { auth } from "@/lib/auth";
+import { getModuleStates } from "@/lib/guild-modules";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { BlacklistForm } from "@/components/dashboard/blacklist-form";
 import { DeleteBanButton } from "@/components/dashboard/delete-ban-button";
+import { ModuleDisabledNotice } from "@/components/dashboard/module-disabled-notice";
 import {
   Table,
   TableBody,
@@ -24,10 +26,17 @@ export default async function BlacklistPage({
   params,
 }: PageProps<"/[locale]/dashboard/[guildId]/blacklist">) {
   const { guildId } = await params;
-  const [t, locale] = await Promise.all([
+  const [t, tDash, locale, moduleStates] = await Promise.all([
     getTranslations("Dashboard.blacklist"),
+    getTranslations("Dashboard"),
     getLocale(),
+    getModuleStates(guildId),
   ]);
+
+  if (!moduleStates.blacklist) {
+    return <ModuleDisabledNotice title={tDash("moduleDisabledTitle")} body={tDash("moduleDisabledBody")} />;
+  }
+
   const rows = await db
     .select()
     .from(bans)

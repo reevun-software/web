@@ -3,7 +3,9 @@ import { Moon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { afkSessions, guildMembers } from "@/lib/db/schema";
+import { getModuleStates } from "@/lib/guild-modules";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ModuleDisabledNotice } from "@/components/dashboard/module-disabled-notice";
 import {
   Table,
   TableBody,
@@ -17,10 +19,17 @@ export default async function AfkPage({
   params,
 }: PageProps<"/[locale]/dashboard/[guildId]/afk">) {
   const { guildId } = await params;
-  const [t, locale] = await Promise.all([
+  const [t, tDash, locale, moduleStates] = await Promise.all([
     getTranslations("Dashboard.afk"),
+    getTranslations("Dashboard"),
     getLocale(),
+    getModuleStates(guildId),
   ]);
+
+  if (!moduleStates.afk) {
+    return <ModuleDisabledNotice title={tDash("moduleDisabledTitle")} body={tDash("moduleDisabledBody")} />;
+  }
+
   const [sessions, members] = await Promise.all([
     db
       .select()

@@ -528,7 +528,9 @@
     "footerCopyright": "© 2023–{year}。Reevun Software LLC.",
     "footerRightsReserved": "保留所有权利。",
     "premium": "Premium",
-    "premiumComingSoon": "功能开发中"
+    "premiumComingSoon": "功能开发中",
+    "moduleDisabledTitle": "模块已禁用",
+    "moduleDisabledBody": "此板块已被服务器所有者禁用，目前无法使用。"
   },
   "LanguageSwitcher": {
     "label": "语言"
