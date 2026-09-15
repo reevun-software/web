@@ -147,12 +147,6 @@
   }
   html {
     @apply font-sans;
-    /* Opening the security filter Sheet locks background scroll, which
-       removes the page's own scrollbar and shifts everything under it by
-       the scrollbar's width for a frame - visible as a stray dark gap right
-       at the edge where the scrollbar used to be. Reserving that gutter
-       permanently means nothing ever has to appear or disappear there. */
-    scrollbar-gutter: stable;
   }
   ::-webkit-scrollbar {
     width: 8px;

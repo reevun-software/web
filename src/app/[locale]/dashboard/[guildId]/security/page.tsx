@@ -182,7 +182,9 @@ export default async function SecurityPage({
 
       <form action={save} className="flex flex-col gap-4">
         <Card className="flex flex-col gap-4 p-6">
-          <span className="text-sm font-medium">{t("moderatorsTitle")}</span>
+          <span className="block border-b border-border/60 pb-4 text-sm font-medium">
+            {t("moderatorsTitle")}
+          </span>
           <div className="flex flex-col gap-2">
             <Label>{t("moderatorRoleIds")}</Label>
             <RolePicker
@@ -252,7 +254,9 @@ export default async function SecurityPage({
         </Card>
 
         <Card className="flex flex-col gap-3 p-6">
-          <span className="text-sm font-medium">{t("muteTitle")}</span>
+          <span className="block border-b border-border/60 pb-4 text-sm font-medium">
+            {t("muteTitle")}
+          </span>
           <label
             htmlFor="muteBlocksReactions"
             className="flex cursor-pointer items-center justify-between gap-4"
