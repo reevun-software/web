@@ -235,13 +235,13 @@ export default async function SecurityPage({
           </div>
           {AUTOMOD_FILTERS.map((key) => (
             <div key={key} className="flex items-center justify-between gap-4 px-6 py-2.5">
-              <label htmlFor={key} className="flex flex-1 cursor-pointer flex-col gap-1">
+              <label htmlFor={key} className="flex flex-1 -translate-y-2 cursor-pointer flex-col gap-1">
                 <span className="text-sm leading-none">{t(`filters.${key}.label`)}</span>
                 <span className="text-xs leading-none text-muted-foreground">
                   {t(`filters.${key}.description`)}
                 </span>
               </label>
-              <div className="flex items-center gap-1">
+              <div className="flex -translate-y-2 items-center gap-1">
                 <FilterSettingsSheet
                   filterType={key}
                   filterLabel={t(`filters.${key}.label`)}
