@@ -10,7 +10,7 @@ const PADDING_Y = 10;
 // lines never start right under them - a solid backing behind each label
 // worked but read as an ugly cutout box stamped over the lines. Leaving
 // the space empty instead means nothing to cover up.
-const PADDING_X_LEFT = 40;
+const PADDING_X_LEFT = 20;
 const GRID_ROWS = 4;
 const X_LABELS = 6;
 const TWO_DAYS_MS = 2 * 24 * 60 * 60 * 1000;
@@ -46,6 +46,7 @@ type CityMeta = { id: string; name: string; color: string };
 type Tick = { t: number; values: Map<string, number> };
 
 export function OnlineHistoryChart({
+  drawKey,
   cityPoints,
   cityColors,
   emptyLabel,
@@ -58,6 +59,10 @@ export function OnlineHistoryChart({
   rangeKey,
   isolatedCityId,
 }: {
+  // Included in the svg's own key below so a project switch (which no
+  // longer remounts this component's parent) still replays the line
+  // draw-in animation, not just a range or isolated-city change.
+  drawKey: string | undefined;
   cityPoints: CityHistoryPoint[];
   // Colors are assigned by the parent from the live (not historical) city
   // list, so a city's line color matches its dot in the list below even
@@ -279,7 +284,7 @@ export function OnlineHistoryChart({
           included, and only clears on leaving the whole area. */}
       <div className="relative" onPointerMove={handleMove} onPointerLeave={() => setHoverT(null)}>
         <svg
-          key={`${rangeKey}-${isolatedCityId ?? "all"}`}
+          key={`${drawKey}-${rangeKey}-${isolatedCityId ?? "all"}`}
           viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
           preserveAspectRatio="none"
           className="h-56 w-full overflow-visible animate-in fade-in duration-200 ease-out"

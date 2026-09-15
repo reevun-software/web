@@ -127,7 +127,11 @@ function DropdownMenuSubContent({
   align = "start",
   alignOffset = -3,
   side = "right",
-  sideOffset = 4,
+  // Offset from the trigger row itself, which already sits inset by the
+  // parent panel's own p-1 padding (4px) - a sideOffset of 4 cancelled out
+  // exactly against that inset, leaving the submenu still flush against the
+  // parent panel's outer edge with no visible gap. 8px clears both.
+  sideOffset = 8,
   className,
   ...props
 }: React.ComponentProps<typeof DropdownMenuContent>) {

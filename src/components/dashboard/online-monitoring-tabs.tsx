@@ -93,6 +93,12 @@ export function OnlineMonitoringTabs({
   const [active, setActive] = useState(projects[0]?.key);
   const [rangeDays, setRangeDays] = useState<(typeof RANGE_OPTIONS)[number]>(1);
   const [isolatedCityId, setIsolatedCityId] = useState<string | null>(null);
+  // Toggled (not a key remount) on project switch, so the blur-in transition
+  // replays without unmounting the stat numbers below it - a full remount
+  // there reset OdometerNumber's digit positions on every switch, which
+  // meant the numbers snapped straight to the new value instead of rolling
+  // to it like they do on every other update.
+  const [switching, setSwitching] = useState(false);
   const locale = useLocale();
   const router = useRouter();
 
@@ -115,6 +121,7 @@ export function OnlineMonitoringTabs({
   function selectProject(key: string) {
     setActive(key);
     setIsolatedCityId(null); // a city id from one project means nothing on another
+    setSwitching(true);
   }
 
   const since = now - rangeDays * 24 * 60 * 60 * 1000;
@@ -169,7 +176,10 @@ export function OnlineMonitoringTabs({
         // numbers themselves roll digit-by-digit via OdometerNumber on top
         // of this, since it re-triggers on any value change regardless of
         // why the value changed (live refresh, project switch, or range).
-        <div key={project?.key} className="flex flex-col gap-4 animate-project-switch">
+        <div
+          className={cn("flex flex-col gap-4", switching && "animate-project-switch")}
+          onAnimationEnd={() => setSwitching(false)}
+        >
           <Card className="grid grid-cols-1 divide-y divide-border/60 p-0 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {stats.map((s) => (
               <div key={s.label} className="flex flex-col gap-1 px-5 py-4">
@@ -209,6 +219,7 @@ export function OnlineMonitoringTabs({
               )}
             </div>
             <OnlineHistoryChart
+              drawKey={project?.key}
               cityPoints={visibleCityHistory}
               cityColors={cityColors}
               emptyLabel={historyEmpty}
