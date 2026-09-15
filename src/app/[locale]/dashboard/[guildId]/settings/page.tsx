@@ -1,10 +1,13 @@
-import { eq } from "drizzle-orm";
-import { Settings, Lock } from "lucide-react";
+import { and, eq } from "drizzle-orm";
+import { Settings, Lock, ShieldOff } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { guilds, guildBotSettings } from "@/lib/db/schema";
+import { guilds, guildBotSettings, guildModules, guildDepartments, guildMembers } from "@/lib/db/schema";
 import { getGuildRoles } from "@/lib/discord-guild";
+import { auth } from "@/lib/auth";
+import { getModuleStates } from "@/lib/guild-modules";
+import { MODULE_KEYS } from "@/lib/modules";
 import { LOCALES, LOCALE_META } from "@/i18n/routing";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -15,17 +18,25 @@ import { RolePicker } from "@/components/dashboard/role-picker";
 import { ColorInput } from "@/components/dashboard/color-input";
 import { SaveForm } from "@/components/dashboard/save-form";
 import { SubmitButton } from "@/components/dashboard/submit-button";
+import { DepartmentsManager } from "@/components/dashboard/departments-manager";
 
 export default async function SettingsPage({
   params,
 }: PageProps<"/[locale]/dashboard/[guildId]/settings">) {
   const { guildId } = await params;
   const t = await getTranslations("Dashboard.settings");
-  const [[guild], [botSettings], roles] = await Promise.all([
-    db.select().from(guilds).where(eq(guilds.id, guildId)).limit(1),
-    db.select().from(guildBotSettings).where(eq(guildBotSettings.guildId, guildId)).limit(1),
-    getGuildRoles(guildId),
-  ]);
+  const [session, [guild], [botSettings], roles, moduleStates, departments, members] =
+    await Promise.all([
+      auth(),
+      db.select().from(guilds).where(eq(guilds.id, guildId)).limit(1),
+      db.select().from(guildBotSettings).where(eq(guildBotSettings.guildId, guildId)).limit(1),
+      getGuildRoles(guildId),
+      getModuleStates(guildId),
+      db.select().from(guildDepartments).where(eq(guildDepartments.guildId, guildId)),
+      db.select().from(guildMembers).where(eq(guildMembers.guildId, guildId)),
+    ]);
+
+  const isOwner = !!session?.discordId && session.discordId === guild?.ownerDiscordId;
 
   const current = botSettings ?? {
     interfaceLanguage: "ru",
@@ -39,6 +50,7 @@ export default async function SettingsPage({
     restoreOldRolesOnRejoin: false,
     restorableRoleIds: [] as string[],
     exemptRoleIds: [] as string[],
+    project: null as string | null,
   };
 
   async function save(formData: FormData) {
@@ -66,14 +78,76 @@ export default async function SettingsPage({
     revalidatePath(`/dashboard/${guildId}/settings`);
   }
 
+  async function saveProject(formData: FormData) {
+    "use server";
+    if (!isOwner) return;
+    const project = (formData.get("project") as string) || null;
+    const values = { guildId, project, updatedAt: new Date() };
+    await db
+      .insert(guildBotSettings)
+      .values(values)
+      .onConflictDoUpdate({ target: guildBotSettings.guildId, set: values });
+    revalidatePath(`/dashboard/${guildId}/settings`);
+    revalidatePath(`/dashboard/${guildId}/monitoring`);
+  }
+
+  async function saveModules(formData: FormData) {
+    "use server";
+    if (!isOwner) return;
+    for (const key of MODULE_KEYS) {
+      const enabled = formData.get(key) === "on";
+      if (enabled) {
+        await db
+          .delete(guildModules)
+          .where(and(eq(guildModules.guildId, guildId), eq(guildModules.moduleKey, key)));
+      } else {
+        const values = { guildId, moduleKey: key, enabled: false, updatedAt: new Date() };
+        await db
+          .insert(guildModules)
+          .values(values)
+          .onConflictDoUpdate({
+            target: [guildModules.guildId, guildModules.moduleKey],
+            set: values,
+          });
+      }
+    }
+    revalidatePath(`/dashboard/${guildId}`, "layout");
+  }
+
+  async function createDepartment(name: string) {
+    "use server";
+    if (!isOwner || !name.trim()) return;
+    await db.insert(guildDepartments).values({ guildId, name: name.trim() });
+    revalidatePath(`/dashboard/${guildId}/settings`);
+  }
+
+  async function deleteDepartment(id: number) {
+    "use server";
+    if (!isOwner) return;
+    await db
+      .delete(guildDepartments)
+      .where(and(eq(guildDepartments.id, id), eq(guildDepartments.guildId, guildId)));
+    revalidatePath(`/dashboard/${guildId}/settings`);
+  }
+
+  async function updateDepartmentMembers(id: number, memberIds: string[]) {
+    "use server";
+    if (!isOwner) return;
+    await db
+      .update(guildDepartments)
+      .set({ memberDiscordIds: memberIds })
+      .where(and(eq(guildDepartments.id, id), eq(guildDepartments.guildId, guildId)));
+    revalidatePath(`/dashboard/${guildId}/settings`);
+  }
+
   return (
-    <div className="flex max-w-2xl flex-col gap-4">
+    <div className="flex max-w-6xl flex-col gap-4">
       <div className="flex items-center gap-2">
         <Settings className="size-5 text-muted-foreground" strokeWidth={1.5} />
         <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
       </div>
 
-      <Card className="flex flex-col gap-4 p-6">
+      <Card className="flex max-w-2xl flex-col gap-4 p-6">
         <div className="flex flex-col gap-2">
           <Label htmlFor="name">{t("name")}</Label>
           <div className="relative">
@@ -97,6 +171,7 @@ export default async function SettingsPage({
         <p className="text-sm text-muted-foreground">{t("note")}</p>
       </Card>
 
+      <div className="grid gap-4 lg:grid-cols-2">
       <SaveForm action={save} savedMessage={t("saved")} className="flex flex-col gap-4">
         <Card className="flex flex-col gap-4 p-6">
           <div className="grid gap-4 sm:grid-cols-2">
@@ -264,6 +339,109 @@ export default async function SettingsPage({
           {t("save")}
         </SubmitButton>
       </SaveForm>
+
+      <div className="flex flex-col gap-4">
+        {!isOwner ? (
+          <Card className="flex flex-col items-center gap-2 p-8 text-center">
+            <ShieldOff className="size-6 text-muted-foreground" strokeWidth={1.5} />
+            <span className="text-sm font-medium">{t("ownerOnlyTitle")}</span>
+            <p className="max-w-[36ch] text-sm text-muted-foreground">{t("ownerOnlyBody")}</p>
+          </Card>
+        ) : (
+          <>
+            <SaveForm action={saveProject} savedMessage={t("saved")}>
+              <Card className="flex flex-col gap-3 p-6">
+                <span className="text-sm font-medium">{t("projectTitle")}</span>
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="project">{t("projectLabel")}</Label>
+                  <Select
+                    name="project"
+                    defaultValue={current.project ?? "none"}
+                    items={{
+                      none: t("projectNone"),
+                      majestic: t("projectMajestic"),
+                      russiaonline: t("projectRussiaOnline"),
+                      gta5rp: t("projectGta5rp"),
+                    }}
+                  >
+                    <SelectTrigger id="project" className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">{t("projectNone")}</SelectItem>
+                      <SelectItem value="majestic">{t("projectMajestic")}</SelectItem>
+                      <SelectItem value="russiaonline">{t("projectRussiaOnline")}</SelectItem>
+                      <SelectItem value="gta5rp">{t("projectGta5rp")}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground">{t("projectHint")}</p>
+                </div>
+                <SubmitButton pendingLabel={t("saving")} className="w-full">
+                  {t("save")}
+                </SubmitButton>
+              </Card>
+            </SaveForm>
+
+            <SaveForm action={saveModules} savedMessage={t("saved")}>
+              <Card className="flex flex-col gap-4 p-6">
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm font-medium">{t("modulesTitle")}</span>
+                  <p className="text-xs text-muted-foreground">{t("modulesHint")}</p>
+                </div>
+                {(
+                  [
+                    ["warnings", t("moduleWarnings")],
+                    ["tickets", t("moduleTickets")],
+                    ["afk", t("moduleAfk")],
+                    ["blacklist", t("moduleBlacklist")],
+                    ["departments", t("moduleDepartments")],
+                  ] as const
+                ).map(([key, label]) => (
+                  <label key={key} htmlFor={key} className="flex cursor-pointer items-center justify-between gap-4">
+                    <span className="text-sm">{label}</span>
+                    <Switch id={key} name={key} defaultChecked={moduleStates[key]} />
+                  </label>
+                ))}
+                <SubmitButton pendingLabel={t("saving")} className="w-full">
+                  {t("save")}
+                </SubmitButton>
+              </Card>
+            </SaveForm>
+
+            <Card className="flex flex-col gap-3 p-6">
+              <div className="flex flex-col gap-1">
+                <span className="text-sm font-medium">{t("departmentsTitle")}</span>
+                <p className="text-xs text-muted-foreground">
+                  {moduleStates.departments ? t("departmentsHint") : t("departmentsDisabledHint")}
+                </p>
+              </div>
+              {moduleStates.departments && (
+                <DepartmentsManager
+                  departments={departments}
+                  members={members.map((m) => ({
+                    discordUserId: m.discordUserId,
+                    username: m.username,
+                  }))}
+                  createDepartment={createDepartment}
+                  deleteDepartment={deleteDepartment}
+                  updateDepartmentMembers={updateDepartmentMembers}
+                  labels={{
+                    addDepartment: t("addDepartment"),
+                    namePlaceholder: t("departmentNamePlaceholder"),
+                    noDepartments: t("noDepartments"),
+                    members: t("departmentMembers"),
+                    addMembers: t("addMembers"),
+                    noMembers: t("noMembers"),
+                    searchMembers: t("searchMembers"),
+                    delete: t("deleteDepartment"),
+                  }}
+                />
+              )}
+            </Card>
+          </>
+        )}
+      </div>
+      </div>
     </div>
   );
 }

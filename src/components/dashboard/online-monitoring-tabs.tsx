@@ -194,16 +194,30 @@ export function OnlineMonitoringTabs({
       ) : (
         // Not keyed by project - a remount here would reset OdometerNumber's
         // digit positions on every switch, making it snap to the new value
-        // instead of rolling to it. The blur overlay below covers the old
-        // project's numbers/chart for PROJECT_SWITCH_DELAY_MS; `active` (and
-        // so every value here) only flips once that timer ends, so the
-        // reveal and the digit roll land on the same beat.
+        // instead of rolling to it. `active` (and so every value below)
+        // only flips once PROJECT_SWITCH_DELAY_MS ends, so the reveal and
+        // the digit roll land on the same beat.
         <div className="relative flex flex-col gap-4">
           {switching && (
-            <div className="absolute inset-0 z-20 flex items-center justify-center rounded-lg bg-background/40 backdrop-blur-sm">
+            // A plain centered spinner, siblings with the blurred content
+            // below rather than layered on top of it via backdrop-blur -
+            // backdrop-filter only reliably samples what's within its own
+            // compositing tile, which broke down once this section (stat
+            // cards + chart + a tall city list) ran taller than one
+            // viewport: only the top portion actually came out blurred.
+            // Blurring the content div itself has no such limit since it
+            // rasterizes its own pixels rather than sampling through a
+            // layer boundary.
+            <div className="absolute inset-0 z-20 flex items-start justify-center pt-24">
               <Loader2 className="size-6 animate-spin text-muted-foreground" />
             </div>
           )}
+          <div
+            className={cn(
+              "flex flex-col gap-4 transition-[filter] duration-300 ease-out",
+              switching && "pointer-events-none blur-sm",
+            )}
+          >
           <Card className="grid grid-cols-1 divide-y divide-border/60 p-0 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {stats.map((s) => (
               <div key={s.label} className="flex flex-col gap-1 px-5 py-4">
@@ -276,6 +290,7 @@ export function OnlineMonitoringTabs({
                 </button>
               );
             })}
+          </div>
           </div>
         </div>
       )}
