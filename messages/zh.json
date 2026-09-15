@@ -393,7 +393,6 @@
       "range7": "7 天",
       "range30": "30 天",
       "peakInRange": "该时段峰值",
-      "shortHistory": "数据自 {date} 起开始收集——目前还没有更早的历史记录。",
       "chartLabel": "{project} 在线历史",
       "colDate": "日期",
       "colPlayers": "在线人数"

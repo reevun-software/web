@@ -393,7 +393,6 @@
       "range7": "7 días",
       "range30": "30 días",
       "peakInRange": "Pico del período",
-      "shortHistory": "Los datos se recopilan desde {date}; todavía no hay historial anterior.",
       "chartLabel": "Historial en línea de {project}",
       "colDate": "Fecha",
       "colPlayers": "Jugadores"

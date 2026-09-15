@@ -213,6 +213,7 @@ export function OnlineMonitoringTabs({
             </div>
           )}
           <div
+            aria-hidden={switching || undefined}
             className={cn(
               "flex flex-col gap-4 transition-[filter] duration-300 ease-out",
               switching && "pointer-events-none blur-sm",

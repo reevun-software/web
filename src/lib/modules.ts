@@ -5,10 +5,3 @@
 // Departments card on the Settings page is usable.
 export const MODULE_KEYS = ["warnings", "tickets", "afk", "blacklist", "departments"] as const;
 export type ModuleKey = (typeof MODULE_KEYS)[number];
-
-export const MODULE_SEGMENTS: Partial<Record<ModuleKey, string>> = {
-  warnings: "warnings",
-  tickets: "tickets",
-  afk: "afk",
-  blacklist: "blacklist",
-};

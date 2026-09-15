@@ -393,7 +393,6 @@
       "range7": "7 дней",
       "range30": "30 дней",
       "peakInRange": "Пик за период",
-      "shortHistory": "Данные собираются с {date} — более ранней истории пока нет.",
       "chartLabel": "История онлайна {project}",
       "colDate": "Дата",
       "colPlayers": "Игроков"

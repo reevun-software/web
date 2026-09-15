@@ -393,7 +393,6 @@
       "range7": "7 days",
       "range30": "30 days",
       "peakInRange": "Peak for period",
-      "shortHistory": "Data has been collected since {date} - no earlier history exists yet.",
       "chartLabel": "{project} online history",
       "colDate": "Date",
       "colPlayers": "Players"

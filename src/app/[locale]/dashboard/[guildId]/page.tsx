@@ -106,7 +106,10 @@ export default async function DashboardOverviewPage({
                 !disabled && "hover:bg-accent/40",
               )}
             >
-              <div className={cn("flex flex-col gap-2", disabled && "pointer-events-none blur-sm")}>
+              <div
+                aria-hidden={disabled || undefined}
+                className={cn("flex flex-col gap-2", disabled && "pointer-events-none blur-sm")}
+              >
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <s.icon className="size-4" strokeWidth={1.5} />
                   <span className="text-xs">{s.label}</span>

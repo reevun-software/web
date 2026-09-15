@@ -393,7 +393,6 @@
       "range7": "7 gün",
       "range30": "30 gün",
       "peakInRange": "Dönem zirvesi",
-      "shortHistory": "Veriler {date} tarihinden beri toplanıyor - henüz daha eski bir geçmiş yok.",
       "chartLabel": "{project} çevrimiçi geçmişi",
       "colDate": "Tarih",
       "colPlayers": "Oyuncu"
