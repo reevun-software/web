@@ -267,7 +267,7 @@ export default async function SecurityPage({
               htmlFor="muteBlocksReactions"
               className="flex cursor-pointer items-center justify-between gap-4"
             >
-              <span className="flex flex-col gap-1">
+              <span className="flex -translate-y-2 flex-col gap-1">
                 <span className="text-sm leading-none">{t("muteBlocksReactions")}</span>
                 <span className="text-xs leading-none text-muted-foreground">
                   {t("muteBlocksReactionsHint")}
@@ -277,6 +277,7 @@ export default async function SecurityPage({
                 id="muteBlocksReactions"
                 name="muteBlocksReactions"
                 defaultChecked={current.muteBlocksReactions}
+                className="-translate-y-2"
               />
             </label>
             <MuteSettingsFields
