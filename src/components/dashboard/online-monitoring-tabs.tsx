@@ -169,7 +169,7 @@ export function OnlineMonitoringTabs({
         // numbers themselves roll digit-by-digit via OdometerNumber on top
         // of this, since it re-triggers on any value change regardless of
         // why the value changed (live refresh, project switch, or range).
-        <div key={project?.key} className="flex flex-col gap-4 animate-in fade-in duration-200 ease-out">
+        <div key={project?.key} className="flex flex-col gap-4 animate-project-switch">
           <Card className="grid grid-cols-1 divide-y divide-border/60 p-0 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {stats.map((s) => (
               <div key={s.label} className="flex flex-col gap-1 px-5 py-4">

@@ -224,7 +224,7 @@ export default async function SecurityPage({
             </label>
             <label
               htmlFor="allowHigherModsToModerateLower"
-              className="flex -translate-y-1 cursor-pointer items-center justify-between gap-4"
+              className="flex -translate-y-2 cursor-pointer items-center justify-between gap-4"
             >
               <span className="text-sm">{t("allowHigherModsToModerateLower")}</span>
               <Switch

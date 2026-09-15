@@ -48,7 +48,7 @@ export function ColorInput({ name, defaultValue }: { name: string; defaultValue:
         render={
           <button
             type="button"
-            className="flex w-fit cursor-pointer items-center gap-2 rounded-md border border-input bg-transparent px-2.5 py-1.5 dark:bg-input/30 dark:hover:bg-input/50"
+            className="flex h-8 w-full cursor-pointer items-center gap-2 rounded-lg border border-input bg-transparent px-2.5 dark:bg-input/30 dark:hover:bg-input/50"
           />
         }
       >

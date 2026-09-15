@@ -93,6 +93,16 @@ export function getRussiaOnlineOnline() {
   return getMajesticFamilyOnline("https://wiki.russia.online/api/online");
 }
 
+// Most GTA5RP city names arrive already correctly cased ("Milton"); a few
+// (e.g. "INSQUAD") ship all-caps instead. Only re-case names that are
+// entirely uppercase, so correctly-cased names pass through untouched.
+function toTitleCase(name: string): string {
+  if (name !== name.toUpperCase() || name === name.toLowerCase()) return name;
+  return name
+    .toLowerCase()
+    .replace(/(^|\s)\p{L}/gu, (c) => c.toUpperCase());
+}
+
 type RageMpServer = {
   name?: string;
   players?: number;
@@ -116,8 +126,10 @@ export async function getGta5rpOnline(): Promise<OnlineProjectData | null> {
       id: key,
       // The raw server name is a long branded string like
       // "[RolePlay][Voice] GTA5RP.COM | Milton | gta5rp.com/discord [1.1]" -
-      // the city name is reliably the middle "|"-delimited segment.
-      name: v.name?.split("|")[1]?.trim() || key.split(".")[0],
+      // the city name is reliably the middle "|"-delimited segment. Some
+      // servers (e.g. "INSQUAD") ship that segment in all caps, unlike the
+      // rest - normalize to Title Case so it matches its siblings.
+      name: toTitleCase(v.name?.split("|")[1]?.trim() || key.split(".")[0]),
       players: v.players ?? 0,
       peak: v.peak,
       countryCode: v.lang,

@@ -217,27 +217,35 @@ export default async function SettingsPage({
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="flex flex-col gap-1.5">
-                <Label htmlFor="restorableRoleIds">{t("restorableRoles")}</Label>
-                <RolePicker
-                  id="restorableRoleIds"
-                  name="restorableRoleIds"
-                  roles={roles}
-                  defaultSelectedIds={current.restorableRoleIds}
-                  addLabel={t("selectRoles")}
-                  emptyLabel={t("rolesUnavailable")}
-                />
+                <Label htmlFor="restorableRoleIds" className="-translate-y-3">
+                  {t("restorableRoles")}
+                </Label>
+                <div className="-translate-y-2">
+                  <RolePicker
+                    id="restorableRoleIds"
+                    name="restorableRoleIds"
+                    roles={roles}
+                    defaultSelectedIds={current.restorableRoleIds}
+                    addLabel={t("selectRoles")}
+                    emptyLabel={t("rolesUnavailable")}
+                  />
+                </div>
                 <p className="text-xs text-muted-foreground">{t("restorableRolesHint")}</p>
               </div>
               <div className="flex flex-col gap-1.5">
-                <Label htmlFor="exemptRoleIds">{t("exemptRoles")}</Label>
-                <RolePicker
-                  id="exemptRoleIds"
-                  name="exemptRoleIds"
-                  roles={roles}
-                  defaultSelectedIds={current.exemptRoleIds}
-                  addLabel={t("selectRoles")}
-                  emptyLabel={t("rolesUnavailable")}
-                />
+                <Label htmlFor="exemptRoleIds" className="-translate-y-3">
+                  {t("exemptRoles")}
+                </Label>
+                <div className="-translate-y-2">
+                  <RolePicker
+                    id="exemptRoleIds"
+                    name="exemptRoleIds"
+                    roles={roles}
+                    defaultSelectedIds={current.exemptRoleIds}
+                    addLabel={t("selectRoles")}
+                    emptyLabel={t("rolesUnavailable")}
+                  />
+                </div>
                 <p className="text-xs text-muted-foreground">{t("exemptRolesHint")}</p>
               </div>
             </div>

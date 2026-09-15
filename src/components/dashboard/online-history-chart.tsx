@@ -6,6 +6,11 @@ import type { CityHistoryPoint } from "@/lib/online-monitoring";
 const WIDTH = 600;
 const HEIGHT = 220;
 const PADDING_Y = 10;
+// Reserves clean space on the left for the y-axis number labels, so city
+// lines never start right under them - a solid backing behind each label
+// worked but read as an ugly cutout box stamped over the lines. Leaving
+// the space empty instead means nothing to cover up.
+const PADDING_X_LEFT = 40;
 const GRID_ROWS = 4;
 const X_LABELS = 6;
 const TWO_DAYS_MS = 2 * 24 * 60 * 60 * 1000;
@@ -139,7 +144,7 @@ export function OnlineHistoryChart({
   const usableHeight = HEIGHT - PADDING_Y * 2;
 
   function xFor(t: number) {
-    return ((t - minT) / spanT) * WIDTH;
+    return PADDING_X_LEFT + ((t - minT) / spanT) * (WIDTH - PADDING_X_LEFT);
   }
   function yFor(players: number) {
     return PADDING_Y + usableHeight - (players / axisMax) * usableHeight;
@@ -202,7 +207,12 @@ export function OnlineHistoryChart({
 
   function handleMove(e: React.PointerEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
-    const ratio = (e.clientX - rect.left) / rect.width;
+    // Inverts xFor(): pixel position -> viewBox x -> ratio across the
+    // plotted span (which starts at PADDING_X_LEFT, not 0). Skipping this
+    // offset would point the hover indicator to the left of the cursor by
+    // however wide that left margin is.
+    const viewBoxX = ((e.clientX - rect.left) / rect.width) * WIDTH;
+    const ratio = Math.max(0, (viewBoxX - PADDING_X_LEFT) / (WIDTH - PADDING_X_LEFT));
     setHoverT(nearestTick(ticks, minT + ratio * spanT).t);
   }
 
@@ -289,18 +299,20 @@ export function OnlineHistoryChart({
               className="text-border"
             />
           ))}
-          {linePaths.map((city) => (
-            <path
-              key={city.id}
-              d={city.d}
-              fill="none"
-              stroke={city.color}
-              strokeWidth={1.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              vectorEffect="non-scaling-stroke"
-            />
-          ))}
+          <g className="animate-chart-draw">
+            {linePaths.map((city) => (
+              <path
+                key={city.id}
+                d={city.d}
+                fill="none"
+                stroke={city.color}
+                strokeWidth={1.5}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+              />
+            ))}
+          </g>
           {hoverX != null && (
             <line
               x1={hoverX}
@@ -316,15 +328,12 @@ export function OnlineHistoryChart({
         </svg>
 
         {/* Y-axis labels, positioned as HTML rather than SVG text so they
-            never get stretched by the non-uniform viewBox scale below. Each
-            one gets its own card-colored backing - every city's line starts
-            at this same left edge, so whichever one happened to cross a
-            grid value there read as the number being crossed out. */}
+            never get stretched by the non-uniform viewBox scale below.
+            PADDING_X_LEFT above keeps every city's line clear of this
+            column, so there's nothing for these to be crossed out by. */}
         <div className="pointer-events-none absolute inset-y-0 left-0 flex flex-col justify-between py-1 text-[10px] text-muted-foreground">
           {gridLines.map((g) => (
-            <span key={g.y} className="bg-card pr-1">
-              {g.value.toLocaleString(locale)}
-            </span>
+            <span key={g.y}>{g.value.toLocaleString(locale)}</span>
           ))}
         </div>
 

@@ -269,8 +269,10 @@ export function FilterSettingsSheet({
             </div>
           </div>
 
-            <div className="flex shrink-0 justify-end border-t border-border/60 p-4">
-              <SubmitButton pendingLabel={labels.saving}>{labels.save}</SubmitButton>
+            <div className="shrink-0 border-t border-border/60 p-4">
+              <SubmitButton pendingLabel={labels.saving} className="w-full">
+                {labels.save}
+              </SubmitButton>
             </div>
           </form>
         </DialogPrimitive.Popup>
