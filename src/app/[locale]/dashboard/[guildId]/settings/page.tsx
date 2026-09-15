@@ -142,7 +142,9 @@ export default async function SettingsPage({
             <span className="text-sm font-medium">{t("accessSecurityTitle")}</span>
           </div>
           <div className="flex flex-col gap-1.5 px-6 py-4">
-            <Label htmlFor="trustedAdminRoleIds">{t("trustedAdminRoles")}</Label>
+            <Label htmlFor="trustedAdminRoleIds" className="-translate-y-3">
+              {t("trustedAdminRoles")}
+            </Label>
             <RolePicker
               id="trustedAdminRoleIds"
               name="trustedAdminRoleIds"
@@ -161,7 +163,9 @@ export default async function SettingsPage({
           </div>
           <div className="flex flex-col gap-4 px-6 py-4">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="defaultRoleIds">{t("defaultRoles")}</Label>
+              <Label htmlFor="defaultRoleIds" className="-translate-y-3">
+                {t("defaultRoles")}
+              </Label>
               <RolePicker
                 id="defaultRoleIds"
                 name="defaultRoleIds"

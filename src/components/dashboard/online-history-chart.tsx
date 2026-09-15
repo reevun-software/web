@@ -117,12 +117,21 @@ export function OnlineHistoryChart({
   const maxT = ticks[ticks.length - 1].t;
   const spanT = maxT - minT || 1;
 
+  // "Peak for period" is the combined total across cities - what actually
+  // answers "what's the most players we've seen at once".
   const peak = Math.max(
     ...ticks.map((tick) =>
       visibleCities.reduce((sum, c) => sum + (tick.values.get(c.id) ?? 0), 0),
     ),
   );
-  const rawMax = peak || 1;
+  // The Y axis scales to the tallest INDIVIDUAL line instead, since these
+  // are separate per-city lines, not a stacked area - scaling every line to
+  // the summed total (a much bigger number) squashed each one flat near the
+  // bottom of the chart.
+  const maxSeriesValue = Math.max(
+    ...ticks.flatMap((tick) => visibleCities.map((c) => tick.values.get(c.id) ?? 0)),
+  );
+  const rawMax = maxSeriesValue || 1;
   // Zero-based, "nice" axis instead of one tied exactly to the data's own
   // min/max, which produced ugly, seemingly-arbitrary grid values.
   const step = niceStep(rawMax / GRID_ROWS);
@@ -170,11 +179,16 @@ export function OnlineHistoryChart({
   const requestedSpanMs = rangeKey * 24 * 60 * 60 * 1000;
   const hasShortHistory = spanT < requestedSpanMs * 0.95;
 
-  const xLabels = Array.from({ length: X_LABELS }, (_, i) => {
-    const frac = i / (X_LABELS - 1);
-    const date = new Date(minT + frac * spanT);
+  // Snapped to real recorded tick indices, not evenly-spaced points in
+  // continuous time - picking arbitrary time fractions produced labels like
+  // 20:19 / 20:21 / 20:22 with inconsistent 1-2 minute gaps between them
+  // whenever the real data didn't divide evenly, which read as broken.
+  const labelCount = Math.min(X_LABELS, ticks.length);
+  const xLabels = Array.from({ length: labelCount }, (_, i) => {
+    const index = Math.round((i / (labelCount - 1 || 1)) * (ticks.length - 1));
+    const date = new Date(ticks[index].t);
     return {
-      x: frac * WIDTH,
+      x: xFor(ticks[index].t),
       label: showTime
         ? date.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })
         : date.toLocaleDateString(locale, { day: "2-digit", month: "2-digit" }),
