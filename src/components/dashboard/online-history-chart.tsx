@@ -252,7 +252,14 @@ export function OnlineHistoryChart({
         </table>
       </div>
 
-      <div className="relative">
+      {/* onPointerLeave lives here, not on the svg - the tooltip below now
+          takes pointer events (so its own list can be scrolled), and it
+          visually overlaps the svg's own box. Moving the cursor from the
+          svg into the tooltip is a pointerleave on the svg specifically,
+          which would otherwise clear hoverT and yank the tooltip away the
+          instant you tried to reach it. This only clears on leaving the
+          whole chart area, tooltip included. */}
+      <div className="relative" onPointerLeave={() => setHoverT(null)}>
         <svg
           key={`${rangeKey}-${isolatedCityId ?? "all"}`}
           viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
@@ -260,7 +267,6 @@ export function OnlineHistoryChart({
           className="h-56 w-full overflow-visible animate-in fade-in duration-200 ease-out"
           aria-hidden="true"
           onPointerMove={handleMove}
-          onPointerLeave={() => setHoverT(null)}
         >
           {gridLines.map((g) => (
             <line
@@ -316,7 +322,11 @@ export function OnlineHistoryChart({
           // near the far left or right - anchor to the near edge instead
           // once close enough to one.
           <div
-            className="pointer-events-none absolute top-0 z-10 flex max-h-full w-max flex-col gap-1 overflow-y-auto rounded-md border border-border/60 bg-popover px-2.5 py-1.5 text-xs whitespace-nowrap text-popover-foreground shadow-md"
+            // Not pointer-events-none like the y-axis labels below - with
+            // enough cities this list needs its own scroll, which
+            // pointer-events-none would silently defeat (wheel input hit-
+            // tests straight through to whatever's behind it instead).
+            className="absolute top-0 z-10 flex max-h-full w-max flex-col gap-1 overflow-y-auto rounded-md border border-border/60 bg-popover px-2.5 py-1.5 text-xs whitespace-nowrap text-popover-foreground shadow-md"
             style={{
               left: `${(hoverX / WIDTH) * 100}%`,
               transform:
