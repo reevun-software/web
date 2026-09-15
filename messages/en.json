@@ -451,7 +451,10 @@
       "allowHigherModsToModerateLower": "Allow moderators with a higher role to punish moderators below them",
       "muteBlocksReactions": "Block reactions",
       "muteBlocksReactionsHint": "Muting will also stop members from adding reactions to messages",
-      "timeoutLimitNotice": "Timeout-based mutes are capped at 28 days - that limit is set by Discord itself."
+      "timeoutLimitNotice": "Timeout-based mutes are capped at 28 days - that limit is set by Discord itself.",
+      "saved": "Saved",
+      "searchRoles": "Search roles…",
+      "searchChannels": "Search channels…"
     }
   },
   "LanguageSwitcher": {

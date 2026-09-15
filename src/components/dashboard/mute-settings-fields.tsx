@@ -74,8 +74,9 @@ export function MuteSettingsFields({
       </div>
       {showRoleField && (
         <div className="flex flex-col gap-1.5 animate-in fade-in slide-in-from-top-1 duration-150 ease-out">
-          <Label>{labels.muteRoleId}</Label>
+          <Label htmlFor="muteRoleId">{labels.muteRoleId}</Label>
           <RoleSelect
+            id="muteRoleId"
             name="muteRoleId"
             roles={roles}
             defaultValue={defaultMuteRoleId}

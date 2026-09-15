@@ -27,6 +27,7 @@ function RoleDot({ color }: { color: string }) {
 // same role-list-with-hierarchy-warning language instead of a plain <Select>
 // full of bare role names.
 export function RoleSelect({
+  id,
   name,
   roles,
   defaultValue,
@@ -35,6 +36,7 @@ export function RoleSelect({
   placeholder,
   emptyLabel,
 }: {
+  id?: string;
   name: string;
   roles: DiscordRole[];
   defaultValue: string | null;
@@ -58,6 +60,7 @@ export function RoleSelect({
       <DropdownMenuTrigger
         render={
           <Button
+            id={id}
             type="button"
             variant="outline"
             className="w-full cursor-pointer justify-between gap-1.5 sm:w-64"

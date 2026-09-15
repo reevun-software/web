@@ -451,7 +451,10 @@
       "allowHigherModsToModerateLower": "Permitir que moderadores con un rol superior sancionen a moderadores inferiores",
       "muteBlocksReactions": "Bloquear reacciones",
       "muteBlocksReactionsHint": "Silenciar también impedirá que los miembros añadan reacciones a los mensajes",
-      "timeoutLimitNotice": "Los silencios por tiempo de espera están limitados a 28 días - ese límite lo establece el propio Discord."
+      "timeoutLimitNotice": "Los silencios por tiempo de espera están limitados a 28 días - ese límite lo establece el propio Discord.",
+      "saved": "Guardado",
+      "searchRoles": "Buscar roles…",
+      "searchChannels": "Buscar canales…"
     }
   },
   "LanguageSwitcher": {

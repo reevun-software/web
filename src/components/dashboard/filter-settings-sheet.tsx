@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -63,6 +64,7 @@ export function FilterSettingsSheet({
 
   async function handleSubmit(formData: FormData) {
     await action(formData);
+    toast.success(labels.saved);
     setOpen(false);
   }
 
@@ -104,9 +106,9 @@ export function FilterSettingsSheet({
               </label>
 
               <div className="flex flex-col gap-1.5">
-                <Label>{labels.punishment}</Label>
+                <Label htmlFor={`${filterType}-punishment`}>{labels.punishment}</Label>
                 <Select name="punishment" defaultValue={config.punishment}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger id={`${filterType}-punishment`} className="w-full">
                     {/* <Select.Value> needs an explicit value->label mapping
                         (an `items` map or this render-function) - it does
                         not read the matching <Select.Item>'s own text, so
@@ -138,9 +140,9 @@ export function FilterSettingsSheet({
               {hasList && (
                 <>
                   <div className="flex flex-col gap-1.5">
-                    <Label>{labels.strategy}</Label>
+                    <Label htmlFor={`${filterType}-strategy`}>{labels.strategy}</Label>
                     <Select name="strategy" defaultValue={config.strategy}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger id={`${filterType}-strategy`} className="w-full">
                         <SelectValue>
                           {(value: string) =>
                             value === "allowlist" ? labels.strategyAllowlist : labels.strategyBlocklist
@@ -191,8 +193,9 @@ export function FilterSettingsSheet({
               </label>
 
               <div className="flex flex-col gap-1.5">
-                <Label>{labels.targetRoles}</Label>
+                <Label htmlFor={`${filterType}-targetRoleIds`}>{labels.targetRoles}</Label>
                 <RolePicker
+                  id={`${filterType}-targetRoleIds`}
                   name="targetRoleIds"
                   roles={roles}
                   defaultSelectedIds={config.targetRoleIds}
@@ -200,13 +203,15 @@ export function FilterSettingsSheet({
                   hierarchyWarningLabel={labels.hierarchyWarning}
                   addLabel={labels.addRole}
                   emptyLabel={labels.rolesUnavailable}
+                  searchPlaceholder={labels.searchRoles}
                 />
                 <p className="text-xs text-muted-foreground">{labels.targetRolesHint}</p>
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <Label>{labels.ignoredRoles}</Label>
+                <Label htmlFor={`${filterType}-ignoredRoleIds`}>{labels.ignoredRoles}</Label>
                 <RolePicker
+                  id={`${filterType}-ignoredRoleIds`}
                   name="ignoredRoleIds"
                   roles={roles}
                   defaultSelectedIds={config.ignoredRoleIds}
@@ -214,30 +219,35 @@ export function FilterSettingsSheet({
                   hierarchyWarningLabel={labels.hierarchyWarning}
                   addLabel={labels.addRole}
                   emptyLabel={labels.rolesUnavailable}
+                  searchPlaceholder={labels.searchRoles}
                 />
                 <p className="text-xs text-muted-foreground">{labels.ignoredRolesHint}</p>
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <Label>{labels.targetChannels}</Label>
+                <Label htmlFor={`${filterType}-targetChannelIds`}>{labels.targetChannels}</Label>
                 <ChannelPicker
+                  id={`${filterType}-targetChannelIds`}
                   name="targetChannelIds"
                   channels={channels}
                   defaultSelectedIds={config.targetChannelIds}
                   addLabel={labels.addChannel}
                   emptyLabel={labels.channelsUnavailable}
+                  searchPlaceholder={labels.searchChannels}
                 />
                 <p className="text-xs text-muted-foreground">{labels.targetChannelsHint}</p>
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <Label>{labels.ignoredChannels}</Label>
+                <Label htmlFor={`${filterType}-ignoredChannelIds`}>{labels.ignoredChannels}</Label>
                 <ChannelPicker
+                  id={`${filterType}-ignoredChannelIds`}
                   name="ignoredChannelIds"
                   channels={channels}
                   defaultSelectedIds={config.ignoredChannelIds}
                   addLabel={labels.addChannel}
                   emptyLabel={labels.channelsUnavailable}
+                  searchPlaceholder={labels.searchChannels}
                 />
                 <p className="text-xs text-muted-foreground">{labels.ignoredChannelsHint}</p>
               </div>

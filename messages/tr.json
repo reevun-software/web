@@ -451,7 +451,10 @@
       "allowHigherModsToModerateLower": "Daha yüksek role sahip moderatörlerin altındakileri cezalandırmasına izin ver",
       "muteBlocksReactions": "Tepkileri engelle",
       "muteBlocksReactionsHint": "Susturma, üyelerin mesajlara tepki eklemesini de engeller",
-      "timeoutLimitNotice": "Zaman aşımı tabanlı susturmalar 28 gün ile sınırlıdır - bu sınırı Discord belirler."
+      "timeoutLimitNotice": "Zaman aşımı tabanlı susturmalar 28 gün ile sınırlıdır - bu sınırı Discord belirler.",
+      "saved": "Kaydedildi",
+      "searchRoles": "Rol ara…",
+      "searchChannels": "Kanal ara…"
     }
   },
   "LanguageSwitcher": {

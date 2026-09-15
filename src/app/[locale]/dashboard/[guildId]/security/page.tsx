@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { RolePicker } from "@/components/dashboard/role-picker";
 import { MuteSettingsFields } from "@/components/dashboard/mute-settings-fields";
 import { SubmitButton } from "@/components/dashboard/submit-button";
+import { SaveForm } from "@/components/dashboard/save-form";
 import { FilterSettingsSheet, type FilterConfig } from "@/components/dashboard/filter-settings-sheet";
 
 const AUTOMOD_FILTERS = [
@@ -170,7 +171,10 @@ export default async function SecurityPage({
     hierarchyWarning: t("hierarchyWarning"),
     save: t("save"),
     saving: t("saving"),
+    saved: t("saved"),
     settingsButtonLabel: t("filterSettings.settingsButtonLabel"),
+    searchRoles: t("searchRoles"),
+    searchChannels: t("searchChannels"),
   };
 
   return (
@@ -180,15 +184,16 @@ export default async function SecurityPage({
         <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
       </div>
 
-      <form action={save} className="flex flex-col gap-4">
+      <SaveForm action={save} savedMessage={t("saved")} className="flex flex-col gap-4">
         <Card className="flex flex-col divide-y divide-border/60 p-0">
           <div className="px-6 py-4">
             <span className="text-sm font-medium">{t("moderatorsTitle")}</span>
           </div>
           <div className="flex flex-col gap-4 px-6 py-4">
             <div className="flex flex-col gap-2">
-              <Label>{t("moderatorRoleIds")}</Label>
+              <Label htmlFor="moderatorRoleIds">{t("moderatorRoleIds")}</Label>
               <RolePicker
+                id="moderatorRoleIds"
                 name="moderatorRoleIds"
                 roles={roles}
                 defaultSelectedIds={current.moderatorRoleIds}
@@ -196,6 +201,7 @@ export default async function SecurityPage({
                 hierarchyWarningLabel={t("hierarchyWarning")}
                 addLabel={t("addRole")}
                 emptyLabel={t("rolesUnavailable")}
+                searchPlaceholder={t("searchRoles")}
               />
             </div>
             <label
@@ -229,16 +235,13 @@ export default async function SecurityPage({
           </div>
           {AUTOMOD_FILTERS.map((key) => (
             <div key={key} className="flex items-center justify-between gap-4 px-6 py-2.5">
-              <label
-                htmlFor={key}
-                className="flex flex-1 -translate-y-2 cursor-pointer flex-col gap-1.5"
-              >
+              <label htmlFor={key} className="flex flex-1 cursor-pointer flex-col gap-1.5">
                 <span className="text-sm leading-none">{t(`filters.${key}.label`)}</span>
                 <span className="text-xs leading-none text-muted-foreground">
                   {t(`filters.${key}.description`)}
                 </span>
               </label>
-              <div className="flex -translate-y-2 items-center gap-1">
+              <div className="flex items-center gap-1">
                 <FilterSettingsSheet
                   filterType={key}
                   filterLabel={t(`filters.${key}.label`)}
@@ -303,7 +306,7 @@ export default async function SecurityPage({
         <SubmitButton pendingLabel={t("saving")} className="w-fit">
           {t("save")}
         </SubmitButton>
-      </form>
+      </SaveForm>
     </div>
   );
 }

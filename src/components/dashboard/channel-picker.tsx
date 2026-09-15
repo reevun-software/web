@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { X, ChevronDown, Hash, Volume2, Folder, Megaphone } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,6 +11,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { DiscordChannel } from "@/lib/discord-guild";
 
+// Below this, a plain scroll list is faster to scan than typing a query.
+const SEARCH_THRESHOLD = 8;
+
 // Discord channel type numbers: 0 text, 2 voice, 4 category, 5 announcement.
 function ChannelTypeIcon({ type }: { type: number }) {
   const Icon = type === 2 ? Volume2 : type === 4 ? Folder : type === 5 ? Megaphone : Hash;
@@ -17,24 +21,32 @@ function ChannelTypeIcon({ type }: { type: number }) {
 }
 
 export function ChannelPicker({
+  id,
   name,
   channels,
   defaultSelectedIds,
   addLabel,
   emptyLabel,
+  searchPlaceholder,
 }: {
+  id?: string;
   name: string;
   channels: DiscordChannel[];
   defaultSelectedIds: string[];
   addLabel: string;
   emptyLabel: string;
+  searchPlaceholder?: string;
 }) {
   const [selectedIds, setSelectedIds] = useState(
-    defaultSelectedIds.filter((id) => channels.some((c) => c.id === id)),
+    defaultSelectedIds.filter((channelId) => channels.some((c) => c.id === channelId)),
   );
+  const [search, setSearch] = useState("");
   const selected = selectedIds
     .map((id) => channels.find((c) => c.id === id))
     .filter((c): c is DiscordChannel => !!c);
+  const visibleChannels = channels.filter((c) =>
+    c.name.toLowerCase().includes(search.toLowerCase()),
+  );
 
   if (channels.length === 0) {
     return <p className="text-sm text-muted-foreground">{emptyLabel}</p>;
@@ -49,6 +61,7 @@ export function ChannelPicker({
       <DropdownMenuTrigger
         render={
           <div
+            id={id}
             role="button"
             tabIndex={0}
             className="flex min-h-9 w-full flex-wrap items-center gap-1.5 rounded-md border border-input bg-transparent px-2 py-1.5 text-left text-sm cursor-pointer dark:bg-input/30 dark:hover:bg-input/50"
@@ -59,11 +72,11 @@ export function ChannelPicker({
         {selected.map((channel) => (
           <span
             key={channel.id}
-            className="flex items-center gap-1.5 rounded-md border border-border/60 bg-card py-1 pr-1.5 pl-2 text-sm"
+            className="flex max-w-full items-center gap-1.5 rounded-md border border-border/60 bg-card py-1 pr-1.5 pl-2 text-sm"
           >
             <input type="hidden" name={name} value={channel.id} />
             <ChannelTypeIcon type={channel.type} />
-            {channel.name}
+            <span className="max-w-40 truncate">{channel.name}</span>
             <button
               type="button"
               onPointerDown={(e) => e.stopPropagation()}
@@ -81,7 +94,17 @@ export function ChannelPicker({
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="start" className="max-h-64 w-(--anchor-width)">
-        {channels.map((channel) => (
+        {channels.length > SEARCH_THRESHOLD && searchPlaceholder && (
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+            placeholder={searchPlaceholder}
+            className="mb-1 h-7 text-xs"
+          />
+        )}
+        {visibleChannels.map((channel) => (
           <DropdownMenuCheckboxItem
             key={channel.id}
             className="cursor-pointer"
@@ -89,7 +112,7 @@ export function ChannelPicker({
             onCheckedChange={(checked) => toggle(channel.id, checked === true)}
           >
             <ChannelTypeIcon type={channel.type} />
-            {channel.name}
+            <span className="truncate">{channel.name}</span>
           </DropdownMenuCheckboxItem>
         ))}
       </DropdownMenuContent>

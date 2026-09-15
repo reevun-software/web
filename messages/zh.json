@@ -451,7 +451,10 @@
       "allowHigherModsToModerateLower": "允许身份组更高的版主处罚身份组更低的版主",
       "muteBlocksReactions": "屏蔽表情回应",
       "muteBlocksReactionsHint": "禁言同时也会阻止成员为消息添加表情回应",
-      "timeoutLimitNotice": "基于超时的禁言最长为 28 天——该限制由 Discord 自身设定。"
+      "timeoutLimitNotice": "基于超时的禁言最长为 28 天——该限制由 Discord 自身设定。",
+      "saved": "已保存",
+      "searchRoles": "搜索身分组…",
+      "searchChannels": "搜索频道…"
     }
   },
   "LanguageSwitcher": {

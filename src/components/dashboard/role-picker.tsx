@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { X, ChevronDown, TriangleAlert } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,6 +11,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { DiscordRole } from "@/lib/discord-guild";
+
+// Below this, a plain scroll list is faster to scan than typing a query.
+const SEARCH_THRESHOLD = 8;
 
 function RoleDot({ color }: { color: string }) {
   return (
@@ -43,6 +47,7 @@ export function RoleHierarchyWarning({ label }: { label: string }) {
 }
 
 export function RolePicker({
+  id,
   name,
   roles,
   defaultSelectedIds,
@@ -50,7 +55,9 @@ export function RolePicker({
   hierarchyWarningLabel,
   addLabel,
   emptyLabel,
+  searchPlaceholder,
 }: {
+  id?: string;
   name: string;
   roles: DiscordRole[];
   defaultSelectedIds: string[];
@@ -58,13 +65,16 @@ export function RolePicker({
   hierarchyWarningLabel?: string;
   addLabel: string;
   emptyLabel: string;
+  searchPlaceholder?: string;
 }) {
   const [selectedIds, setSelectedIds] = useState(
-    defaultSelectedIds.filter((id) => roles.some((r) => r.id === id)),
+    defaultSelectedIds.filter((roleId) => roles.some((r) => r.id === roleId)),
   );
+  const [search, setSearch] = useState("");
   const selected = selectedIds
     .map((id) => roles.find((r) => r.id === id))
     .filter((r): r is DiscordRole => !!r);
+  const visibleRoles = roles.filter((r) => r.name.toLowerCase().includes(search.toLowerCase()));
 
   if (roles.length === 0) {
     return <p className="text-sm text-muted-foreground">{emptyLabel}</p>;
@@ -82,6 +92,7 @@ export function RolePicker({
       <DropdownMenuTrigger
         render={
           <div
+            id={id}
             role="button"
             tabIndex={0}
             className="flex min-h-9 w-full flex-wrap items-center gap-1.5 rounded-md border border-input bg-transparent px-2 py-1.5 text-left text-sm cursor-pointer dark:bg-input/30 dark:hover:bg-input/50"
@@ -92,11 +103,11 @@ export function RolePicker({
         {selected.map((role) => (
           <span
             key={role.id}
-            className="flex items-center gap-1.5 rounded-md border border-border/60 bg-card py-1 pr-1.5 pl-2 text-sm"
+            className="flex max-w-full items-center gap-1.5 rounded-md border border-border/60 bg-card py-1 pr-1.5 pl-2 text-sm"
           >
             <input type="hidden" name={name} value={role.id} />
             <RoleDot color={role.color} />
-            {role.name}
+            <span className="max-w-40 truncate">{role.name}</span>
             {role.position >= botRolePosition && hierarchyWarningLabel && (
               <RoleHierarchyWarning label={hierarchyWarningLabel} />
             )}
@@ -121,7 +132,17 @@ export function RolePicker({
           picking several roles doesn't mean reopening this menu each
           time. */}
       <DropdownMenuContent align="start" className="max-h-64 w-(--anchor-width)">
-        {roles.map((role) => (
+        {roles.length > SEARCH_THRESHOLD && searchPlaceholder && (
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+            placeholder={searchPlaceholder}
+            className="mb-1 h-7 text-xs"
+          />
+        )}
+        {visibleRoles.map((role) => (
           <DropdownMenuCheckboxItem
             key={role.id}
             className="cursor-pointer"
@@ -129,7 +150,7 @@ export function RolePicker({
             onCheckedChange={(checked) => toggle(role.id, checked === true)}
           >
             <RoleDot color={role.color} />
-            {role.name}
+            <span className="truncate">{role.name}</span>
             {role.position >= botRolePosition && hierarchyWarningLabel && (
               <RoleHierarchyWarning label={hierarchyWarningLabel} />
             )}

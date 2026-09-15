@@ -451,7 +451,10 @@
       "allowHigherModsToModerateLower": "Moderatoren mit höherer Rolle dürfen niedrigere Moderatoren bestrafen",
       "muteBlocksReactions": "Reaktionen blockieren",
       "muteBlocksReactionsHint": "Stummschaltung verhindert auch, dass Mitglieder auf Nachrichten reagieren",
-      "timeoutLimitNotice": "Timeout-basierte Stummschaltungen sind auf 28 Tage begrenzt - dieses Limit setzt Discord selbst."
+      "timeoutLimitNotice": "Timeout-basierte Stummschaltungen sind auf 28 Tage begrenzt - dieses Limit setzt Discord selbst.",
+      "saved": "Gespeichert",
+      "searchRoles": "Rollen suchen…",
+      "searchChannels": "Kanäle suchen…"
     }
   },
   "LanguageSwitcher": {
