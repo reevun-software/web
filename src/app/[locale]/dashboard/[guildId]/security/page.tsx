@@ -225,15 +225,10 @@ export default async function SecurityPage({
           </div>
           {AUTOMOD_FILTERS.map((key) => (
             <div key={key} className="flex items-center justify-between gap-4 px-6 py-2.5">
-              <label htmlFor={key} className="flex flex-1 cursor-pointer flex-col gap-1">
-                {/* leading-none: default text-sm/text-xs line-heights add
-                    extra space above/below the glyphs themselves (~1.43x/1.33x
-                    the font size) that a shape like the switch doesn't carry -
-                    box-centering this block against the switch measures exactly
-                    centered (verified via getBoundingClientRect), but the
-                    text's actual ink sits inside a taller box than its own
-                    letters need, throwing off the optical center. Tightening
-                    the line-height shrinks that gap between box and ink. */}
+              <label
+                htmlFor={key}
+                className="flex flex-1 -translate-y-1 cursor-pointer flex-col gap-1"
+              >
                 <span className="text-sm leading-none">{t(`filters.${key}.label`)}</span>
                 <span className="text-xs leading-none text-muted-foreground">
                   {t(`filters.${key}.description`)}
@@ -262,7 +257,7 @@ export default async function SecurityPage({
             htmlFor="muteBlocksReactions"
             className="flex cursor-pointer items-center justify-between gap-4"
           >
-            <span className="flex flex-col gap-1">
+            <span className="flex -translate-y-1 flex-col gap-1">
               <span className="text-sm leading-none">{t("muteBlocksReactions")}</span>
               <span className="text-xs leading-none text-muted-foreground">
                 {t("muteBlocksReactionsHint")}
