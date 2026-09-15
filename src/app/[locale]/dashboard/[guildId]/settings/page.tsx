@@ -75,8 +75,15 @@ export default async function SettingsPage({
     server: null as string | null,
   };
 
-  async function save(formData: FormData) {
+  async function saveAll(formData: FormData) {
     "use server";
+    const project = isOwner ? (formData.get("project") as string) || null : current.project;
+    const server = isOwner
+      ? project
+        ? (formData.get("server") as string) || null
+        : null
+      : current.server;
+
     const values = {
       guildId,
       interfaceLanguage: (formData.get("interfaceLanguage") as string) || "ru",
@@ -90,6 +97,8 @@ export default async function SettingsPage({
       restoreOldRolesOnRejoin: formData.get("restoreOldRolesOnRejoin") === "on",
       restorableRoleIds: formData.getAll("restorableRoleIds") as string[],
       exemptRoleIds: formData.getAll("exemptRoleIds") as string[],
+      project,
+      server,
       updatedAt: new Date(),
     };
 
@@ -97,43 +106,29 @@ export default async function SettingsPage({
       .insert(guildBotSettings)
       .values(values)
       .onConflictDoUpdate({ target: guildBotSettings.guildId, set: values });
-    revalidatePath(`/dashboard/${guildId}/settings`);
-  }
 
-  async function saveProject(formData: FormData) {
-    "use server";
-    if (!isOwner) return;
-    const project = (formData.get("project") as string) || null;
-    const server = project ? (formData.get("server") as string) || null : null;
-    const values = { guildId, project, server, updatedAt: new Date() };
-    await db
-      .insert(guildBotSettings)
-      .values(values)
-      .onConflictDoUpdate({ target: guildBotSettings.guildId, set: values });
-    revalidatePath(`/dashboard/${guildId}/settings`);
-    revalidatePath(`/dashboard/${guildId}/monitoring`);
-  }
-
-  async function saveModules(formData: FormData) {
-    "use server";
-    if (!isOwner) return;
-    for (const key of MODULE_KEYS) {
-      const enabled = formData.get(key) === "on";
-      if (enabled) {
-        await db
-          .delete(guildModules)
-          .where(and(eq(guildModules.guildId, guildId), eq(guildModules.moduleKey, key)));
-      } else {
-        const values = { guildId, moduleKey: key, enabled: false, updatedAt: new Date() };
-        await db
-          .insert(guildModules)
-          .values(values)
-          .onConflictDoUpdate({
-            target: [guildModules.guildId, guildModules.moduleKey],
-            set: values,
-          });
+    if (isOwner) {
+      for (const key of MODULE_KEYS) {
+        const enabled = formData.get(key) === "on";
+        if (enabled) {
+          await db
+            .delete(guildModules)
+            .where(and(eq(guildModules.guildId, guildId), eq(guildModules.moduleKey, key)));
+        } else {
+          const moduleValues = { guildId, moduleKey: key, enabled: false, updatedAt: new Date() };
+          await db
+            .insert(guildModules)
+            .values(moduleValues)
+            .onConflictDoUpdate({
+              target: [guildModules.guildId, guildModules.moduleKey],
+              set: moduleValues,
+            });
+        }
       }
     }
+
+    revalidatePath(`/dashboard/${guildId}/settings`);
+    revalidatePath(`/dashboard/${guildId}/monitoring`);
     revalidatePath(`/dashboard/${guildId}`, "layout");
   }
 
@@ -170,7 +165,8 @@ export default async function SettingsPage({
         <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <SaveForm action={saveAll} savedMessage={t("saved")} className="flex flex-col gap-4">
+      <div className="grid items-start gap-4 lg:grid-cols-2">
       <div className="flex flex-col gap-4">
       <Card className="flex flex-col gap-4 p-6">
         <div className="flex flex-col gap-2">
@@ -196,7 +192,7 @@ export default async function SettingsPage({
         <p className="text-sm text-muted-foreground">{t("note")}</p>
       </Card>
 
-      <SaveForm action={save} savedMessage={t("saved")} className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <Card className="flex flex-col gap-4 p-6">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="flex flex-col gap-1.5">
@@ -358,11 +354,7 @@ export default async function SettingsPage({
             </div>
           </div>
         </Card>
-
-        <SubmitButton pendingLabel={t("saving")} className="w-full">
-          {t("save")}
-        </SubmitButton>
-      </SaveForm>
+      </div>
       </div>
 
       <div className="flex flex-col gap-4">
@@ -374,8 +366,7 @@ export default async function SettingsPage({
           </Card>
         ) : (
           <>
-            <SaveForm action={saveProject} savedMessage={t("saved")}>
-              <Card className="flex flex-col gap-3 p-6">
+            <Card className="flex flex-col gap-3 p-6">
                 <span className="text-sm font-medium">{t("projectTitle")}</span>
                 <ProjectServerSelector
                   defaultProject={current.project}
@@ -392,14 +383,9 @@ export default async function SettingsPage({
                   }}
                 />
                 <p className="text-xs text-muted-foreground">{t("projectHint")}</p>
-                <SubmitButton pendingLabel={t("saving")} className="w-full">
-                  {t("save")}
-                </SubmitButton>
               </Card>
-            </SaveForm>
 
-            <SaveForm action={saveModules} savedMessage={t("saved")}>
-              <Card className="flex flex-col gap-4 p-6">
+            <Card className="flex flex-col gap-4 p-6">
                 <div className="flex flex-col gap-1">
                   <span className="text-sm font-medium">{t("modulesTitle")}</span>
                   <p className="text-xs text-muted-foreground">{t("modulesHint")}</p>
@@ -418,11 +404,7 @@ export default async function SettingsPage({
                     <Switch id={key} name={key} defaultChecked={moduleStates[key]} />
                   </label>
                 ))}
-                <SubmitButton pendingLabel={t("saving")} className="w-full">
-                  {t("save")}
-                </SubmitButton>
               </Card>
-            </SaveForm>
 
             <Card className="flex flex-col gap-3 p-6">
               <div className="flex flex-col gap-1">
@@ -458,6 +440,11 @@ export default async function SettingsPage({
         )}
       </div>
       </div>
+
+      <SubmitButton pendingLabel={t("saving")} className="w-full">
+        {t("save")}
+      </SubmitButton>
+      </SaveForm>
     </div>
   );
 }

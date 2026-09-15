@@ -200,7 +200,7 @@ export function DashboardSidebar({
           its own if it has more items than fit) regardless of how tall
           the outer rail grows. */}
       <aside className="hidden min-h-[calc(100dvh-2rem)] w-64 shrink-0 border-r border-border/60 bg-card/40 md:flex md:flex-col">
-        <div className="sticky top-8 flex max-h-[calc(100dvh-2rem)] flex-col overflow-y-auto">
+        <div className="sticky top-8 flex h-[calc(100dvh-2rem)] flex-col overflow-y-auto">
           <SidebarNavContent
             guildId={guildId}
             guildName={guildName}
