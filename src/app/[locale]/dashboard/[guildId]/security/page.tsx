@@ -224,7 +224,10 @@ export default async function SecurityPage({
             <span className="text-sm font-medium">{t("automodTitle")}</span>
           </div>
           {AUTOMOD_FILTERS.map((key) => (
-            <div key={key} className="flex items-center justify-between gap-4 px-6 py-3">
+            <div
+              key={key}
+              className="flex min-h-16 items-center justify-between gap-4 px-6 py-3"
+            >
               <label htmlFor={key} className="flex flex-1 cursor-pointer flex-col gap-0.5">
                 <span className="text-sm">{t(`filters.${key}.label`)}</span>
                 <span className="text-xs text-muted-foreground">

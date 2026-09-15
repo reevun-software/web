@@ -407,7 +407,7 @@
       "muteModeBoth": "两者都用",
       "muteRoleId": "禁言身份组 ID",
       "save": "保存",
-      "addRole": "添加身份组",
+      "addRole": "选择身份组",
       "rolesUnavailable": "无法加载该服务器的身份组，请确认已将 Reevun 机器人添加到此服务器。",
       "muteRoleIdPlaceholder": "选择身份组",
       "saving": "保存中...",
@@ -442,7 +442,7 @@
         "targetChannelsHint": "仅在这些频道中生效（未指定时对所有频道生效）",
         "ignoredChannels": "忽略的频道与分类",
         "ignoredChannelsHint": "在这些频道中永不生效",
-        "addChannel": "添加频道",
+        "addChannel": "选择频道",
         "channelsUnavailable": "无法获取服务器频道。请确认 Reevun 机器人已添加到此服务器。"
       },
       "muteModeHint": "Discord 超时无需额外身份组即可禁言。「授予身份组」会应用你设置的禁言身份组。「两者都」会同时执行两种操作。",

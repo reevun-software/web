@@ -407,7 +407,7 @@
       "muteModeBoth": "Both",
       "muteRoleId": "Mute role ID",
       "save": "Save",
-      "addRole": "Add role",
+      "addRole": "Select roles",
       "rolesUnavailable": "Couldn't load this server's roles. Make sure the Reevun bot is added to it.",
       "muteRoleIdPlaceholder": "Select a role",
       "saving": "Saving...",
@@ -442,7 +442,7 @@
         "targetChannelsHint": "Only applies in these channels (all channels if none are set)",
         "ignoredChannels": "Ignored channels and categories",
         "ignoredChannelsHint": "Never applies in these channels",
-        "addChannel": "Add channel",
+        "addChannel": "Select channels",
         "channelsUnavailable": "Couldn't load the server's channels. Make sure the Reevun bot has been added to this server."
       },
       "muteModeHint": "Discord timeout mutes without needing a role. \"Assign a role\" applies a mute role you've set up. \"Both\" does both at once.",

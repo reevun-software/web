@@ -407,7 +407,7 @@
       "muteModeBoth": "Beides",
       "muteRoleId": "Stummschaltungs-Rollen-ID",
       "save": "Speichern",
-      "addRole": "Rolle hinzufügen",
+      "addRole": "Rollen auswählen",
       "rolesUnavailable": "Die Rollen dieses Servers konnten nicht geladen werden. Stellen Sie sicher, dass der Reevun-Bot hinzugefügt wurde.",
       "muteRoleIdPlaceholder": "Rolle auswählen",
       "saving": "Speichern...",
@@ -442,7 +442,7 @@
         "targetChannelsHint": "Gilt nur in diesen Kanälen (in allen, wenn keiner angegeben ist)",
         "ignoredChannels": "Ignorierte Kanäle und Kategorien",
         "ignoredChannelsHint": "Gilt nie in diesen Kanälen",
-        "addChannel": "Kanal hinzufügen",
+        "addChannel": "Kanäle auswählen",
         "channelsUnavailable": "Die Kanäle des Servers konnten nicht geladen werden. Stelle sicher, dass der Reevun-Bot diesem Server hinzugefügt wurde."
       },
       "muteModeHint": "Discord-Timeout schaltet ohne zusätzliche Rolle stumm. „Rolle vergeben“ nutzt eine von dir eingerichtete Mute-Rolle. „Beides“ macht beides gleichzeitig.",

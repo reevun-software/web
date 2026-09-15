@@ -42,20 +42,27 @@ export function MuteSettingsFields({
     <>
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="muteMode">{labels.muteMode}</Label>
-        {/* Uncontrolled (defaultValue, not value) - Base UI's SelectValue
-            only resolves the selected item's rendered label text once its
-            items have registered, and a controlled `value` set on first
-            render beat that registration, so the trigger showed the raw
-            "timeout" instead of "Таймаут Discord". onValueChange still
-            fires either way, which is all this needs to drive the
-            conditional role field below. */}
+        {/* Base UI's <Select.Value> only resolves a value to its label via
+            an explicit `items` map or a children render-function - it does
+            NOT auto-read the matching <Select.Item>'s rendered text despite
+            that being wrapped in <Select.ItemText>. Without either, it just
+            stringifies the raw stored value, which is why this showed
+            "timeout" instead of "Таймаут Discord". */}
         <Select
           name="muteMode"
           defaultValue={defaultMuteMode}
           onValueChange={(v) => setMuteMode(v as string)}
         >
           <SelectTrigger id="muteMode" className="w-full sm:w-64">
-            <SelectValue />
+            <SelectValue>
+              {(value: string) =>
+                value === "role"
+                  ? labels.muteModeRole
+                  : value === "both"
+                    ? labels.muteModeBoth
+                    : labels.muteModeTimeout
+              }
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="timeout">{labels.muteModeTimeout}</SelectItem>

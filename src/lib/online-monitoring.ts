@@ -126,13 +126,11 @@ export async function getGta5rpOnline(): Promise<OnlineProjectData | null> {
 
 const SNAPSHOT_MIN_INTERVAL_MS = 60 * 1000;
 
-// ponytail: history is seeded by whoever happens to view the monitoring page
-// (at most one snapshot per project per ~1min, matching the page's own
-// auto-refresh interval) rather than a dedicated scheduled worker - simplest
-// thing that actually accumulates real data with no new infrastructure.
-// Upgrade path: a Railway cron service calling these same fetch functions on
-// a fixed interval, once the page gets enough traffic that organic views
-// leave gaps.
+// Called every 60s by the in-process scheduler in src/instrumentation.ts,
+// so history accumulates on a real fixed cadence instead of whenever
+// someone happens to have the page open. The throttle below is just a
+// safety net against a near-simultaneous duplicate write, not the pacing
+// mechanism itself.
 export async function recordOnlineSnapshot(project: OnlineProjectKey, totalPlayers: number) {
   const [last] = await db
     .select({ recordedAt: onlineSnapshots.recordedAt })

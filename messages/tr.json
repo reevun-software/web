@@ -407,7 +407,7 @@
       "muteModeBoth": "İkisi de",
       "muteRoleId": "Susturma rolü ID'si",
       "save": "Kaydet",
-      "addRole": "Rol ekle",
+      "addRole": "Rolleri seç",
       "rolesUnavailable": "Bu sunucunun rolleri yüklenemedi. Reevun botunun sunucuya eklendiğinden emin olun.",
       "muteRoleIdPlaceholder": "Bir rol seçin",
       "saving": "Kaydediliyor...",
@@ -442,7 +442,7 @@
         "targetChannelsHint": "Yalnızca bu kanallarda uygulanır (hiçbiri seçilmezse tüm kanallar)",
         "ignoredChannels": "Yok sayılan kanallar ve kategoriler",
         "ignoredChannelsHint": "Bu kanallarda asla uygulanmaz",
-        "addChannel": "Kanal ekle",
+        "addChannel": "Kanalları seç",
         "channelsUnavailable": "Sunucunun kanalları alınamadı. Reevun botunun bu sunucuya eklendiğinden emin olun."
       },
       "muteModeHint": "Discord zaman aşımı, ek bir role gerek kalmadan susturur. \"Rol ver\" senin oluşturduğun susturma rolünü uygular. \"İkisi de\" ikisini birden yapar.",

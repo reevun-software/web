@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X, Plus, TriangleAlert } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { X, ChevronDown, TriangleAlert } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   DropdownMenu,
@@ -75,60 +74,68 @@ export function RolePicker({
     setSelectedIds((ids) => (checked ? [...ids, roleId] : ids.filter((id) => id !== roleId)));
   }
 
+  // One long field, the way Juniper does it - clicking anywhere in it opens
+  // the role checklist, and the chips it already holds live inline instead
+  // of sitting next to a separate "add role" button.
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      {selected.map((role) => (
-        <span
-          key={role.id}
-          className="flex items-center gap-1.5 rounded-md border border-border/60 bg-card py-1 pr-1.5 pl-2 text-sm"
-        >
-          <input type="hidden" name={name} value={role.id} />
-          <RoleDot color={role.color} />
-          {role.name}
-          {role.position >= botRolePosition && hierarchyWarningLabel && (
-            <RoleHierarchyWarning label={hierarchyWarningLabel} />
-          )}
-          <button
-            type="button"
-            onClick={() => toggle(role.id, false)}
-            className="cursor-pointer rounded p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <div
+            role="button"
+            tabIndex={0}
+            className="flex min-h-9 w-full flex-wrap items-center gap-1.5 rounded-md border border-input bg-transparent px-2 py-1.5 text-left text-sm cursor-pointer dark:bg-input/30 dark:hover:bg-input/50"
+          />
+        }
+      >
+        {selected.length === 0 && <span className="px-1 text-muted-foreground">{addLabel}</span>}
+        {selected.map((role) => (
+          <span
+            key={role.id}
+            className="flex items-center gap-1.5 rounded-md border border-border/60 bg-card py-1 pr-1.5 pl-2 text-sm"
           >
-            <X className="size-3" />
-          </button>
-        </span>
-      ))}
+            <input type="hidden" name={name} value={role.id} />
+            <RoleDot color={role.color} />
+            {role.name}
+            {role.position >= botRolePosition && hierarchyWarningLabel && (
+              <RoleHierarchyWarning label={hierarchyWarningLabel} />
+            )}
+            <button
+              type="button"
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggle(role.id, false);
+              }}
+              className="cursor-pointer rounded p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+            >
+              <X className="size-3" />
+            </button>
+          </span>
+        ))}
+        <ChevronDown className="ml-auto size-3.5 shrink-0 self-center text-muted-foreground" />
+      </DropdownMenuTrigger>
 
       {/* All roles stay in one checklist that toggles without closing
           (DropdownMenuCheckboxItem defaults to closeOnClick=false), so
           picking several roles doesn't mean reopening this menu each
-          time - a plain click-to-add DropdownMenuItem closed itself
-          after every single pick and read as "only one role at a time". */}
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          render={
-            <Button variant="outline" size="sm" className="cursor-pointer gap-1">
-              <Plus className="size-3.5" />
-              {addLabel}
-            </Button>
-          }
-        />
-        <DropdownMenuContent align="start" className="max-h-64 w-56">
-          {roles.map((role) => (
-            <DropdownMenuCheckboxItem
-              key={role.id}
-              className="cursor-pointer"
-              checked={selectedIds.includes(role.id)}
-              onCheckedChange={(checked) => toggle(role.id, checked === true)}
-            >
-              <RoleDot color={role.color} />
-              {role.name}
-              {role.position >= botRolePosition && hierarchyWarningLabel && (
-                <RoleHierarchyWarning label={hierarchyWarningLabel} />
-              )}
-            </DropdownMenuCheckboxItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+          time. */}
+      <DropdownMenuContent align="start" className="max-h-64 w-(--anchor-width)">
+        {roles.map((role) => (
+          <DropdownMenuCheckboxItem
+            key={role.id}
+            className="cursor-pointer"
+            checked={selectedIds.includes(role.id)}
+            onCheckedChange={(checked) => toggle(role.id, checked === true)}
+          >
+            <RoleDot color={role.color} />
+            {role.name}
+            {role.position >= botRolePosition && hierarchyWarningLabel && (
+              <RoleHierarchyWarning label={hierarchyWarningLabel} />
+            )}
+          </DropdownMenuCheckboxItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

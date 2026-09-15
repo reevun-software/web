@@ -81,12 +81,12 @@ export function FilterSettingsSheet({
       >
         <Settings2 className="size-4" />
       </SheetTrigger>
-      {/* Juniper opens this as effectively its own full-width screen, not a
-          narrow side panel - overriding the Sheet's default w-3/4/max-w-sm
-          to fill the viewport matches that instead of feeling like a
-          cramped drawer bolted onto a much bigger form. */}
-      <SheetContent className="flex flex-col gap-0 overflow-y-auto p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-none">
-        <form action={handleSubmit} className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 overflow-y-auto p-6">
+      {/* A right-side panel, not a full-width takeover - the Sheet's own
+          default sizing. A single scroll container: SheetContent used to
+          also be overflow-y-auto around this already-scrolling form, which
+          rendered two nested scrollbars. */}
+      <SheetContent className="flex flex-col gap-0 p-0">
+        <form action={handleSubmit} className="flex flex-1 flex-col gap-6 overflow-y-auto p-6">
           <SheetHeader className="sticky top-0 z-10 -mx-6 border-b border-border/60 bg-popover px-6 py-4">
             <SheetTitle>{filterLabel}</SheetTitle>
           </SheetHeader>
@@ -101,7 +101,21 @@ export function FilterSettingsSheet({
               <Label>{labels.punishment}</Label>
               <Select name="punishment" defaultValue={config.punishment}>
                 <SelectTrigger className="w-full">
-                  <SelectValue />
+                  {/* <Select.Value> needs an explicit value->label mapping
+                      (an `items` map or this render-function) - it does not
+                      read the matching <Select.Item>'s own text, so without
+                      one it just showed the raw stored value ("none"). */}
+                  <SelectValue>
+                    {(value: string) =>
+                      ({
+                        none: labels.punishmentNone,
+                        warn: labels.punishmentWarn,
+                        mute: labels.punishmentMute,
+                        kick: labels.punishmentKick,
+                        ban: labels.punishmentBan,
+                      })[value] ?? labels.punishmentNone
+                    }
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">{labels.punishmentNone}</SelectItem>
@@ -120,7 +134,11 @@ export function FilterSettingsSheet({
                   <Label>{labels.strategy}</Label>
                   <Select name="strategy" defaultValue={config.strategy}>
                     <SelectTrigger className="w-full">
-                      <SelectValue />
+                      <SelectValue>
+                        {(value: string) =>
+                          value === "allowlist" ? labels.strategyAllowlist : labels.strategyBlocklist
+                        }
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="blocklist">{labels.strategyBlocklist}</SelectItem>
@@ -218,7 +236,7 @@ export function FilterSettingsSheet({
             </div>
           </div>
 
-          <SheetFooter className="sticky bottom-0 -mx-4 mt-auto border-t border-border/60 bg-popover p-4">
+          <SheetFooter className="sticky bottom-0 -mx-6 mt-auto border-t border-border/60 bg-popover p-4">
             <SubmitButton pendingLabel={labels.saving}>{labels.save}</SubmitButton>
           </SheetFooter>
         </form>

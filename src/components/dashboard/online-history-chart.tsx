@@ -198,9 +198,23 @@ export function OnlineHistoryChart({
         )}
 
         {hovered && hoveredCoord && (
+          // Centering the tooltip on the hovered point (translateX(-50%))
+          // pushed half of it past the container's edge and out of view
+          // whenever the hover point itself was near the far left or right
+          // (nothing clips it, it's just no longer within the visible
+          // card). Anchor to the near edge instead of centering once the
+          // point is close enough to one.
           <div
-            className="pointer-events-none absolute top-0 -translate-x-1/2 rounded-md border border-border/60 bg-popover px-2 py-1 text-xs whitespace-nowrap text-popover-foreground shadow-md"
-            style={{ left: `${(hoveredCoord[0] / WIDTH) * 100}%` }}
+            className="pointer-events-none absolute top-0 rounded-md border border-border/60 bg-popover px-2 py-1 text-xs whitespace-nowrap text-popover-foreground shadow-md"
+            style={{
+              left: `${(hoveredCoord[0] / WIDTH) * 100}%`,
+              transform:
+                hoveredCoord[0] / WIDTH < 0.12
+                  ? "translateX(0)"
+                  : hoveredCoord[0] / WIDTH > 0.88
+                    ? "translateX(-100%)"
+                    : "translateX(-50%)",
+            }}
           >
             <span className="font-medium tabular-nums">{hovered.totalPlayers.toLocaleString(locale)}</span>{" "}
             <span className="text-muted-foreground">

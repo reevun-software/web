@@ -4,29 +4,19 @@ import {
   getRussiaOnlineOnline,
   getGta5rpOnline,
   getOnlineHistory,
-  recordOnlineSnapshot,
-  type OnlineProjectKey,
 } from "@/lib/online-monitoring";
 import { OnlineMonitoringTabs } from "@/components/dashboard/online-monitoring-tabs";
 
 export default async function MonitoringPage() {
   const t = await getTranslations("Dashboard.monitoring");
+  // Snapshot history is now recorded by a real per-minute scheduler (see
+  // src/instrumentation.ts), not as a side effect of loading this page -
+  // this just reads the current live numbers and the accumulated history.
   const [majestic, russiaOnline, gta5rp] = await Promise.all([
     getMajesticOnline(),
     getRussiaOnlineOnline(),
     getGta5rpOnline(),
   ]);
-
-  const live: Record<OnlineProjectKey, { totalPlayers: number } | null> = {
-    majestic,
-    russiaonline: russiaOnline,
-    gta5rp,
-  };
-  await Promise.all(
-    (Object.entries(live) as [OnlineProjectKey, { totalPlayers: number } | null][])
-      .filter(([, data]) => data)
-      .map(([project, data]) => recordOnlineSnapshot(project, data!.totalPlayers)),
-  );
 
   // Fetched once at the widest range the UI offers (365 days) - the range
   // buttons in OnlineMonitoringTabs just filter this client-side instead of

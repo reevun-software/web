@@ -407,7 +407,7 @@
       "muteModeBoth": "Ambos",
       "muteRoleId": "ID del rol de silencio",
       "save": "Guardar",
-      "addRole": "Añadir rol",
+      "addRole": "Seleccionar roles",
       "rolesUnavailable": "No se pudieron cargar los roles de este servidor. Asegúrate de que el bot de Reevun esté añadido.",
       "muteRoleIdPlaceholder": "Selecciona un rol",
       "saving": "Guardando...",
@@ -442,7 +442,7 @@
         "targetChannelsHint": "Solo se aplica en estos canales (todos si no se especifica ninguno)",
         "ignoredChannels": "Canales y categorías ignorados",
         "ignoredChannelsHint": "Nunca se aplica en estos canales",
-        "addChannel": "Añadir canal",
+        "addChannel": "Seleccionar canales",
         "channelsUnavailable": "No se pudieron obtener los canales del servidor. Asegúrate de que el bot Reevun se haya añadido a este servidor."
       },
       "muteModeHint": "El tiempo de espera de Discord silencia sin necesitar un rol adicional. \"Asignar rol\" aplica un rol de silencio que hayas configurado. \"Ambos\" hace las dos cosas a la vez.",
