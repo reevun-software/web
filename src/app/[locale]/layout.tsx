@@ -48,16 +48,17 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <NextIntlClientProvider messages={messages}>
           <TooltipProvider>
-            {/* Fixed h-8 (not content-sized padding) so its height is a known
-                quantity - every full-viewport layout below (dashboard rail,
-                loading screens) subtracts this exact value from 100dvh,
-                since this bar sits above them in normal flow and would
-                otherwise push their h-dvh/min-h-dvh past the real viewport
-                and force an unwanted page-level scrollbar. */}
-            <div className="flex h-8 shrink-0 items-center justify-center bg-brand px-4 text-center text-xs font-medium text-brand-foreground">
+            {/* Pinned (fixed, not static-flow) so it stays visible while the
+                page scrolls instead of disappearing off the top - h-8 is a
+                known quantity (not content-sized padding), and everything
+                below still reserves exactly that much space for it (the
+                pt-8 wrapper here, and every full-viewport layout downstream
+                that subtracts 2rem from 100dvh) since a fixed element no
+                longer pushes flow content down on its own. */}
+            <div className="fixed inset-x-0 top-0 z-50 flex h-8 items-center justify-center bg-brand px-4 text-center text-xs font-medium text-brand-foreground">
               {t("message")}
             </div>
-            {children}
+            <div className="flex flex-1 flex-col pt-8">{children}</div>
             <Toaster position="top-center" />
           </TooltipProvider>
         </NextIntlClientProvider>

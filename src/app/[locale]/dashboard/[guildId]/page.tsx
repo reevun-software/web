@@ -1,9 +1,12 @@
 import { desc, eq } from "drizzle-orm";
-import { Users, Ticket as TicketIcon, ShieldAlert, Moon, UserX, LayoutDashboard } from "lucide-react";
+import { Users, Ticket as TicketIcon, ShieldAlert, Moon, UserX, LayoutDashboard, Lock } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { guildMembers, tickets, afkSessions, bans, auditLog } from "@/lib/db/schema";
 import { describeAuditEntry } from "@/lib/audit-log";
+import { getModuleStates } from "@/lib/guild-modules";
+import type { ModuleKey } from "@/lib/modules";
+import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -13,10 +16,12 @@ export default async function DashboardOverviewPage({
   params,
 }: PageProps<"/[locale]/dashboard/[guildId]">) {
   const { guildId } = await params;
-  const [t, tAuditLog, locale] = await Promise.all([
+  const [t, tDash, tAuditLog, locale, moduleStates] = await Promise.all([
     getTranslations("Dashboard.overview"),
+    getTranslations("Dashboard"),
     getTranslations("Dashboard.auditLog"),
     getLocale(),
+    getModuleStates(guildId),
   ]);
 
   // ponytail: full-table scan aggregation - fine at RP-family scale, switch
@@ -44,12 +49,42 @@ export default async function DashboardOverviewPage({
     .sort((a, b) => b.warnings - a.warnings)
     .slice(0, 5);
 
-  const stats = [
+  const stats: {
+    label: string;
+    value: number;
+    icon: typeof Users;
+    href: string;
+    moduleKey?: ModuleKey;
+  }[] = [
     { label: t("members"), value: members.length, icon: Users, href: `/dashboard/${guildId}/members` },
-    { label: t("openTickets"), value: openTickets, icon: TicketIcon, href: `/dashboard/${guildId}/tickets` },
-    { label: t("warnings"), value: totalWarnings, icon: ShieldAlert, href: `/dashboard/${guildId}/warnings` },
-    { label: t("afk"), value: afk.length, icon: Moon, href: `/dashboard/${guildId}/afk` },
-    { label: t("blacklist"), value: blacklisted.length, icon: UserX, href: `/dashboard/${guildId}/blacklist` },
+    {
+      label: t("openTickets"),
+      value: openTickets,
+      icon: TicketIcon,
+      href: `/dashboard/${guildId}/tickets`,
+      moduleKey: "tickets",
+    },
+    {
+      label: t("warnings"),
+      value: totalWarnings,
+      icon: ShieldAlert,
+      href: `/dashboard/${guildId}/warnings`,
+      moduleKey: "warnings",
+    },
+    {
+      label: t("afk"),
+      value: afk.length,
+      icon: Moon,
+      href: `/dashboard/${guildId}/afk`,
+      moduleKey: "afk",
+    },
+    {
+      label: t("blacklist"),
+      value: blacklisted.length,
+      icon: UserX,
+      href: `/dashboard/${guildId}/blacklist`,
+      moduleKey: "blacklist",
+    },
   ];
 
   const usernames = new Map(members.map((m) => [m.discordUserId, m.username]));
@@ -62,17 +97,38 @@ export default async function DashboardOverviewPage({
         <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        {stats.map((s) => (
-          <Link key={s.label} href={s.href} className="block">
-            <Card className="flex flex-col gap-2 p-5 transition-colors hover:bg-accent/40">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <s.icon className="size-4" strokeWidth={1.5} />
-                <span className="text-xs">{s.label}</span>
+        {stats.map((s) => {
+          const disabled = s.moduleKey ? moduleStates[s.moduleKey] === false : false;
+          const content = (
+            <Card
+              className={cn(
+                "relative flex flex-col gap-2 overflow-hidden p-5 transition-colors",
+                !disabled && "hover:bg-accent/40",
+              )}
+            >
+              <div className={cn("flex flex-col gap-2", disabled && "pointer-events-none blur-sm")}>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <s.icon className="size-4" strokeWidth={1.5} />
+                  <span className="text-xs">{s.label}</span>
+                </div>
+                <span className="text-2xl font-semibold tracking-tight">{s.value}</span>
               </div>
-              <span className="text-2xl font-semibold tracking-tight">{s.value}</span>
+              {disabled && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-card/60 px-2 text-center">
+                  <Lock className="size-4 text-muted-foreground" strokeWidth={1.5} />
+                  <span className="text-xs text-muted-foreground">{tDash("moduleDisabledTitle")}</span>
+                </div>
+              )}
             </Card>
-          </Link>
-        ))}
+          );
+          return disabled ? (
+            <div key={s.label}>{content}</div>
+          ) : (
+            <Link key={s.label} href={s.href} className="block">
+              {content}
+            </Link>
+          );
+        })}
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">

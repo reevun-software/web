@@ -19,6 +19,7 @@ import {
   Check,
   Menu,
   Sparkles,
+  Crown,
   type LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -36,7 +37,16 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import type { ManageableGuild } from "@/lib/guilds";
 import type { ModuleKey } from "@/lib/modules";
 
-type NavItem = { label: string; icon: LucideIcon; segment: string; moduleKey?: ModuleKey };
+// A nav item with comingSoon:true has no real route - it renders as a
+// button that shows a toast instead of a Link (see renderNavItem), the
+// same treatment as the Premium row.
+type NavItem = {
+  label: string;
+  icon: LucideIcon;
+  segment: string;
+  moduleKey?: ModuleKey;
+  comingSoon?: boolean;
+};
 
 // Shared between the permanent desktop rail and the mobile Sheet - only the
 // outer chrome differs, so the nav itself (and its active-state logic)
@@ -72,6 +82,20 @@ function SidebarNavContent({
   const base = `/dashboard/${guildId}`;
 
   function renderNavItem(item: NavItem) {
+    if (item.comingSoon) {
+      return (
+        <button
+          key={item.label}
+          type="button"
+          onClick={() => toast.info(premiumComingSoonLabel)}
+          className="flex cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent/60 hover:text-foreground"
+        >
+          <item.icon className="size-4" strokeWidth={1.5} />
+          {item.label}
+        </button>
+      );
+    }
+
     const href = item.segment ? `${base}/${item.segment}` : base;
     const active = pathname === href;
     const locked = item.moduleKey ? moduleStates[item.moduleKey] === false : false;
@@ -183,6 +207,7 @@ export function DashboardSidebar({
     [
       { label: t("nav.dashboard"), icon: LayoutDashboard, segment: "" },
       { label: t("nav.monitoring"), icon: Activity, segment: "monitoring" },
+      { label: t("nav.capts"), icon: Crown, segment: "", comingSoon: true },
       { label: t("nav.news"), icon: Newspaper, segment: "news" },
     ],
     [
