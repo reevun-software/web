@@ -51,7 +51,6 @@ export function OnlineHistoryChart({
   cityColors,
   emptyLabel,
   peakLabel,
-  shortHistoryLabel,
   chartLabel,
   colDate,
   colPlayers,
@@ -70,8 +69,6 @@ export function OnlineHistoryChart({
   cityColors: Record<string, string>;
   emptyLabel: string;
   peakLabel: string;
-  // "{date}" placeholder replaced with the oldest point's formatted date/time.
-  shortHistoryLabel: string;
   // The chart itself is pointer-only (hover to read a value) - this table
   // is the actual accessible path to the data for keyboard/screen-reader
   // users, not just an aria-label summary of the SVG.
@@ -182,12 +179,6 @@ export function OnlineHistoryChart({
   // alone to stop being useful.
   const showTime = spanT < TWO_DAYS_MS;
 
-  // Every range button filters the same underlying history, so once the
-  // range asked for is wider than what's actually been recorded so far,
-  // every button shows the identical, full dataset - surfacing how far back
-  // real data goes makes that self-explanatory instead of looking broken.
-  const requestedSpanMs = rangeKey * 24 * 60 * 60 * 1000;
-  const hasShortHistory = spanT < requestedSpanMs * 0.95;
 
   // Snapped to real recorded tick indices, not evenly-spaced points in
   // continuous time - picking arbitrary time fractions produced labels like
@@ -396,19 +387,6 @@ export function OnlineHistoryChart({
         ))}
       </div>
 
-      {hasShortHistory && (
-        <p className="pl-9 text-xs text-muted-foreground">
-          {shortHistoryLabel.replace(
-            "{date}",
-            new Date(minT).toLocaleString(locale, {
-              day: "2-digit",
-              month: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-            }),
-          )}
-        </p>
-      )}
     </div>
   );
 }

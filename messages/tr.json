@@ -3,6 +3,9 @@
     "title": "Reevun",
     "description": "RP toplulukları için Reevun Discord botu yönetim paneli."
   },
+  "BetaBanner": {
+    "message": "Reevun beta aşamasında — ürün henüz tam olarak hazır değil, hatalar ve değişiklikler olabilir."
+  },
   "Header": {
     "signIn": "Discord ile giriş yap",
     "dashboardAria": "Sunucularım",
@@ -289,7 +292,7 @@
     },
     "settings": {
       "heading": "Aile ayarları",
-      "name": "Ad",
+      "name": "Aile adı",
       "serverId": "Discord sunucu kimliği",
       "note": "Bot adı ve ayarları Discord üzerinden değiştirilir. Panele özel ayarlar ihtiyaç duyulduğunda burada görünecek.",
       "saved": "Kaydedildi",
@@ -326,7 +329,10 @@
       "ticketOpen": "açık",
       "ticketClosed": "kapalı",
       "topWarned": "En çok uyarı alanlar",
-      "noWarnings": "Henüz uyarı yok"
+      "noWarnings": "Henüz uyarı yok",
+      "blacklist": "Kara liste",
+      "recentActivity": "Son etkinlikler",
+      "noActivity": "Henüz etkinlik yok"
     },
     "warnings": {
       "heading": "Uyarılar",
@@ -488,7 +494,8 @@
       "searchChannels": "Kanal ara…"
     },
     "openMenu": "Menüyü aç",
-    "backToSite": "Siteye dön"
+    "backToSite": "Siteye dön",
+    "footerRights": "© {year} Reevun. Tüm hakları saklıdır."
   },
   "LanguageSwitcher": {
     "label": "Dil"

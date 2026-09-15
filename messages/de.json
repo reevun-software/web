@@ -3,6 +3,9 @@
     "title": "Reevun",
     "description": "Dashboard für den Discord-Bot Reevun, gebaut für RP-Communitys."
   },
+  "BetaBanner": {
+    "message": "Reevun befindet sich in der Beta-Phase — das Produkt ist noch nicht fertig, Fehler und Änderungen sind möglich."
+  },
   "Header": {
     "signIn": "Mit Discord anmelden",
     "dashboardAria": "Meine Server",
@@ -289,7 +292,7 @@
     },
     "settings": {
       "heading": "Familieneinstellungen",
-      "name": "Name",
+      "name": "Name der Familie",
       "serverId": "Discord-Server-ID",
       "note": "Name und Bot-Einstellungen werden über Discord geändert. Dashboard-spezifische Einstellungen erscheinen hier, sobald sie benötigt werden.",
       "saved": "Gespeichert",
@@ -326,7 +329,10 @@
       "ticketOpen": "offen",
       "ticketClosed": "geschlossen",
       "topWarned": "Meiste Verwarnungen",
-      "noWarnings": "Noch keine Verwarnungen"
+      "noWarnings": "Noch keine Verwarnungen",
+      "blacklist": "Schwarze Liste",
+      "recentActivity": "Letzte Aktivitäten",
+      "noActivity": "Noch keine Aktivitäten"
     },
     "warnings": {
       "heading": "Verwarnungen",
@@ -488,7 +494,8 @@
       "searchChannels": "Kanäle suchen…"
     },
     "openMenu": "Menü öffnen",
-    "backToSite": "Zur Website"
+    "backToSite": "Zur Website",
+    "footerRights": "© {year} Reevun. Alle Rechte vorbehalten."
   },
   "LanguageSwitcher": {
     "label": "Sprache"

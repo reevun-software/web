@@ -3,6 +3,7 @@ import { History } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { auditLog, guildMembers } from "@/lib/db/schema";
+import { describeAuditEntry } from "@/lib/audit-log";
 import { AuditLogTable, type AuditLogRow } from "@/components/dashboard/audit-log-table";
 
 const PAGE_SIZE = 50;
@@ -20,21 +21,7 @@ export default async function AuditLogPage({
   const nameOf = (id: string) => usernames.get(id) ?? id;
 
   function describe(entry: { logType: string; discordUserId: string; oldRank: number | null; newRank: number | null }): string {
-    const target = nameOf(entry.discordUserId);
-    switch (entry.logType) {
-      case "rank_change":
-        return t("rankChange", { target, oldRank: entry.oldRank ?? 0, newRank: entry.newRank ?? 0 });
-      case "warn_issued":
-        return t("warnIssued", { target });
-      case "warn_removed":
-        return t("warnRemoved", { target });
-      case "ban_added":
-        return t("banAdded", { target });
-      case "ban_removed":
-        return t("banRemoved", { target });
-      default:
-        return t("generic", { target, type: entry.logType });
-    }
+    return describeAuditEntry(t, nameOf(entry.discordUserId), entry);
   }
 
   function toRow(entry: {

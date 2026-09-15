@@ -3,6 +3,9 @@
     "title": "Reevun",
     "description": "Панель управления Discord-ботом Reevun для RP-сообществ."
   },
+  "BetaBanner": {
+    "message": "Reevun находится в бета-тестировании — продукт ещё не готов полностью, возможны ошибки и изменения."
+  },
   "Header": {
     "signIn": "Войти через Discord",
     "dashboardAria": "Мои серверы",
@@ -289,7 +292,7 @@
     },
     "settings": {
       "heading": "Настройки семьи",
-      "name": "Название",
+      "name": "Название семьи",
       "serverId": "Discord ID сервера",
       "note": "Изменение названия и параметров бота выполняется через Discord. Здесь появятся настройки, специфичные для панели, когда они понадобятся.",
       "saved": "Сохранено",
@@ -326,7 +329,10 @@
       "ticketOpen": "открыт",
       "ticketClosed": "закрыт",
       "topWarned": "Больше всего предупреждений",
-      "noWarnings": "Пока нет предупреждений"
+      "noWarnings": "Пока нет предупреждений",
+      "blacklist": "Чёрный список",
+      "recentActivity": "Последние действия",
+      "noActivity": "Пока нет действий"
     },
     "warnings": {
       "heading": "Предупреждения",
@@ -488,7 +494,8 @@
       "searchChannels": "Поиск канала…"
     },
     "openMenu": "Открыть меню",
-    "backToSite": "На главную сайта"
+    "backToSite": "На главную сайта",
+    "footerRights": "© {year} Reevun. Все права защищены."
   },
   "LanguageSwitcher": {
     "label": "Язык"

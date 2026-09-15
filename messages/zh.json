@@ -3,6 +3,9 @@
     "title": "Reevun",
     "description": "为角色扮演社区打造的 Reevun Discord 机器人管理面板。"
   },
+  "BetaBanner": {
+    "message": "Reevun 目前处于测试阶段——产品尚未完全完成,可能存在错误和变更。"
+  },
   "Header": {
     "signIn": "使用 Discord 登录",
     "dashboardAria": "我的服务器",
@@ -289,7 +292,7 @@
     },
     "settings": {
       "heading": "家族设置",
-      "name": "名称",
+      "name": "家族名称",
       "serverId": "Discord 服务器 ID",
       "note": "机器人的名称和参数需通过 Discord 修改。面板专属设置会在需要时出现在这里。",
       "saved": "已保存",
@@ -326,7 +329,10 @@
       "ticketOpen": "进行中",
       "ticketClosed": "已关闭",
       "topWarned": "警告最多",
-      "noWarnings": "暂无警告"
+      "noWarnings": "暂无警告",
+      "blacklist": "黑名单",
+      "recentActivity": "最近动态",
+      "noActivity": "暂无动态"
     },
     "warnings": {
       "heading": "警告",
@@ -488,7 +494,8 @@
       "searchChannels": "搜索频道…"
     },
     "openMenu": "打开菜单",
-    "backToSite": "返回主站"
+    "backToSite": "返回主站",
+    "footerRights": "© {year} Reevun。保留所有权利。"
   },
   "LanguageSwitcher": {
     "label": "语言"

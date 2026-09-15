@@ -71,7 +71,6 @@ export function OnlineMonitoringTabs({
   peakInRange,
   unavailable,
   historyEmpty,
-  shortHistory,
   chartLabel,
   colDate,
   colPlayers,
@@ -84,7 +83,6 @@ export function OnlineMonitoringTabs({
   peakInRange: string;
   unavailable: string;
   historyEmpty: string;
-  shortHistory: string;
   chartLabel: string;
   colDate: string;
   colPlayers: string;
@@ -192,31 +190,18 @@ export function OnlineMonitoringTabs({
           </Card>
 
           <Card className="flex flex-col gap-3 p-5 text-foreground">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex flex-wrap gap-1.5">
-                {RANGE_OPTIONS.map((days) => (
-                  <Button
-                    key={days}
-                    variant={rangeDays === days ? "default" : "ghost"}
-                    size="sm"
-                    className="cursor-pointer"
-                    onClick={() => setRangeDays(days)}
-                  >
-                    {rangeLabels[days]}
-                  </Button>
-                ))}
-              </div>
-              {isolatedCityId && (
+            <div className="flex flex-wrap gap-1.5">
+              {RANGE_OPTIONS.map((days) => (
                 <Button
-                  variant="ghost"
+                  key={days}
+                  variant={rangeDays === days ? "default" : "ghost"}
                   size="sm"
-                  className="cursor-pointer text-muted-foreground"
-                  onClick={() => setIsolatedCityId(null)}
+                  className="cursor-pointer"
+                  onClick={() => setRangeDays(days)}
                 >
-                  {data.cities.find((c) => c.id === isolatedCityId)?.name}
-                  <span aria-hidden> ×</span>
+                  {rangeLabels[days]}
                 </Button>
-              )}
+              ))}
             </div>
             <OnlineHistoryChart
               drawKey={project?.key}
@@ -224,7 +209,6 @@ export function OnlineMonitoringTabs({
               cityColors={cityColors}
               emptyLabel={historyEmpty}
               peakLabel={peakInRange}
-              shortHistoryLabel={shortHistory}
               chartLabel={chartLabel.replace("{project}", project?.label ?? "")}
               colDate={colDate}
               colPlayers={colPlayers}

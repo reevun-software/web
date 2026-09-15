@@ -7,7 +7,7 @@ function DigitColumn({ digit }: { digit: number }) {
   return (
     <span className="relative inline-block h-[1em] w-[0.62em] overflow-hidden align-bottom">
       <span
-        className="odometer-digit absolute inset-x-0 top-0 flex flex-col transition-transform duration-[450ms] ease-[cubic-bezier(0.77,0,0.175,1)]"
+        className="odometer-digit absolute inset-x-0 top-0 flex flex-col transition-transform duration-[900ms] ease-[cubic-bezier(0.77,0,0.175,1)]"
         style={{ transform: `translateY(${-digit * 10}%)` }}
       >
         {Array.from({ length: 10 }, (_, i) => (

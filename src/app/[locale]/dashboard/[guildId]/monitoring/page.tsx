@@ -25,6 +25,10 @@ export default async function MonitoringPage() {
   // it's a lot more data than the total-only series - keeping the window to
   // just what the UI can select keeps that bounded.
   const HISTORY_HOURS = 30 * 24;
+  // A fixed minimum so the loading.tsx transition reads the same every
+  // time instead of flickering by in whatever fraction of a second the
+  // upstream APIs happened to respond in.
+  const MIN_LOAD_MS = 1500;
   const [
     majesticHistory,
     russiaOnlineHistory,
@@ -39,6 +43,7 @@ export default async function MonitoringPage() {
     getCityOnlineHistory("majestic", HISTORY_HOURS),
     getCityOnlineHistory("russiaonline", HISTORY_HOURS),
     getCityOnlineHistory("gta5rp", HISTORY_HOURS),
+    new Promise((resolve) => setTimeout(resolve, MIN_LOAD_MS)),
   ]);
 
   return (
@@ -77,7 +82,6 @@ export default async function MonitoringPage() {
         peakInRange={t("peakInRange")}
         unavailable={t("unavailable")}
         historyEmpty={t("historyEmpty")}
-        shortHistory={t("shortHistory")}
         chartLabel={t("chartLabel")}
         colDate={t("colDate")}
         colPlayers={t("colPlayers")}

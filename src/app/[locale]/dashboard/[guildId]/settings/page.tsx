@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { Settings } from "lucide-react";
+import { Settings, Lock } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
@@ -76,11 +76,23 @@ export default async function SettingsPage({
       <Card className="flex flex-col gap-4 p-6">
         <div className="flex flex-col gap-2">
           <Label htmlFor="name">{t("name")}</Label>
-          <Input id="name" defaultValue={guild?.name} disabled />
+          <div className="relative">
+            <Input id="name" defaultValue={guild?.name} disabled className="pr-9" />
+            <Lock
+              className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 text-muted-foreground"
+              strokeWidth={1.5}
+            />
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="id">{t("serverId")}</Label>
-          <Input id="id" defaultValue={guildId} disabled className="font-mono" />
+          <div className="relative">
+            <Input id="id" defaultValue={guildId} disabled className="pr-9 font-mono" />
+            <Lock
+              className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 text-muted-foreground"
+              strokeWidth={1.5}
+            />
+          </div>
         </div>
         <p className="text-sm text-muted-foreground">{t("note")}</p>
       </Card>
@@ -163,8 +175,8 @@ export default async function SettingsPage({
           <div className="px-6 py-4">
             <span className="text-sm font-medium">{t("memberJoiningTitle")}</span>
           </div>
-          <div className="flex flex-col gap-4 px-6 py-4">
-            <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col divide-y divide-border/60">
+            <div className="flex flex-col gap-1.5 px-6 py-4">
               <Label htmlFor="defaultRoleIds" className="-translate-y-3">
                 {t("defaultRoles")}
               </Label>
@@ -178,44 +190,48 @@ export default async function SettingsPage({
                   emptyLabel={t("rolesUnavailable")}
                 />
               </div>
-              <p className="text-xs text-muted-foreground">{t("defaultRolesHint")}</p>
+              <p className="-translate-y-1 text-xs text-muted-foreground">
+                {t("defaultRolesHint")}
+              </p>
             </div>
 
-            <label
-              htmlFor="alwaysAssignDefaultRoles"
-              className="flex cursor-pointer items-center justify-between gap-4"
-            >
-              <span className="text-sm">{t("alwaysAssignDefaultRoles")}</span>
-              <Switch
-                id="alwaysAssignDefaultRoles"
-                name="alwaysAssignDefaultRoles"
-                defaultChecked={current.alwaysAssignDefaultRoles}
-              />
-            </label>
-            <label
-              htmlFor="restoreNicknameOnRejoin"
-              className="flex cursor-pointer items-center justify-between gap-4"
-            >
-              <span className="text-sm">{t("restoreNickname")}</span>
-              <Switch
-                id="restoreNicknameOnRejoin"
-                name="restoreNicknameOnRejoin"
-                defaultChecked={current.restoreNicknameOnRejoin}
-              />
-            </label>
-            <label
-              htmlFor="restoreOldRolesOnRejoin"
-              className="flex cursor-pointer items-center justify-between gap-4"
-            >
-              <span className="text-sm">{t("restoreOldRoles")}</span>
-              <Switch
-                id="restoreOldRolesOnRejoin"
-                name="restoreOldRolesOnRejoin"
-                defaultChecked={current.restoreOldRolesOnRejoin}
-              />
-            </label>
+            <div className="flex flex-col gap-4 px-6 py-4">
+              <label
+                htmlFor="alwaysAssignDefaultRoles"
+                className="flex cursor-pointer items-center justify-between gap-4"
+              >
+                <span className="text-sm">{t("alwaysAssignDefaultRoles")}</span>
+                <Switch
+                  id="alwaysAssignDefaultRoles"
+                  name="alwaysAssignDefaultRoles"
+                  defaultChecked={current.alwaysAssignDefaultRoles}
+                />
+              </label>
+              <label
+                htmlFor="restoreNicknameOnRejoin"
+                className="flex cursor-pointer items-center justify-between gap-4"
+              >
+                <span className="text-sm">{t("restoreNickname")}</span>
+                <Switch
+                  id="restoreNicknameOnRejoin"
+                  name="restoreNicknameOnRejoin"
+                  defaultChecked={current.restoreNicknameOnRejoin}
+                />
+              </label>
+              <label
+                htmlFor="restoreOldRolesOnRejoin"
+                className="flex cursor-pointer items-center justify-between gap-4"
+              >
+                <span className="text-sm">{t("restoreOldRoles")}</span>
+                <Switch
+                  id="restoreOldRolesOnRejoin"
+                  name="restoreOldRolesOnRejoin"
+                  defaultChecked={current.restoreOldRolesOnRejoin}
+                />
+              </label>
+            </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 px-6 py-4 sm:grid-cols-2">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="restorableRoleIds">{t("restorableRoles")}</Label>
                 <RolePicker

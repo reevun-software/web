@@ -38,6 +38,7 @@ export default async function RootLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
 
   const messages = await getMessages();
+  const t = await getTranslations({ locale, namespace: "BetaBanner" });
 
   return (
     <html
@@ -47,6 +48,9 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <NextIntlClientProvider messages={messages}>
           <TooltipProvider>
+            <div className="bg-brand px-4 py-1.5 text-center text-xs font-medium text-brand-foreground">
+              {t("message")}
+            </div>
             {children}
             <Toaster position="top-center" />
           </TooltipProvider>
