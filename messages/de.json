@@ -138,7 +138,8 @@
   "Status": {
     "operational": "Alle Systeme funktionieren",
     "issue": "Störungen im Betrieb",
-    "unavailable": "Status nicht verfügbar"
+    "unavailable": "Status nicht verfügbar",
+    "maintenance": "Geplante Wartung"
   },
   "NotFound": {
     "title": "Seite nicht gefunden",

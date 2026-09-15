@@ -6,16 +6,14 @@ import { getServiceStatus } from "@/lib/status";
 const DOT_COLOR = {
   operational: "bg-emerald-500",
   issue: "bg-amber-500",
+  maintenance: "bg-sky-500",
   unavailable: "bg-muted-foreground",
 };
 
 export async function StatusPill({ className }: { className?: string }) {
   const status = await getServiceStatus();
   const t = await getTranslations("Status");
-  const label =
-    status.variant === "issue" && status.incidentTitle
-      ? status.incidentTitle
-      : t(status.variant);
+  const label = t(status.variant);
 
   return (
     <Link

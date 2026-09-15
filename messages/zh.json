@@ -138,7 +138,8 @@
   "Status": {
     "operational": "所有系统正常运行",
     "issue": "服务出现中断",
-    "unavailable": "状态不可用"
+    "unavailable": "状态不可用",
+    "maintenance": "计划维护"
   },
   "NotFound": {
     "title": "页面未找到",
