@@ -1,4 +1,5 @@
 import { eq } from "drizzle-orm";
+import { Activity } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { guildBotSettings } from "@/lib/db/schema";
@@ -89,7 +90,10 @@ export default async function MonitoringPage({
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
+      <div className="flex items-center gap-2">
+        <Activity className="size-5 text-muted-foreground" strokeWidth={1.5} />
+        <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
+      </div>
       <OnlineMonitoringTabs
         projects={projects}
         current={t("current")}

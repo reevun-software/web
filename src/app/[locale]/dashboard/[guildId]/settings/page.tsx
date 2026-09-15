@@ -159,7 +159,7 @@ export default async function SettingsPage({
   }
 
   return (
-    <div className="flex max-w-6xl flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <Settings className="size-5 text-muted-foreground" strokeWidth={1.5} />
         <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
@@ -366,8 +366,11 @@ export default async function SettingsPage({
           </Card>
         ) : (
           <>
-            <Card className="flex flex-col gap-3 p-6">
+            <Card className="flex flex-col divide-y divide-border/60 p-0">
+              <div className="px-6 py-4">
                 <span className="text-sm font-medium">{t("projectTitle")}</span>
+              </div>
+              <div className="flex flex-col gap-1.5 px-6 py-4">
                 <ProjectServerSelector
                   defaultProject={current.project}
                   defaultServer={current.server}
@@ -383,13 +386,15 @@ export default async function SettingsPage({
                   }}
                 />
                 <p className="text-xs text-muted-foreground">{t("projectHint")}</p>
-              </Card>
+              </div>
+            </Card>
 
-            <Card className="flex flex-col gap-4 p-6">
-                <div className="flex flex-col gap-1">
-                  <span className="text-sm font-medium">{t("modulesTitle")}</span>
-                  <p className="text-xs text-muted-foreground">{t("modulesHint")}</p>
-                </div>
+            <Card className="flex flex-col divide-y divide-border/60 p-0">
+              <div className="px-6 py-4">
+                <span className="text-sm font-medium">{t("modulesTitle")}</span>
+                <p className="text-xs text-muted-foreground">{t("modulesHint")}</p>
+              </div>
+              <div className="flex flex-col gap-4 px-6 py-4">
                 {(
                   [
                     ["warnings", t("moduleWarnings")],
@@ -404,36 +409,39 @@ export default async function SettingsPage({
                     <Switch id={key} name={key} defaultChecked={moduleStates[key]} />
                   </label>
                 ))}
-              </Card>
+              </div>
+            </Card>
 
-            <Card className="flex flex-col gap-3 p-6">
-              <div className="flex flex-col gap-1">
+            <Card className="flex flex-col divide-y divide-border/60 p-0">
+              <div className="px-6 py-4">
                 <span className="text-sm font-medium">{t("departmentsTitle")}</span>
                 <p className="text-xs text-muted-foreground">
                   {moduleStates.departments ? t("departmentsHint") : t("departmentsDisabledHint")}
                 </p>
               </div>
               {moduleStates.departments && (
-                <DepartmentsManager
-                  departments={departments}
-                  members={members.map((m) => ({
-                    discordUserId: m.discordUserId,
-                    username: m.username,
-                  }))}
-                  createDepartment={createDepartment}
-                  deleteDepartment={deleteDepartment}
-                  updateDepartmentMembers={updateDepartmentMembers}
-                  labels={{
-                    addDepartment: t("addDepartment"),
-                    namePlaceholder: t("departmentNamePlaceholder"),
-                    noDepartments: t("noDepartments"),
-                    members: t("departmentMembers"),
-                    addMembers: t("addMembers"),
-                    noMembers: t("noMembers"),
-                    searchMembers: t("searchMembers"),
-                    delete: t("deleteDepartment"),
-                  }}
-                />
+                <div className="px-6 py-4">
+                  <DepartmentsManager
+                    departments={departments}
+                    members={members.map((m) => ({
+                      discordUserId: m.discordUserId,
+                      username: m.username,
+                    }))}
+                    createDepartment={createDepartment}
+                    deleteDepartment={deleteDepartment}
+                    updateDepartmentMembers={updateDepartmentMembers}
+                    labels={{
+                      addDepartment: t("addDepartment"),
+                      namePlaceholder: t("departmentNamePlaceholder"),
+                      noDepartments: t("noDepartments"),
+                      members: t("departmentMembers"),
+                      addMembers: t("addMembers"),
+                      noMembers: t("noMembers"),
+                      searchMembers: t("searchMembers"),
+                      delete: t("deleteDepartment"),
+                    }}
+                  />
+                </div>
               )}
             </Card>
           </>

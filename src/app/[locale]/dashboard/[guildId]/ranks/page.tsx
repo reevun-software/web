@@ -32,7 +32,10 @@ export default async function RanksPage({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
-        <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="size-5 text-muted-foreground" strokeWidth={1.5} />
+          <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
+        </div>
         <p className="text-sm text-muted-foreground">{t("note")}</p>
       </div>
       <Card className="flex flex-col divide-y divide-border/60 p-0">

@@ -1,5 +1,5 @@
 import { desc, eq } from "drizzle-orm";
-import { Users, Ticket as TicketIcon, ShieldAlert, Moon, UserX } from "lucide-react";
+import { Users, Ticket as TicketIcon, ShieldAlert, Moon, UserX, LayoutDashboard } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { guildMembers, tickets, afkSessions, bans, auditLog } from "@/lib/db/schema";
@@ -57,7 +57,10 @@ export default async function DashboardOverviewPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
+      <div className="flex items-center gap-2">
+        <LayoutDashboard className="size-5 text-muted-foreground" strokeWidth={1.5} />
+        <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
+      </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {stats.map((s) => (
           <Link key={s.label} href={s.href} className="block">

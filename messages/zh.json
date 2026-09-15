@@ -526,7 +526,9 @@
     "openMenu": "打开菜单",
     "backToSite": "返回主站",
     "footerCopyright": "© 2023–{year}。Reevun Software LLC.",
-    "footerRightsReserved": "保留所有权利。"
+    "footerRightsReserved": "保留所有权利。",
+    "premium": "Premium",
+    "premiumComingSoon": "功能开发中"
   },
   "LanguageSwitcher": {
     "label": "语言"

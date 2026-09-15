@@ -43,7 +43,10 @@ export default async function AfkPage({
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
+      <div className="flex items-center gap-2">
+        <Moon className="size-5 text-muted-foreground" strokeWidth={1.5} />
+        <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>

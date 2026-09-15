@@ -18,8 +18,10 @@ import {
   ChevronsUpDown,
   Check,
   Menu,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
+import { toast } from "sonner";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -50,6 +52,8 @@ function SidebarNavContent({
   bottomNav,
   moduleStates,
   moduleLockedLabel,
+  premiumLabel,
+  premiumComingSoonLabel,
   onNavigate,
 }: {
   guildId: string;
@@ -60,6 +64,8 @@ function SidebarNavContent({
   bottomNav: NavItem[];
   moduleStates: Record<ModuleKey, boolean>;
   moduleLockedLabel: string;
+  premiumLabel: string;
+  premiumComingSoonLabel: string;
   onNavigate?: () => void;
 }) {
   const pathname = usePathname();
@@ -141,6 +147,14 @@ function SidebarNavContent({
       </nav>
 
       <div className="flex flex-col gap-0.5 border-t border-border/60 px-2 py-2">
+        <button
+          type="button"
+          onClick={() => toast.info(premiumComingSoonLabel)}
+          className="flex cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent/60 hover:text-foreground"
+        >
+          <Sparkles className="size-4" strokeWidth={1.5} />
+          {premiumLabel}
+        </button>
         {bottomNav.map(renderNavItem)}
       </div>
     </>
@@ -210,6 +224,8 @@ export function DashboardSidebar({
             bottomNav={bottomNav}
             moduleStates={moduleStates}
             moduleLockedLabel={t("nav.moduleLocked")}
+            premiumLabel={t("premium")}
+            premiumComingSoonLabel={t("premiumComingSoon")}
           />
         </div>
       </aside>
@@ -234,6 +250,8 @@ export function DashboardSidebar({
               bottomNav={bottomNav}
               moduleStates={moduleStates}
               moduleLockedLabel={t("nav.moduleLocked")}
+              premiumLabel={t("premium")}
+              premiumComingSoonLabel={t("premiumComingSoon")}
               onNavigate={() => setMobileOpen(false)}
             />
           </SheetContent>
