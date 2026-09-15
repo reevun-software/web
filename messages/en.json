@@ -468,7 +468,8 @@
       "searchRoles": "Search roles…",
       "searchChannels": "Search channels…"
     },
-    "openMenu": "Open menu"
+    "openMenu": "Open menu",
+    "backToSite": "Back to site"
   },
   "LanguageSwitcher": {
     "label": "Language"

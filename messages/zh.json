@@ -468,7 +468,8 @@
       "searchRoles": "搜索身分组…",
       "searchChannels": "搜索频道…"
     },
-    "openMenu": "打开菜单"
+    "openMenu": "打开菜单",
+    "backToSite": "返回主站"
   },
   "LanguageSwitcher": {
     "label": "语言"

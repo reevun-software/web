@@ -468,7 +468,8 @@
       "searchRoles": "Rol ara…",
       "searchChannels": "Kanal ara…"
     },
-    "openMenu": "Menüyü aç"
+    "openMenu": "Menüyü aç",
+    "backToSite": "Siteye dön"
   },
   "LanguageSwitcher": {
     "label": "Dil"

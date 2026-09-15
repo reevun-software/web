@@ -468,7 +468,8 @@
       "searchRoles": "Buscar roles…",
       "searchChannels": "Buscar canales…"
     },
-    "openMenu": "Abrir menú"
+    "openMenu": "Abrir menú",
+    "backToSite": "Volver al sitio"
   },
   "LanguageSwitcher": {
     "label": "Idioma"

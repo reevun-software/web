@@ -190,7 +190,7 @@ export default async function SecurityPage({
             <span className="text-sm font-medium">{t("moderatorsTitle")}</span>
           </div>
           <div className="flex flex-col gap-4 px-6 py-4">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
               <Label htmlFor="moderatorRoleIds">{t("moderatorRoleIds")}</Label>
               <RolePicker
                 id="moderatorRoleIds"

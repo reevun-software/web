@@ -468,7 +468,8 @@
       "searchRoles": "Поиск роли…",
       "searchChannels": "Поиск канала…"
     },
-    "openMenu": "Открыть меню"
+    "openMenu": "Открыть меню",
+    "backToSite": "На главную сайта"
   },
   "LanguageSwitcher": {
     "label": "Язык"
