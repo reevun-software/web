@@ -219,8 +219,13 @@ export function OnlineMonitoringTabs({
             )}
           >
           <Card className="grid grid-cols-1 divide-y divide-border/60 p-0 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-            {stats.map((s) => (
-              <div key={s.label} className="flex flex-col gap-1 px-5 py-4">
+            {stats.map((s, i) => (
+              // sm:divide-x puts a 1px border-left on every column but the
+              // first, which eats into that column's own box - the content
+              // inside columns 2/3 sits 1px further right than column 1's
+              // even though both have identical px-5 padding. -ml-px pulls
+              // it back so all three line up on the same left edge.
+              <div key={s.label} className={cn("flex flex-col gap-1 px-5 py-4", i > 0 && "-ml-px")}>
                 <span className="text-xs text-muted-foreground">{s.label}</span>
                 <span className="text-2xl font-semibold tracking-tight">
                   {s.value != null ? <OdometerNumber value={s.value} locale={locale} /> : "—"}

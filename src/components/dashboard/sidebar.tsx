@@ -188,18 +188,30 @@ export function DashboardSidebar({
 
   return (
     <>
-      {/* Permanent rail from md up - a 768px+ viewport has room for it. */}
-      <aside className="sticky top-0 hidden h-[calc(100dvh-2rem)] w-64 shrink-0 flex-col overflow-y-auto border-r border-border/60 bg-card/40 md:flex">
-        <SidebarNavContent
-          guildId={guildId}
-          guildName={guildName}
-          guilds={guilds}
-          noBotLabel={t("noBot")}
-          navGroups={navGroups}
-          bottomNav={bottomNav}
-          moduleStates={moduleStates}
-          moduleLockedLabel={t("nav.moduleLocked")}
-        />
+      {/* Permanent rail from md up - a 768px+ viewport has room for it.
+          The rail itself is a plain (non-sticky) flex item with only a
+          MINIMUM height - it stretches to match its row sibling (the main
+          content column) via the parent's default flex stretch, so its
+          background/border still reach the bottom on any page taller than
+          one viewport (a long settings page, or once the footer is
+          added) instead of visibly running out partway down. The nav
+          itself lives in an inner div that's actually sticky and height-
+          capped, so it stays pinned within the viewport (and scrolls on
+          its own if it has more items than fit) regardless of how tall
+          the outer rail grows. */}
+      <aside className="hidden min-h-[calc(100dvh-2rem)] w-64 shrink-0 border-r border-border/60 bg-card/40 md:flex md:flex-col">
+        <div className="sticky top-8 flex max-h-[calc(100dvh-2rem)] flex-col overflow-y-auto">
+          <SidebarNavContent
+            guildId={guildId}
+            guildName={guildName}
+            guilds={guilds}
+            noBotLabel={t("noBot")}
+            navGroups={navGroups}
+            bottomNav={bottomNav}
+            moduleStates={moduleStates}
+            moduleLockedLabel={t("nav.moduleLocked")}
+          />
+        </div>
       </aside>
 
       {/* Below md, the rail would eat the whole viewport, so it collapses
