@@ -227,14 +227,14 @@ export default async function SecurityPage({
             <div key={key} className="flex items-center justify-between gap-4 px-6 py-2.5">
               <label
                 htmlFor={key}
-                className="flex flex-1 -translate-y-1 cursor-pointer flex-col gap-1"
+                className="flex flex-1 -translate-y-2 cursor-pointer flex-col gap-1"
               >
                 <span className="text-sm leading-none">{t(`filters.${key}.label`)}</span>
                 <span className="text-xs leading-none text-muted-foreground">
                   {t(`filters.${key}.description`)}
                 </span>
               </label>
-              <div className="flex items-center gap-1">
+              <div className="flex -translate-y-2 items-center gap-1">
                 <FilterSettingsSheet
                   filterType={key}
                   filterLabel={t(`filters.${key}.label`)}
@@ -257,7 +257,7 @@ export default async function SecurityPage({
             htmlFor="muteBlocksReactions"
             className="flex cursor-pointer items-center justify-between gap-4"
           >
-            <span className="flex -translate-y-1 flex-col gap-1">
+            <span className="flex -translate-y-2 flex-col gap-1">
               <span className="text-sm leading-none">{t("muteBlocksReactions")}</span>
               <span className="text-xs leading-none text-muted-foreground">
                 {t("muteBlocksReactionsHint")}
@@ -267,6 +267,7 @@ export default async function SecurityPage({
               id="muteBlocksReactions"
               name="muteBlocksReactions"
               defaultChecked={current.muteBlocksReactions}
+              className="-translate-y-2"
             />
           </label>
           <MuteSettingsFields
