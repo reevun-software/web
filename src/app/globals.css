@@ -95,8 +95,10 @@
   --card-foreground: oklch(0.985 0 0);
   /* Was identical to --card - every dropdown/select popup floating over a
      Card had zero visible background contrast against it, reading as "no
-     popup box at all, text just merged into whatever's behind it". */
-  --popover: oklch(0.269 0 0);
+     popup box at all, text just merged into whatever's behind it". A small
+     step (--secondary's own 0.269) still read as barely-there once
+     compressed on screen, so this goes further. */
+  --popover: oklch(0.32 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
