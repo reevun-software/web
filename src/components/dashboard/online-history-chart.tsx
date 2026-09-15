@@ -183,12 +183,17 @@ export function OnlineHistoryChart({
   // continuous time - picking arbitrary time fractions produced labels like
   // 20:19 / 20:21 / 20:22 with inconsistent 1-2 minute gaps between them
   // whenever the real data didn't divide evenly, which read as broken.
-  const labelCount = Math.min(X_LABELS, ticks.length);
-  const xLabels = Array.from({ length: labelCount }, (_, i) => {
-    const index = Math.round((i / (labelCount - 1 || 1)) * (ticks.length - 1));
-    const date = new Date(ticks[index].t);
+  // Evenly spaced across the real TIME SPAN, each then snapped to its own
+  // nearest real tick - not evenly spaced by index. Backfilled history mixes
+  // dense recent data (per-minute) with sparse older data (hourly/daily), so
+  // picking evenly-spaced indices oversamples whichever window happens to be
+  // denser and left every label showing today's date.
+  const xLabels = Array.from({ length: X_LABELS }, (_, i) => {
+    const frac = i / (X_LABELS - 1);
+    const tick = nearestTick(ticks, minT + frac * spanT);
+    const date = new Date(tick.t);
     return {
-      x: xFor(ticks[index].t),
+      x: xFor(tick.t),
       label: showTime
         ? date.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })
         : date.toLocaleDateString(locale, { day: "2-digit", month: "2-digit" }),
