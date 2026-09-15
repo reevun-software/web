@@ -93,7 +93,10 @@
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  /* Was identical to --card - every dropdown/select popup floating over a
+     Card had zero visible background contrast against it, reading as "no
+     popup box at all, text just merged into whatever's behind it". */
+  --popover: oklch(0.269 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
@@ -166,6 +169,28 @@
   .odometer-digit {
     transition: none;
   }
+}
+
+/* The plain OS scrollbar (wide, with up/down arrow buttons on Windows) on a
+   scrollable panel like the filter settings sheet read as an ugly stray
+   "bar" next to the content. `scrollbar-width` covers Firefox/Chrome/Edge;
+   the ::-webkit-scrollbar rules are the equivalent for older WebKit. */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 9999px;
 }
 
 @keyframes leaving-ring-deplete {
