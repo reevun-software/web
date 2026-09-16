@@ -347,7 +347,8 @@
       "addMembers": "Üye seçin",
       "noMembers": "Kullanılabilir üye yok",
       "searchMembers": "Üye ara…",
-      "deleteDepartment": "Departmanı sil"
+      "deleteDepartment": "Departmanı sil",
+      "confirmDeleteDepartment": "Bu departman silinsin mi? Üye listesi kaybolacak."
     },
     "overview": {
       "heading": "Panel",

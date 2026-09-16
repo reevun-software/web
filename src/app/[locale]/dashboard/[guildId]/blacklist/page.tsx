@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { bans } from "@/lib/db/schema";
 import { auth } from "@/lib/auth";
 import { getModuleStates } from "@/lib/guild-modules";
+import { requireGuildManager } from "@/lib/guild-auth";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -43,8 +44,15 @@ export default async function BlacklistPage({
     .where(eq(bans.guildId, guildId))
     .orderBy(desc(bans.createdAt));
 
+  // Re-checked fresh in each action below, not just at the top of the page
+  // component: this closure is bound once at page render and never
+  // re-runs, so a tab that loaded before the module was disabled or before
+  // the caller lost access to this guild would otherwise keep acting on
+  // stale permissions forever.
   async function addBan(formData: FormData): Promise<{ error?: string }> {
     "use server";
+    await requireGuildManager(guildId);
+    if (!(await getModuleStates(guildId)).blacklist) return { error: "missingTarget" };
     const discordUserId = (formData.get("discordUserId") as string)?.trim() || null;
     const characterName = (formData.get("characterName") as string)?.trim() || null;
     const reason = (formData.get("reason") as string)?.trim();
@@ -65,6 +73,8 @@ export default async function BlacklistPage({
 
   async function deleteBan(id: number) {
     "use server";
+    await requireGuildManager(guildId);
+    if (!(await getModuleStates(guildId)).blacklist) return;
     await db.delete(bans).where(and(eq(bans.id, id), eq(bans.guildId, guildId)));
     revalidatePath(`/dashboard/${guildId}/blacklist`);
   }

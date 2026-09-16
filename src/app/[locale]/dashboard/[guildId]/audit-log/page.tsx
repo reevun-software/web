@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { db } from "@/lib/db";
 import { auditLog, guildMembers } from "@/lib/db/schema";
 import { describeAuditEntry } from "@/lib/audit-log";
+import { requireGuildManager } from "@/lib/guild-auth";
 import { AuditLogTable, type AuditLogRow } from "@/components/dashboard/audit-log-table";
 
 const PAGE_SIZE = 50;
@@ -62,6 +63,7 @@ export default async function AuditLogPage({
 
   async function loadMore(offset: number) {
     "use server";
+    await requireGuildManager(guildId);
     const rows = await db
       .select()
       .from(auditLog)

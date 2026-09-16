@@ -347,7 +347,8 @@
       "addMembers": "Mitglieder auswählen",
       "noMembers": "Keine Mitglieder verfügbar",
       "searchMembers": "Mitglied suchen…",
-      "deleteDepartment": "Abteilung löschen"
+      "deleteDepartment": "Abteilung löschen",
+      "confirmDeleteDepartment": "Diese Abteilung löschen? Die Mitgliederliste geht verloren."
     },
     "overview": {
       "heading": "Dashboard",

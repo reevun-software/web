@@ -31,6 +31,7 @@ export function DepartmentsManager({
     noMembers: string;
     searchMembers: string;
     delete: string;
+    confirmDelete: string;
   };
 }) {
   const [name, setName] = useState("");
@@ -84,7 +85,10 @@ export function DepartmentsManager({
                   size="icon-sm"
                   className="cursor-pointer text-muted-foreground hover:text-destructive"
                   aria-label={labels.delete}
-                  onClick={() => startTransition(() => deleteDepartment(dept.id))}
+                  onClick={() => {
+                    if (!confirm(labels.confirmDelete)) return;
+                    startTransition(() => deleteDepartment(dept.id));
+                  }}
                 >
                   <Trash2 className="size-4" strokeWidth={1.5} />
                 </Button>

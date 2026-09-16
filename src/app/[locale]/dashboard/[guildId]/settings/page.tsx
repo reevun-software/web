@@ -7,6 +7,7 @@ import { guilds, guildBotSettings, guildModules, guildDepartments, guildMembers 
 import { getGuildRoles } from "@/lib/discord-guild";
 import { auth } from "@/lib/auth";
 import { getModuleStates } from "@/lib/guild-modules";
+import { requireGuildManager, isGuildOwner } from "@/lib/guild-auth";
 import { MODULE_KEYS } from "@/lib/modules";
 import { getMajesticOnline, getRussiaOnlineOnline, getGta5rpOnline } from "@/lib/online-monitoring";
 import { LOCALES, LOCALE_META } from "@/i18n/routing";
@@ -77,8 +78,10 @@ export default async function SettingsPage({
 
   async function saveAll(formData: FormData) {
     "use server";
-    const project = isOwner ? (formData.get("project") as string) || null : current.project;
-    const server = isOwner
+    await requireGuildManager(guildId);
+    const freshIsOwner = await isGuildOwner(guildId);
+    const project = freshIsOwner ? (formData.get("project") as string) || null : current.project;
+    const server = freshIsOwner
       ? project
         ? (formData.get("server") as string) || null
         : null
@@ -107,7 +110,7 @@ export default async function SettingsPage({
       .values(values)
       .onConflictDoUpdate({ target: guildBotSettings.guildId, set: values });
 
-    if (isOwner) {
+    if (freshIsOwner) {
       for (const key of MODULE_KEYS) {
         const enabled = formData.get(key) === "on";
         if (enabled) {
@@ -132,16 +135,20 @@ export default async function SettingsPage({
     revalidatePath(`/dashboard/${guildId}`, "layout");
   }
 
+  // Re-checked fresh here, not the render-time `isOwner`/module-state
+  // reads above - this closure is bound once at page render and never
+  // re-runs, so a tab that loaded before ownership or the module state
+  // changed would otherwise keep acting on stale permissions forever.
   async function createDepartment(name: string) {
     "use server";
-    if (!isOwner || !name.trim()) return;
+    if (!name.trim() || !(await isGuildOwner(guildId)) || !(await getModuleStates(guildId)).departments) return;
     await db.insert(guildDepartments).values({ guildId, name: name.trim() });
     revalidatePath(`/dashboard/${guildId}/settings`);
   }
 
   async function deleteDepartment(id: number) {
     "use server";
-    if (!isOwner) return;
+    if (!(await isGuildOwner(guildId)) || !(await getModuleStates(guildId)).departments) return;
     await db
       .delete(guildDepartments)
       .where(and(eq(guildDepartments.id, id), eq(guildDepartments.guildId, guildId)));
@@ -150,7 +157,7 @@ export default async function SettingsPage({
 
   async function updateDepartmentMembers(id: number, memberIds: string[]) {
     "use server";
-    if (!isOwner) return;
+    if (!(await isGuildOwner(guildId)) || !(await getModuleStates(guildId)).departments) return;
     await db
       .update(guildDepartments)
       .set({ memberDiscordIds: memberIds })
@@ -439,6 +446,7 @@ export default async function SettingsPage({
                       noMembers: t("noMembers"),
                       searchMembers: t("searchMembers"),
                       delete: t("deleteDepartment"),
+                      confirmDelete: t("confirmDeleteDepartment"),
                     }}
                   />
                 </div>

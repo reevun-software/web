@@ -347,7 +347,8 @@
       "addMembers": "Seleccionar miembros",
       "noMembers": "No hay miembros disponibles",
       "searchMembers": "Buscar miembro…",
-      "deleteDepartment": "Eliminar departamento"
+      "deleteDepartment": "Eliminar departamento",
+      "confirmDeleteDepartment": "¿Eliminar este departamento? Se perderá su lista de miembros."
     },
     "overview": {
       "heading": "Panel",

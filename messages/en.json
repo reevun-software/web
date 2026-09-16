@@ -347,7 +347,8 @@
       "addMembers": "Select members",
       "noMembers": "No members available",
       "searchMembers": "Search members…",
-      "deleteDepartment": "Delete department"
+      "deleteDepartment": "Delete department",
+      "confirmDeleteDepartment": "Delete this department? Its member list will be lost."
     },
     "overview": {
       "heading": "Dashboard",

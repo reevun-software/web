@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { guildSecuritySettings, automodFilterConfig } from "@/lib/db/schema";
 import { getGuildRoles, getGuildChannels, getBotHighestRolePosition } from "@/lib/discord-guild";
+import { requireGuildManager } from "@/lib/guild-auth";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -73,6 +74,7 @@ export default async function SecurityPage({
 
   async function save(formData: FormData) {
     "use server";
+    await requireGuildManager(guildId);
     const moderatorRoleIds = formData.getAll("moderatorRoleIds") as string[];
     const muteMode = formData.get("muteMode") as string;
     const muteRoleId = (formData.get("muteRoleId") as string) || null;
@@ -103,6 +105,7 @@ export default async function SecurityPage({
 
   async function saveFilterConfig(filterType: string, formData: FormData) {
     "use server";
+    await requireGuildManager(guildId);
     const list = (formData.get("list") as string | null)
       ?.split("\n")
       .map((s) => s.trim())

@@ -347,7 +347,8 @@
       "addMembers": "Выберите участников",
       "noMembers": "Нет доступных участников",
       "searchMembers": "Поиск участника…",
-      "deleteDepartment": "Удалить отдел"
+      "deleteDepartment": "Удалить отдел",
+      "confirmDeleteDepartment": "Удалить этот отдел? Список его участников будет потерян."
     },
     "overview": {
       "heading": "Дашборд",

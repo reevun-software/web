@@ -347,7 +347,8 @@
       "addMembers": "选择成员",
       "noMembers": "没有可选成员",
       "searchMembers": "搜索成员…",
-      "deleteDepartment": "删除部门"
+      "deleteDepartment": "删除部门",
+      "confirmDeleteDepartment": "删除此部门？其成员列表将丢失。"
     },
     "overview": {
       "heading": "仪表盘",
