@@ -7,7 +7,6 @@ import { guildBotSettings, guildModules, guildDepartments } from "@/lib/db/schem
 import { getGuildRoles, getGuildChannels } from "@/lib/discord-guild";
 import { getGuild } from "@/lib/guilds";
 import { getBotGuildConfig, updateBotGuildConfig, getBotGuildMembers, type BotGuildConfig } from "@/lib/bot-api";
-import { auth } from "@/lib/auth";
 import { getModuleStates } from "@/lib/guild-modules";
 import { requireGuildManager, isGuildOwner } from "@/lib/guild-auth";
 import { MODULE_KEYS } from "@/lib/modules";
@@ -32,7 +31,6 @@ export default async function SettingsPage({
   const { guildId } = await params;
   const t = await getTranslations("Dashboard.settings");
   const [
-    session,
     guild,
     [botSettings],
     roles,
@@ -44,8 +42,8 @@ export default async function SettingsPage({
     majestic,
     russiaOnline,
     gta5rp,
+    isOwner,
   ] = await Promise.all([
-    auth(),
     getGuild(guildId),
     db.select().from(guildBotSettings).where(eq(guildBotSettings.guildId, guildId)).limit(1),
     getGuildRoles(guildId),
@@ -57,9 +55,8 @@ export default async function SettingsPage({
     getMajesticOnline(),
     getRussiaOnlineOnline(),
     getGta5rpOnline(),
+    isGuildOwner(guildId),
   ]);
-
-  const isOwner = !!session?.discordId && session.discordId === guild?.ownerDiscordId;
 
   const citiesByProject = {
     majestic: majestic?.cities ?? [],
