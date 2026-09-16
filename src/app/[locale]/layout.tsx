@@ -55,7 +55,13 @@ export default async function RootLayout({
                 pt-8 wrapper here, and every full-viewport layout downstream
                 that subtracts 2rem from 100dvh) since a fixed element no
                 longer pushes flow content down on its own. */}
-            <div className="fixed inset-x-0 top-0 z-50 flex h-8 items-center justify-center bg-brand px-4 text-center text-xs font-medium text-brand-foreground">
+            {/* truncate, not wrap: the message is long enough in Russian
+                (and other locales) to wrap to 2-3 lines on a phone-width
+                viewport, which would overflow this fixed h-8 box (nothing
+                below reserves more than 2rem for it) and spill over the
+                header. A single truncated line is a no-op on desktop,
+                where it already fits. */}
+            <div className="fixed inset-x-0 top-0 z-50 flex h-8 items-center justify-center overflow-hidden bg-brand px-4 text-center text-xs font-medium text-ellipsis whitespace-nowrap text-brand-foreground">
               {t("message")}
             </div>
             <div className="flex flex-1 flex-col pt-8">{children}</div>
