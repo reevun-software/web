@@ -1,8 +1,5 @@
-import { eq } from "drizzle-orm";
 import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { guilds } from "@/lib/db/schema";
-import { getManageableGuilds } from "@/lib/guilds";
+import { getManageableGuilds, getGuild } from "@/lib/guilds";
 
 // Server actions are closures captured at page-render time and never
 // re-run on their own - a check computed once (isOwner, "session manages
@@ -23,6 +20,6 @@ export async function requireGuildManager(guildId: string): Promise<void> {
 export async function isGuildOwner(guildId: string): Promise<boolean> {
   const session = await auth();
   if (!session?.discordId) return false;
-  const [guild] = await db.select().from(guilds).where(eq(guilds.id, guildId)).limit(1);
+  const guild = await getGuild(guildId);
   return !!guild && guild.ownerDiscordId === session.discordId;
 }

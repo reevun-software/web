@@ -94,11 +94,41 @@ export type BotBan = {
   createdAt: string;
 };
 
+export type BotGuild = {
+  id: string;
+  name: string;
+  icon: string | null;
+  ownerDiscordId: string | null;
+};
+
 function botApiEnv() {
   const baseUrl = process.env.BOT_API_URL;
   const secret = process.env.BOT_API_SECRET;
   if (!baseUrl || !secret) return null;
   return { baseUrl, secret };
+}
+
+// Which guilds the bot is actually in right now, straight from its own
+// live Discord.js cache - not guild-scoped, so it doesn't go through
+// botApiFetch (which always prefixes /api/guilds/:id). This is what
+// answers "is the bot installed here" and "who owns this guild" - the web
+// app's own guilds table used to answer both, but nothing here ever wrote
+// to it, so every guild but whichever one got manually seeded showed up
+// as not-installed and every ownership check on it silently failed.
+export async function getBotGuilds(): Promise<BotGuild[]> {
+  const env = botApiEnv();
+  if (!env) return [];
+  try {
+    const res = await fetch(`${env.baseUrl}/api/bot-guilds`, {
+      headers: { Authorization: `Bearer ${env.secret}` },
+      cache: "no-store",
+    });
+    if (!res.ok) return [];
+    return (await res.json()) as BotGuild[];
+  } catch (error) {
+    console.error("bot-api: getBotGuilds failed", error);
+    return [];
+  }
 }
 
 // Every read here degrades to an empty result rather than throwing - the

@@ -1,8 +1,6 @@
-import { eq, inArray } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
-import { db } from "@/lib/db";
-import { guilds } from "@/lib/db/schema";
 import { fetchUserGuilds, filterManageable } from "@/lib/discord-guilds";
+import { getBotGuilds } from "@/lib/bot-api";
 
 // Discord's /users/@me/guilds is aggressively rate-limited, and its own
 // reset window can outlast a short cache - a 60s TTL still hit it in
@@ -44,12 +42,12 @@ export async function getManageableGuilds(
   const discordGuilds = filterManageable(rawGuilds);
   if (discordGuilds.length === 0) return [];
 
-  const ids = discordGuilds.map((g) => g.id);
-  const installed = await db
-    .select({ id: guilds.id })
-    .from(guilds)
-    .where(inArray(guilds.id, ids));
-  const installedIds = new Set(installed.map((g) => g.id));
+  // "Is the bot installed here" used to be answered by this app's own
+  // guilds table - nothing ever wrote to it, so every real family showed
+  // up as not-installed. The bot's own live guild list is the only thing
+  // that's ever actually current.
+  const botGuilds = await getBotGuilds();
+  const installedIds = new Set(botGuilds.map((g) => g.id));
 
   return discordGuilds.map((g) => ({
     id: g.id,
@@ -60,10 +58,7 @@ export async function getManageableGuilds(
 }
 
 export async function getGuild(guildId: string) {
-  const [guild] = await db
-    .select()
-    .from(guilds)
-    .where(eq(guilds.id, guildId))
-    .limit(1);
-  return guild ?? null;
+  const botGuilds = await getBotGuilds();
+  const guild = botGuilds.find((g) => g.id === guildId);
+  return guild ? { id: guild.id, name: guild.name, icon: guild.icon, ownerDiscordId: guild.ownerDiscordId } : null;
 }

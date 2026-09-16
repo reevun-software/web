@@ -3,8 +3,9 @@ import { Settings, Lock, ShieldOff } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { guilds, guildBotSettings, guildModules, guildDepartments } from "@/lib/db/schema";
+import { guildBotSettings, guildModules, guildDepartments } from "@/lib/db/schema";
 import { getGuildRoles, getGuildChannels } from "@/lib/discord-guild";
+import { getGuild } from "@/lib/guilds";
 import { getBotGuildConfig, updateBotGuildConfig, getBotGuildMembers, type BotGuildConfig } from "@/lib/bot-api";
 import { auth } from "@/lib/auth";
 import { getModuleStates } from "@/lib/guild-modules";
@@ -32,7 +33,7 @@ export default async function SettingsPage({
   const t = await getTranslations("Dashboard.settings");
   const [
     session,
-    [guild],
+    guild,
     [botSettings],
     roles,
     channels,
@@ -45,7 +46,7 @@ export default async function SettingsPage({
     gta5rp,
   ] = await Promise.all([
     auth(),
-    db.select().from(guilds).where(eq(guilds.id, guildId)).limit(1),
+    getGuild(guildId),
     db.select().from(guildBotSettings).where(eq(guildBotSettings.guildId, guildId)).limit(1),
     getGuildRoles(guildId),
     getGuildChannels(guildId),
