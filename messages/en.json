@@ -269,6 +269,7 @@
       "colWarnings": "Warnings",
       "colStatus": "Status",
       "rank": "Rank {n}",
+      "noRank": "No rank",
       "online": "Online",
       "afk": "AFK",
       "searchPlaceholder": "Search members…"

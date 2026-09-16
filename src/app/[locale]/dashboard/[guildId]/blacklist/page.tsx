@@ -1,12 +1,10 @@
-import { and, desc, eq } from "drizzle-orm";
 import { Ban as BanIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
-import { db } from "@/lib/db";
-import { bans } from "@/lib/db/schema";
 import { auth } from "@/lib/auth";
 import { getModuleStates } from "@/lib/guild-modules";
 import { requireGuildManager } from "@/lib/guild-auth";
+import { getBotBans, addBotBan, removeBotBan } from "@/lib/bot-api";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,11 +36,9 @@ export default async function BlacklistPage({
     return <ModuleDisabledNotice title={tDash("moduleDisabledTitle")} body={tDash("moduleDisabledBody")} />;
   }
 
-  const rows = await db
-    .select()
-    .from(bans)
-    .where(eq(bans.guildId, guildId))
-    .orderBy(desc(bans.createdAt));
+  const rows = [...(await getBotBans(guildId))].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
 
   // Re-checked fresh in each action below, not just at the top of the page
   // component: this closure is bound once at page render and never
@@ -60,13 +56,8 @@ export default async function BlacklistPage({
     const staff = await auth();
     if (!staff?.discordId) return { error: "missingTarget" };
 
-    await db.insert(bans).values({
-      guildId,
-      discordUserId,
-      characterName,
-      reason,
-      issuedBy: staff.discordId,
-    });
+    const result = await addBotBan(guildId, { discordUserId, characterName, reason, issuedBy: staff.discordId });
+    if (!result.ok) return { error: "missingTarget" };
     revalidatePath(`/dashboard/${guildId}/blacklist`);
     return {};
   }
@@ -75,7 +66,7 @@ export default async function BlacklistPage({
     "use server";
     await requireGuildManager(guildId);
     if (!(await getModuleStates(guildId)).blacklist) return;
-    await db.delete(bans).where(and(eq(bans.id, id), eq(bans.guildId, guildId)));
+    await removeBotBan(guildId, id);
     revalidatePath(`/dashboard/${guildId}/blacklist`);
   }
 
@@ -140,7 +131,7 @@ export default async function BlacklistPage({
                 </TableCell>
                 <TableCell className="text-muted-foreground">{row.reason}</TableCell>
                 <TableCell className="text-muted-foreground">
-                  {row.createdAt.toLocaleDateString(locale)}
+                  {new Date(row.createdAt).toLocaleDateString(locale)}
                 </TableCell>
                 <TableCell>
                   <DeleteBanButton

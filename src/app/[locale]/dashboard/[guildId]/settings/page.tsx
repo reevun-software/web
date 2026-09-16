@@ -3,9 +3,9 @@ import { Settings, Lock, ShieldOff } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { guilds, guildBotSettings, guildModules, guildDepartments, guildMembers } from "@/lib/db/schema";
+import { guilds, guildBotSettings, guildModules, guildDepartments } from "@/lib/db/schema";
 import { getGuildRoles, getGuildChannels } from "@/lib/discord-guild";
-import { getBotGuildConfig, updateBotGuildConfig, type BotGuildConfig } from "@/lib/bot-api";
+import { getBotGuildConfig, updateBotGuildConfig, getBotGuildMembers, type BotGuildConfig } from "@/lib/bot-api";
 import { auth } from "@/lib/auth";
 import { getModuleStates } from "@/lib/guild-modules";
 import { requireGuildManager, isGuildOwner } from "@/lib/guild-auth";
@@ -52,7 +52,7 @@ export default async function SettingsPage({
     getBotGuildConfig(guildId),
     getModuleStates(guildId),
     db.select().from(guildDepartments).where(eq(guildDepartments.guildId, guildId)),
-    db.select().from(guildMembers).where(eq(guildMembers.guildId, guildId)),
+    getBotGuildMembers(guildId),
     getMajesticOnline(),
     getRussiaOnlineOnline(),
     getGta5rpOnline(),
@@ -445,7 +445,7 @@ export default async function SettingsPage({
                   <DepartmentsManager
                     departments={departments}
                     members={members.map((m) => ({
-                      discordUserId: m.discordUserId,
+                      discordUserId: m.discordId,
                       username: m.username,
                     }))}
                     createDepartment={createDepartment}

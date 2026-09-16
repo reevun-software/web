@@ -1,7 +1,7 @@
-// The bot's per-guild config (leadership/rank/warn roles, log and panel
-// channel ids) lives in the bot's own Postgres, not this app's - the bot
-// is the source of truth for anything guild-operational, since it's the
-// one actually acting on Discord. This talks to it over Railway's private
+// The bot's own data (config, members, warnings, ranks, tickets, afk
+// sessions, bans) lives in the bot's Postgres, not this app's - the bot is
+// the source of truth for anything guild-operational, since it's the one
+// actually acting on Discord. This talks to it over Railway's private
 // network (BOT_API_URL is http://main-bot.railway.internal:<port>, not
 // publicly reachable) with a shared-secret header.
 
@@ -35,6 +35,65 @@ const EMPTY_CONFIG: BotGuildConfig = {
   adminPanelChannelId: null,
 };
 
+export type BotGuildMember = {
+  discordId: string;
+  username: string;
+  rank: number | null;
+  activeWarnings: number;
+  totalWarnings: number;
+};
+
+export type BotAuditLogEntry = {
+  id: number;
+  logType: string; // "rank" | "warn" | "ban_added" | "ban_removed"
+  userId: string;
+  oldRank: number | null;
+  newRank: number | null;
+  administratorId: string | null;
+  reason: string | null;
+  warnAction: string | null;
+  warningReason: string | null;
+  createdAt: string;
+};
+
+export type BotAfkSession = {
+  userId: string;
+  reason: string | null;
+  startedAt: string;
+  expiresAt: string;
+};
+
+export type BotTicket = {
+  id: number;
+  category: "application" | "support";
+  ticketKey: string;
+  uid: string | null;
+  userId: string;
+  status: string;
+  requestType: string | null;
+  icName: string | null;
+  characterLevel: string | null;
+  characterStaticId: string | null;
+  captRole: string | null;
+  oocAge: string | null;
+  details: string | null;
+  claimedBy: string | null;
+  decidedBy: string | null;
+  decisionReason: string | null;
+  createdAt: string;
+  updatedAt: string | null;
+  closedAt: string | null;
+};
+
+export type BotBan = {
+  id: number;
+  discordUserId: string | null;
+  characterName: string | null;
+  reason: string;
+  issuedBy: string;
+  createdAt: string;
+};
+
 function botApiEnv() {
   const baseUrl = process.env.BOT_API_URL;
   const secret = process.env.BOT_API_SECRET;
@@ -42,41 +101,84 @@ function botApiEnv() {
   return { baseUrl, secret };
 }
 
-// Bot unreachable (not deployed yet, network hiccup, guild the bot isn't
-// in) degrades to an empty-but-shaped config rather than throwing - this
-// is a settings page, not a hard dependency, and a person disabled by a
-// transient bot-side issue shouldn't lose the rest of the page.
-export async function getBotGuildConfig(guildId: string): Promise<BotGuildConfig> {
+// Every read here degrades to an empty result rather than throwing - the
+// bot being briefly unreachable (not deployed yet, network hiccup, guild it
+// isn't in) shouldn't 500 a dashboard page, just show it empty.
+async function botApiFetch<T>(guildId: string, path: string, fallback: T): Promise<T> {
   const env = botApiEnv();
-  if (!env) return EMPTY_CONFIG;
+  if (!env) return fallback;
   try {
-    const res = await fetch(`${env.baseUrl}/api/guilds/${guildId}/config`, {
+    const res = await fetch(`${env.baseUrl}/api/guilds/${guildId}${path}`, {
       headers: { Authorization: `Bearer ${env.secret}` },
       cache: "no-store",
     });
-    if (!res.ok) return EMPTY_CONFIG;
-    return (await res.json()) as BotGuildConfig;
+    if (!res.ok) return fallback;
+    return (await res.json()) as T;
   } catch (error) {
-    console.error("bot-api: getBotGuildConfig failed", guildId, error);
-    return EMPTY_CONFIG;
+    console.error("bot-api: fetch failed", guildId, path, error);
+    return fallback;
   }
 }
 
-export async function updateBotGuildConfig(
+async function botApiWrite<T>(
   guildId: string,
-  patch: Partial<BotGuildConfig>,
-): Promise<{ ok: boolean }> {
+  path: string,
+  init: RequestInit,
+): Promise<{ ok: boolean; data?: T }> {
   const env = botApiEnv();
   if (!env) return { ok: false };
   try {
-    const res = await fetch(`${env.baseUrl}/api/guilds/${guildId}/config`, {
-      method: "PUT",
-      headers: { Authorization: `Bearer ${env.secret}`, "Content-Type": "application/json" },
-      body: JSON.stringify(patch),
+    const res = await fetch(`${env.baseUrl}/api/guilds/${guildId}${path}`, {
+      ...init,
+      headers: { Authorization: `Bearer ${env.secret}`, "Content-Type": "application/json", ...init.headers },
     });
-    return { ok: res.ok };
+    if (!res.ok) return { ok: false };
+    const data = res.status === 204 ? undefined : ((await res.json()) as T);
+    return { ok: true, data };
   } catch (error) {
-    console.error("bot-api: updateBotGuildConfig failed", guildId, error);
+    console.error("bot-api: write failed", guildId, path, error);
     return { ok: false };
   }
+}
+
+export function getBotGuildConfig(guildId: string) {
+  return botApiFetch<BotGuildConfig>(guildId, "/config", EMPTY_CONFIG);
+}
+
+export async function updateBotGuildConfig(guildId: string, patch: Partial<BotGuildConfig>) {
+  const result = await botApiWrite(guildId, "/config", { method: "PUT", body: JSON.stringify(patch) });
+  return { ok: result.ok };
+}
+
+export function getBotGuildMembers(guildId: string) {
+  return botApiFetch<BotGuildMember[]>(guildId, "/members", []);
+}
+
+export function getBotAuditLog(guildId: string, limit = 50) {
+  return botApiFetch<BotAuditLogEntry[]>(guildId, `/audit-log?limit=${limit}`, []);
+}
+
+export function getBotAfkSessions(guildId: string) {
+  return botApiFetch<BotAfkSession[]>(guildId, "/afk-sessions", []);
+}
+
+export function getBotTickets(guildId: string, category?: "application" | "support") {
+  return botApiFetch<BotTicket[]>(guildId, category ? `/tickets?category=${category}` : "/tickets", []);
+}
+
+export function getBotBans(guildId: string) {
+  return botApiFetch<BotBan[]>(guildId, "/bans", []);
+}
+
+export async function addBotBan(
+  guildId: string,
+  ban: { discordUserId?: string | null; characterName?: string | null; reason: string; issuedBy: string },
+) {
+  const result = await botApiWrite<{ id: number }>(guildId, "/bans", { method: "POST", body: JSON.stringify(ban) });
+  return result;
+}
+
+export async function removeBotBan(guildId: string, banId: number) {
+  const result = await botApiWrite(guildId, `/bans/${banId}`, { method: "DELETE" });
+  return { ok: result.ok };
 }

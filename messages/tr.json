@@ -269,6 +269,7 @@
       "colWarnings": "Uyarılar",
       "colStatus": "Durum",
       "rank": "Rütbe {n}",
+      "noRank": "Rütbe yok",
       "online": "Çevrim içi",
       "afk": "AFK",
       "searchPlaceholder": "Üye ara…"

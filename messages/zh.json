@@ -269,6 +269,7 @@
       "colWarnings": "警告",
       "colStatus": "状态",
       "rank": "军衔 {n}",
+      "noRank": "无军衔",
       "online": "在线",
       "afk": "AFK",
       "searchPlaceholder": "搜索成员…"

@@ -1,8 +1,6 @@
-import { eq, desc } from "drizzle-orm";
 import { Ticket as TicketIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { db } from "@/lib/db";
-import { tickets } from "@/lib/db/schema";
+import { getBotTickets } from "@/lib/bot-api";
 import { getModuleStates } from "@/lib/guild-modules";
 import { Badge } from "@/components/ui/badge";
 import { ModuleDisabledNotice } from "@/components/dashboard/module-disabled-notice";
@@ -30,11 +28,9 @@ export default async function TicketsPage({
     return <ModuleDisabledNotice title={tDash("moduleDisabledTitle")} body={tDash("moduleDisabledBody")} />;
   }
 
-  const rows = await db
-    .select()
-    .from(tickets)
-    .where(eq(tickets.guildId, guildId))
-    .orderBy(desc(tickets.createdAt));
+  const rows = [...(await getBotTickets(guildId))].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
 
   if (rows.length === 0) {
     return (
@@ -66,15 +62,15 @@ export default async function TicketsPage({
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.id}>
-              <TableCell className="font-mono text-xs">{row.id}</TableCell>
-              <TableCell>{row.type}</TableCell>
+              <TableCell className="font-mono text-xs">{row.uid ?? row.ticketKey}</TableCell>
+              <TableCell>{row.requestType ?? row.category}</TableCell>
               <TableCell>
-                <Badge variant={row.status === "open" ? "default" : "secondary"}>
-                  {row.status === "open" ? t("statusOpen") : t("statusClosed")}
+                <Badge variant={row.status !== "closed" ? "default" : "secondary"}>
+                  {row.status !== "closed" ? t("statusOpen") : t("statusClosed")}
                 </Badge>
               </TableCell>
               <TableCell className="text-muted-foreground">
-                {row.createdAt.toLocaleDateString(locale)}
+                {new Date(row.createdAt).toLocaleDateString(locale)}
               </TableCell>
             </TableRow>
           ))}

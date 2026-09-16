@@ -1,8 +1,6 @@
-import { desc, eq } from "drizzle-orm";
 import { History } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { db } from "@/lib/db";
-import { auditLog, guildMembers } from "@/lib/db/schema";
+import { getBotAuditLog, getBotGuildMembers, type BotAuditLogEntry } from "@/lib/bot-api";
 import { describeAuditEntry } from "@/lib/audit-log";
 import { requireGuildManager } from "@/lib/guild-auth";
 import { AuditLogTable, type AuditLogRow } from "@/components/dashboard/audit-log-table";
@@ -17,39 +15,26 @@ export default async function AuditLogPage({
     getTranslations("Dashboard.auditLog"),
     getLocale(),
   ]);
-  const members = await db.select().from(guildMembers).where(eq(guildMembers.guildId, guildId));
-  const usernames = new Map(members.map((m) => [m.discordUserId, m.username]));
+  const members = await getBotGuildMembers(guildId);
+  const usernames = new Map(members.map((m) => [m.discordId, m.username]));
   const nameOf = (id: string) => usernames.get(id) ?? id;
 
-  function describe(entry: { logType: string; discordUserId: string; oldRank: number | null; newRank: number | null }): string {
-    return describeAuditEntry(t, nameOf(entry.discordUserId), entry);
-  }
-
-  function toRow(entry: {
-    id: number;
-    logType: string;
-    discordUserId: string;
-    oldRank: number | null;
-    newRank: number | null;
-    administratorDiscordId: string | null;
-    reason: string | null;
-    createdAt: Date;
-  }): AuditLogRow {
+  function toRow(entry: BotAuditLogEntry): AuditLogRow {
     return {
       id: entry.id,
-      description: describe(entry),
-      admin: entry.administratorDiscordId ? nameOf(entry.administratorDiscordId) : t("systemActor"),
-      reason: entry.reason ?? "—",
-      date: entry.createdAt.toLocaleString(locale),
+      description: describeAuditEntry(t, nameOf(entry.userId), entry),
+      admin: entry.administratorId ? nameOf(entry.administratorId) : t("systemActor"),
+      reason: (entry.reason ?? entry.warningReason) || "—",
+      date: new Date(entry.createdAt).toLocaleString(locale),
     };
   }
 
-  const firstPage = await db
-    .select()
-    .from(auditLog)
-    .where(eq(auditLog.guildId, guildId))
-    .orderBy(desc(auditLog.createdAt))
-    .limit(PAGE_SIZE);
+  // The bot API has no offset-based pagination yet - fetch enough for a
+  // first page plus a bit more, and page further loadMore calls in-memory.
+  // Fine at this data scale; revisit with real DB offset pagination if a
+  // family's audit history grows large enough for this to matter.
+  const allEntries = await getBotAuditLog(guildId, PAGE_SIZE * 4);
+  const firstPage = allEntries.slice(0, PAGE_SIZE);
 
   if (firstPage.length === 0) {
     return (
@@ -64,14 +49,8 @@ export default async function AuditLogPage({
   async function loadMore(offset: number) {
     "use server";
     await requireGuildManager(guildId);
-    const rows = await db
-      .select()
-      .from(auditLog)
-      .where(eq(auditLog.guildId, guildId))
-      .orderBy(desc(auditLog.createdAt))
-      .limit(PAGE_SIZE)
-      .offset(offset);
-    return { entries: rows.map(toRow), hasMore: rows.length === PAGE_SIZE };
+    const rows = allEntries.slice(offset, offset + PAGE_SIZE);
+    return { entries: rows.map(toRow), hasMore: offset + PAGE_SIZE < allEntries.length };
   }
 
   return (

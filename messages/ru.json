@@ -269,6 +269,7 @@
       "colWarnings": "Предупреждения",
       "colStatus": "Статус",
       "rank": "Ранг {n}",
+      "noRank": "Без ранга",
       "online": "На связи",
       "afk": "AFK",
       "searchPlaceholder": "Поиск участника…"

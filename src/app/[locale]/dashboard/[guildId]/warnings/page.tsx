@@ -1,9 +1,7 @@
-import { eq } from "drizzle-orm";
 import { ShieldAlert } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { db } from "@/lib/db";
-import { guildMembers } from "@/lib/db/schema";
 import { getModuleStates } from "@/lib/guild-modules";
+import { getBotGuildMembers } from "@/lib/bot-api";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ModuleDisabledNotice } from "@/components/dashboard/module-disabled-notice";
@@ -30,11 +28,10 @@ export default async function WarningsPage({
     return <ModuleDisabledNotice title={tDash("moduleDisabledTitle")} body={tDash("moduleDisabledBody")} />;
   }
 
-  const members = await db
-    .select()
-    .from(guildMembers)
-    .where(eq(guildMembers.guildId, guildId));
-  const warned = members.filter((m) => m.warnings > 0).sort((a, b) => b.warnings - a.warnings);
+  const members = await getBotGuildMembers(guildId);
+  const warned = members
+    .filter((m) => m.activeWarnings > 0)
+    .sort((a, b) => b.activeWarnings - a.activeWarnings);
 
   if (warned.length === 0) {
     return (
@@ -61,7 +58,7 @@ export default async function WarningsPage({
         </TableHeader>
         <TableBody>
           {warned.map((m) => (
-            <TableRow key={m.discordUserId}>
+            <TableRow key={m.discordId}>
               <TableCell className="flex items-center gap-2.5">
                 <Avatar className="size-7">
                   <AvatarFallback className="text-xs">{m.username[0]}</AvatarFallback>
@@ -69,7 +66,7 @@ export default async function WarningsPage({
                 {m.username}
               </TableCell>
               <TableCell>
-                <Badge variant="destructive">{m.warnings}</Badge>
+                <Badge variant="destructive">{m.activeWarnings}</Badge>
               </TableCell>
             </TableRow>
           ))}

@@ -1,8 +1,6 @@
-import { eq } from "drizzle-orm";
 import { ShieldCheck } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { db } from "@/lib/db";
-import { guildMembers } from "@/lib/db/schema";
+import { getBotGuildMembers } from "@/lib/bot-api";
 import { Card } from "@/components/ui/card";
 
 export default async function RanksPage({
@@ -10,12 +8,10 @@ export default async function RanksPage({
 }: PageProps<"/[locale]/dashboard/[guildId]/ranks">) {
   const { guildId } = await params;
   const t = await getTranslations("Dashboard.ranks");
-  const members = await db
-    .select()
-    .from(guildMembers)
-    .where(eq(guildMembers.guildId, guildId));
+  const members = await getBotGuildMembers(guildId);
+  const ranked = members.filter((m) => m.rank != null);
 
-  if (members.length === 0) {
+  if (ranked.length === 0) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-3 py-24 text-center">
         <ShieldCheck className="size-8 text-muted-foreground" strokeWidth={1.5} />
@@ -26,7 +22,7 @@ export default async function RanksPage({
   }
 
   const byRank = new Map<number, number>();
-  for (const m of members) byRank.set(m.rank, (byRank.get(m.rank) ?? 0) + 1);
+  for (const m of ranked) byRank.set(m.rank as number, (byRank.get(m.rank as number) ?? 0) + 1);
   const rows = [...byRank.entries()].sort((a, b) => b[0] - a[0]);
 
   return (

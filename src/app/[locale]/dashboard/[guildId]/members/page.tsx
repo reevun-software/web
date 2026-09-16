@@ -1,8 +1,6 @@
-import { desc, eq } from "drizzle-orm";
 import { Users } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { db } from "@/lib/db";
-import { guildMembers, afkSessions } from "@/lib/db/schema";
+import { getBotGuildMembers, getBotAfkSessions } from "@/lib/bot-api";
 import { MembersTable } from "@/components/dashboard/members-table";
 
 export default async function MembersPage({
@@ -11,14 +9,10 @@ export default async function MembersPage({
   const { guildId } = await params;
   const t = await getTranslations("Dashboard.members");
   const [members, afk] = await Promise.all([
-    db
-      .select()
-      .from(guildMembers)
-      .where(eq(guildMembers.guildId, guildId))
-      .orderBy(desc(guildMembers.joinedAt)),
-    db.select().from(afkSessions).where(eq(afkSessions.guildId, guildId)),
+    getBotGuildMembers(guildId),
+    getBotAfkSessions(guildId),
   ]);
-  const afkUserIds = new Set(afk.map((a) => a.discordUserId));
+  const afkUserIds = new Set(afk.map((a) => a.userId));
 
   if (members.length === 0) {
     return (
@@ -40,12 +34,12 @@ export default async function MembersPage({
       </div>
       <MembersTable
         members={members.map((m) => ({
-          discordUserId: m.discordUserId,
+          discordUserId: m.discordId,
           username: m.username,
-          rank: m.rank,
-          rankLabel: t("rank", { n: m.rank }),
-          warnings: m.warnings,
-          isAfk: afkUserIds.has(m.discordUserId),
+          rank: m.rank ?? 0,
+          rankLabel: m.rank ? t("rank", { n: m.rank }) : t("noRank"),
+          warnings: m.activeWarnings,
+          isAfk: afkUserIds.has(m.discordId),
         }))}
         labels={{
           colMember: t("colMember"),

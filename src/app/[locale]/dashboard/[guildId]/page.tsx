@@ -1,8 +1,6 @@
-import { desc, eq } from "drizzle-orm";
 import { Users, Ticket as TicketIcon, ShieldAlert, Moon, UserX, LayoutDashboard, Lock } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { db } from "@/lib/db";
-import { guildMembers, tickets, afkSessions, bans, auditLog } from "@/lib/db/schema";
+import { getBotGuildMembers, getBotTickets, getBotAfkSessions, getBotBans, getBotAuditLog } from "@/lib/bot-api";
 import { describeAuditEntry } from "@/lib/audit-log";
 import { getModuleStates } from "@/lib/guild-modules";
 import type { ModuleKey } from "@/lib/modules";
@@ -24,29 +22,22 @@ export default async function DashboardOverviewPage({
     getModuleStates(guildId),
   ]);
 
-  // ponytail: full-table scan aggregation - fine at RP-family scale, switch
-  // to SQL count()/sum() if a guild's member/ticket count grows large.
   const [members, allTickets, afk, blacklisted, recentActivity] = await Promise.all([
-    db.select().from(guildMembers).where(eq(guildMembers.guildId, guildId)),
-    db.select().from(tickets).where(eq(tickets.guildId, guildId)),
-    db.select().from(afkSessions).where(eq(afkSessions.guildId, guildId)),
-    db.select().from(bans).where(eq(bans.guildId, guildId)),
-    db
-      .select()
-      .from(auditLog)
-      .where(eq(auditLog.guildId, guildId))
-      .orderBy(desc(auditLog.createdAt))
-      .limit(5),
+    getBotGuildMembers(guildId),
+    getBotTickets(guildId),
+    getBotAfkSessions(guildId),
+    getBotBans(guildId),
+    getBotAuditLog(guildId, 5),
   ]);
 
-  const totalWarnings = members.reduce((sum, m) => sum + m.warnings, 0);
-  const openTickets = allTickets.filter((row) => row.status === "open").length;
+  const totalWarnings = members.reduce((sum, m) => sum + m.activeWarnings, 0);
+  const openTickets = allTickets.filter((row) => row.status !== "closed").length;
   const recentTickets = [...allTickets]
-    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice(0, 5);
   const topWarned = members
-    .filter((m) => m.warnings > 0)
-    .sort((a, b) => b.warnings - a.warnings)
+    .filter((m) => m.activeWarnings > 0)
+    .sort((a, b) => b.activeWarnings - a.activeWarnings)
     .slice(0, 5);
 
   const stats: {
@@ -87,7 +78,7 @@ export default async function DashboardOverviewPage({
     },
   ];
 
-  const usernames = new Map(members.map((m) => [m.discordUserId, m.username]));
+  const usernames = new Map(members.map((m) => [m.discordId, m.username]));
   const nameOf = (id: string) => usernames.get(id) ?? id;
 
   return (
@@ -143,13 +134,13 @@ export default async function DashboardOverviewPage({
             <Card className="flex flex-col divide-y divide-border/60 p-0">
               {recentTickets.map((row) => (
                 <div key={row.id} className="flex items-center justify-between px-5 py-3">
-                  <span className="text-sm">{row.type}</span>
+                  <span className="text-sm">{row.requestType ?? row.category}</span>
                   <div className="flex items-center gap-3">
                     <span className="text-xs text-muted-foreground">
-                      {row.createdAt.toLocaleDateString(locale)}
+                      {new Date(row.createdAt).toLocaleDateString(locale)}
                     </span>
-                    <Badge variant={row.status === "open" ? "default" : "secondary"}>
-                      {row.status === "open" ? t("ticketOpen") : t("ticketClosed")}
+                    <Badge variant={row.status !== "closed" ? "default" : "secondary"}>
+                      {row.status !== "closed" ? t("ticketOpen") : t("ticketClosed")}
                     </Badge>
                   </div>
                 </div>
@@ -165,14 +156,14 @@ export default async function DashboardOverviewPage({
           ) : (
             <Card className="flex flex-col divide-y divide-border/60 p-0">
               {topWarned.map((m) => (
-                <div key={m.discordUserId} className="flex items-center justify-between px-5 py-3">
+                <div key={m.discordId} className="flex items-center justify-between px-5 py-3">
                   <span className="flex items-center gap-2.5 text-sm">
                     <Avatar className="size-6">
                       <AvatarFallback className="text-xs">{m.username[0]}</AvatarFallback>
                     </Avatar>
                     {m.username}
                   </span>
-                  <Badge variant="destructive">{m.warnings}</Badge>
+                  <Badge variant="destructive">{m.activeWarnings}</Badge>
                 </div>
               ))}
             </Card>
@@ -188,10 +179,10 @@ export default async function DashboardOverviewPage({
               {recentActivity.map((entry) => (
                 <div key={entry.id} className="flex flex-col gap-1 px-5 py-3">
                   <span className="text-sm">
-                    {describeAuditEntry(tAuditLog, nameOf(entry.discordUserId), entry)}
+                    {describeAuditEntry(tAuditLog, nameOf(entry.userId), entry)}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    {entry.createdAt.toLocaleString(locale)}
+                    {new Date(entry.createdAt).toLocaleString(locale)}
                   </span>
                 </div>
               ))}

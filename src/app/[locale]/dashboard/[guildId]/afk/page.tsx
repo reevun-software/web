@@ -1,9 +1,7 @@
-import { desc, eq } from "drizzle-orm";
 import { Moon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { db } from "@/lib/db";
-import { afkSessions, guildMembers } from "@/lib/db/schema";
 import { getModuleStates } from "@/lib/guild-modules";
+import { getBotAfkSessions, getBotGuildMembers } from "@/lib/bot-api";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ModuleDisabledNotice } from "@/components/dashboard/module-disabled-notice";
 import {
@@ -30,15 +28,14 @@ export default async function AfkPage({
     return <ModuleDisabledNotice title={tDash("moduleDisabledTitle")} body={tDash("moduleDisabledBody")} />;
   }
 
-  const [sessions, members] = await Promise.all([
-    db
-      .select()
-      .from(afkSessions)
-      .where(eq(afkSessions.guildId, guildId))
-      .orderBy(desc(afkSessions.startedAt)),
-    db.select().from(guildMembers).where(eq(guildMembers.guildId, guildId)),
+  const [sessionsRaw, members] = await Promise.all([
+    getBotAfkSessions(guildId),
+    getBotGuildMembers(guildId),
   ]);
-  const usernames = new Map(members.map((m) => [m.discordUserId, m.username]));
+  const sessions = [...sessionsRaw].sort(
+    (a, b) => new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime(),
+  );
+  const usernames = new Map(members.map((m) => [m.discordId, m.username]));
 
   if (sessions.length === 0) {
     return (
@@ -66,9 +63,9 @@ export default async function AfkPage({
         </TableHeader>
         <TableBody>
           {sessions.map((s) => {
-            const username = usernames.get(s.discordUserId) ?? s.discordUserId;
+            const username = usernames.get(s.userId) ?? s.userId;
             return (
-              <TableRow key={s.discordUserId}>
+              <TableRow key={s.userId}>
                 <TableCell className="flex items-center gap-2.5">
                   <Avatar className="size-7">
                     <AvatarFallback className="text-xs">{username[0]}</AvatarFallback>
@@ -79,7 +76,7 @@ export default async function AfkPage({
                   {s.reason ?? t("noReason")}
                 </TableCell>
                 <TableCell className="text-muted-foreground">
-                  {s.startedAt.toLocaleString(locale)}
+                  {new Date(s.startedAt).toLocaleString(locale)}
                 </TableCell>
               </TableRow>
             );
