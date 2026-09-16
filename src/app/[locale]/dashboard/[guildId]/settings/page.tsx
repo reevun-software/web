@@ -4,7 +4,8 @@ import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { guilds, guildBotSettings, guildModules, guildDepartments, guildMembers } from "@/lib/db/schema";
-import { getGuildRoles } from "@/lib/discord-guild";
+import { getGuildRoles, getGuildChannels } from "@/lib/discord-guild";
+import { getBotGuildConfig, updateBotGuildConfig, type BotGuildConfig } from "@/lib/bot-api";
 import { auth } from "@/lib/auth";
 import { getModuleStates } from "@/lib/guild-modules";
 import { requireGuildManager, isGuildOwner } from "@/lib/guild-auth";
@@ -21,6 +22,7 @@ import { ColorInput } from "@/components/dashboard/color-input";
 import { SaveForm } from "@/components/dashboard/save-form";
 import { SubmitButton } from "@/components/dashboard/submit-button";
 import { DepartmentsManager } from "@/components/dashboard/departments-manager";
+import { BotConfigManager } from "@/components/dashboard/bot-config-manager";
 import { ProjectServerSelector } from "@/components/dashboard/project-server-selector";
 
 export default async function SettingsPage({
@@ -33,6 +35,8 @@ export default async function SettingsPage({
     [guild],
     [botSettings],
     roles,
+    channels,
+    botConfig,
     moduleStates,
     departments,
     members,
@@ -44,6 +48,8 @@ export default async function SettingsPage({
     db.select().from(guilds).where(eq(guilds.id, guildId)).limit(1),
     db.select().from(guildBotSettings).where(eq(guildBotSettings.guildId, guildId)).limit(1),
     getGuildRoles(guildId),
+    getGuildChannels(guildId),
+    getBotGuildConfig(guildId),
     getModuleStates(guildId),
     db.select().from(guildDepartments).where(eq(guildDepartments.guildId, guildId)),
     db.select().from(guildMembers).where(eq(guildMembers.guildId, guildId)),
@@ -163,6 +169,14 @@ export default async function SettingsPage({
       .set({ memberDiscordIds: memberIds })
       .where(and(eq(guildDepartments.id, id), eq(guildDepartments.guildId, guildId)));
     revalidatePath(`/dashboard/${guildId}/settings`);
+  }
+
+  async function saveBotConfig(patch: Partial<BotGuildConfig>) {
+    "use server";
+    if (!(await isGuildOwner(guildId))) return { ok: false };
+    const result = await updateBotGuildConfig(guildId, patch);
+    revalidatePath(`/dashboard/${guildId}/settings`);
+    return result;
   }
 
   return (
@@ -451,6 +465,51 @@ export default async function SettingsPage({
                   />
                 </div>
               )}
+            </Card>
+
+            <Card className="flex flex-col divide-y divide-border/60 p-0">
+              <div className="px-6 py-4">
+                <span className="text-sm font-medium">{t("botConfigTitle")}</span>
+                <p className="text-xs text-muted-foreground">{t("botConfigHint")}</p>
+              </div>
+              <div className="-translate-y-2 px-6 py-4">
+                <BotConfigManager
+                  roles={roles}
+                  channels={channels}
+                  initialConfig={botConfig}
+                  save={saveBotConfig}
+                  labels={{
+                    leadershipRoles: t("botLeadershipRoles"),
+                    leadershipRolesHint: t("botLeadershipRolesHint"),
+                    selectRoles: t("selectRoles"),
+                    rolesUnavailable: t("rolesUnavailable"),
+                    searchRoles: t("searchRoles"),
+                    verifiedMemberRole: t("botVerifiedMemberRole"),
+                    roleNone: t("botRoleNone"),
+                    channelNone: t("botChannelNone"),
+                    logChannel: t("botLogChannel"),
+                    applicationsChannel: t("botApplicationsChannel"),
+                    applicationPanelChannel: t("botApplicationPanelChannel"),
+                    supportPanelChannel: t("botSupportPanelChannel"),
+                    adminPanelChannel: t("botAdminPanelChannel"),
+                    warnRolesTitle: t("botWarnRolesTitle"),
+                    warnRole1: t("botWarnRole1"),
+                    warnRole2: t("botWarnRole2"),
+                    ranksTitle: t("botRanksTitle"),
+                    ranksHint: t("botRanksHint"),
+                    addRank: t("botAddRank"),
+                    rankNumber: t("botRankNumber"),
+                    rankLabel: t("botRankLabel"),
+                    nicknamePrefix: t("botNicknamePrefix"),
+                    noRanks: t("botNoRanks"),
+                    delete: t("botDeleteRank"),
+                    save: t("save"),
+                    saving: t("saving"),
+                    saved: t("saved"),
+                    saveFailed: t("botSaveFailed"),
+                  }}
+                />
+              </div>
             </Card>
           </>
         )}
