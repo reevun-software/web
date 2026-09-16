@@ -54,7 +54,9 @@ export function Footer() {
         <div className="flex flex-col gap-3">
           <span className="text-sm font-medium">{t("resources")}</span>
           <Link
-            href="/"
+            href={DOCS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             {t("commands")}

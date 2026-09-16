@@ -15,7 +15,11 @@ export async function SiteHeader() {
   const [session, t] = await Promise.all([auth(), getTranslations()]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
+    // top-8, not top-0: the beta banner is position:fixed at the very top
+    // (z-50) with a matching pt-8 reserving its space in flow - a sticky
+    // header stuck at top-0 would end up sliding underneath that banner
+    // once scrolled, instead of resting right below it.
+    <header className="sticky top-8 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2">
           <Image
