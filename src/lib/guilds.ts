@@ -1,6 +1,8 @@
 import { unstable_cache } from "next/cache";
 import { fetchUserGuilds, filterManageable } from "@/lib/discord-guilds";
 import { getBotGuilds } from "@/lib/bot-api";
+import { db } from "@/lib/db";
+import { guilds } from "@/lib/db/schema";
 
 // Discord's /users/@me/guilds is aggressively rate-limited, and its own
 // reset window can outlast a short cache - a 60s TTL still hit it in
@@ -60,5 +62,21 @@ export async function getManageableGuilds(
 export async function getGuild(guildId: string) {
   const botGuilds = await getBotGuilds();
   const guild = botGuilds.find((g) => g.id === guildId);
-  return guild ? { id: guild.id, name: guild.name, icon: guild.icon, ownerDiscordId: guild.ownerDiscordId } : null;
+  if (!guild) return null;
+
+  // guild_bot_settings, guild_departments, and every other guild-scoped table
+  // in this app's own DB has a foreign key on guilds.id - but nothing ever
+  // writes to this table on its own anymore now that the bot is the source
+  // of truth for guild identity. Keep it as an upserted identity stub so
+  // those FKs don't 23503 on the first save for a guild.
+  const ownerDiscordId = guild.ownerDiscordId ?? "";
+  await db
+    .insert(guilds)
+    .values({ id: guild.id, name: guild.name, icon: guild.icon, ownerDiscordId })
+    .onConflictDoUpdate({
+      target: guilds.id,
+      set: { name: guild.name, icon: guild.icon, ownerDiscordId },
+    });
+
+  return { id: guild.id, name: guild.name, icon: guild.icon, ownerDiscordId: guild.ownerDiscordId };
 }
