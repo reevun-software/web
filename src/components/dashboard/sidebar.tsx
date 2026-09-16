@@ -262,7 +262,16 @@ export function DashboardSidebar({
           <SheetTrigger render={<Button variant="ghost" size="icon-sm" aria-label={t("openMenu")} />}>
             <Menu className="size-4" />
           </SheetTrigger>
-          <SheetContent side="left" className="flex w-72 flex-col gap-0 p-0">
+          {/* showCloseButton={false}: SheetContent's own close X sits
+              absolute top-3 right-3, which lands directly on top of the
+              guild switcher's ChevronsUpDown icon just below it - the
+              drawer already closes by picking a nav item or tapping the
+              overlay, so the built-in close button is redundant here. */}
+          <SheetContent
+            side="left"
+            className="flex w-72 flex-col gap-0 p-0"
+            showCloseButton={false}
+          >
             <SheetHeader className="sr-only">
               <SheetTitle>{guildName}</SheetTitle>
             </SheetHeader>
