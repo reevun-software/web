@@ -49,7 +49,16 @@ export function ChannelPicker({
   );
 
   if (channels.length === 0) {
-    return <p className="text-sm text-muted-foreground">{emptyLabel}</p>;
+    // Same reasoning as role-picker.tsx: don't let a transient channel-fetch
+    // failure wipe an existing selection on the next save.
+    return (
+      <>
+        {defaultSelectedIds.map((channelId) => (
+          <input key={channelId} type="hidden" name={name} value={channelId} />
+        ))}
+        <p className="text-sm text-muted-foreground">{emptyLabel}</p>
+      </>
+    );
   }
 
   function toggle(channelId: string, checked: boolean) {

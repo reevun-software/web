@@ -77,7 +77,18 @@ export function RolePicker({
   const visibleRoles = roles.filter((r) => r.name.toLowerCase().includes(search.toLowerCase()));
 
   if (roles.length === 0) {
-    return <p className="text-sm text-muted-foreground">{emptyLabel}</p>;
+    // A transient Discord role-fetch failure shouldn't wipe an existing
+    // selection - keep submitting the already-saved ids as hidden inputs
+    // even with nothing to pick from, instead of silently clearing them
+    // the next time this form saves.
+    return (
+      <>
+        {defaultSelectedIds.map((roleId) => (
+          <input key={roleId} type="hidden" name={name} value={roleId} />
+        ))}
+        <p className="text-sm text-muted-foreground">{emptyLabel}</p>
+      </>
+    );
   }
 
   function toggle(roleId: string, checked: boolean) {

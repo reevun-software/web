@@ -51,7 +51,16 @@ export function RoleSelect({
   const selected = roles.find((r) => r.id === selectedId);
 
   if (roles.length === 0) {
-    return <p className="text-sm text-muted-foreground">{emptyLabel}</p>;
+    // Same reasoning as role-picker.tsx: don't let a transient role-fetch
+    // failure wipe an existing selection on the next save. `selectedId` is
+    // already filtered against `roles` above (so it's always null here) -
+    // use the raw `defaultValue` instead.
+    return (
+      <>
+        {defaultValue && <input type="hidden" name={name} value={defaultValue} />}
+        <p className="text-sm text-muted-foreground">{emptyLabel}</p>
+      </>
+    );
   }
 
   return (

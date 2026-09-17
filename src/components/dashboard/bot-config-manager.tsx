@@ -52,7 +52,11 @@ function ChannelSelect({
   );
 }
 
-export function RoleSelect({
+// Local to this file only - the richer dropdown-menu-based RoleSelect in
+// role-select.tsx is what everything else in the app uses (warn-roles-
+// manager.tsx, mute-settings-fields.tsx). Don't import this one from
+// elsewhere; the duplicate name is confusing enough as it is.
+function RoleSelect({
   name,
   defaultValue,
   roles,
