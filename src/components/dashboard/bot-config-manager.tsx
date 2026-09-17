@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { RolePicker } from "@/components/dashboard/role-picker";
 import { RankLadderEditor } from "@/components/dashboard/rank-ladder-editor";
 import type { DiscordRole, DiscordChannel } from "@/lib/discord-guild";
 import type { BotGuildConfig } from "@/lib/bot-api";
@@ -53,7 +52,7 @@ function ChannelSelect({
   );
 }
 
-function RoleSelect({
+export function RoleSelect({
   name,
   defaultValue,
   roles,
@@ -102,8 +101,6 @@ export function BotConfigManager({
   channels: DiscordChannel[];
   initialConfig: BotGuildConfig;
   labels: {
-    leadershipRoles: string;
-    leadershipRolesHint: string;
     selectRoles: string;
     rolesUnavailable: string;
     searchRoles: string;
@@ -115,9 +112,6 @@ export function BotConfigManager({
     applicationPanelChannel: string;
     supportPanelChannel: string;
     adminPanelChannel: string;
-    warnRolesTitle: string;
-    warnRole1: string;
-    warnRole2: string;
     ranksTitle: string;
     ranksHint: string;
     addRank: string;
@@ -130,20 +124,6 @@ export function BotConfigManager({
 }) {
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="leadershipRoleIds">{labels.leadershipRoles}</Label>
-        <RolePicker
-          id="leadershipRoleIds"
-          name="leadershipRoleIds"
-          roles={roles}
-          defaultSelectedIds={initialConfig.leadershipRoleIds}
-          addLabel={labels.selectRoles}
-          emptyLabel={labels.rolesUnavailable}
-          searchPlaceholder={labels.searchRoles}
-        />
-        <p className="text-xs text-muted-foreground">{labels.leadershipRolesHint}</p>
-      </div>
-
       <RoleSelect
         name="verifiedMemberRoleId"
         defaultValue={initialConfig.verifiedMemberRoleId}
@@ -158,14 +138,6 @@ export function BotConfigManager({
         <ChannelSelect name="applicationPanelChannelId" defaultValue={initialConfig.applicationPanelChannelId} channels={channels} noneLabel={labels.channelNone} label={labels.applicationPanelChannel} />
         <ChannelSelect name="supportPanelChannelId" defaultValue={initialConfig.supportPanelChannelId} channels={channels} noneLabel={labels.channelNone} label={labels.supportPanelChannel} />
         <ChannelSelect name="adminPanelChannelId" defaultValue={initialConfig.adminPanelChannelId} channels={channels} noneLabel={labels.channelNone} label={labels.adminPanelChannel} />
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <span className="text-sm font-medium">{labels.warnRolesTitle}</span>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <RoleSelect name="warnRole1" defaultValue={initialConfig.warnRoleIds["1"] ?? null} roles={roles} noneLabel={labels.roleNone} label={labels.warnRole1} />
-          <RoleSelect name="warnRole2" defaultValue={initialConfig.warnRoleIds["2"] ?? null} roles={roles} noneLabel={labels.roleNone} label={labels.warnRole2} />
-        </div>
       </div>
 
       <div className="flex flex-col gap-2">

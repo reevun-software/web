@@ -11,7 +11,14 @@ export type RankDefinition = {
   nicknamePrefix: string;
 };
 
+// "stripRoles" (default, historical behavior) | "kick" | "ban" |
+// "assignRole" (uses warnPunishmentRoleId instead of touching other roles).
+export type WarnPunishmentMode = "stripRoles" | "kick" | "ban" | "assignRole";
+
 export type BotGuildConfig = {
+  // Not directly editable from the dashboard anymore - kept in sync with
+  // the Security page's "Роли администраторов" (moderatorRoleIds) instead,
+  // see security/page.tsx's save().
   leadershipRoleIds: string[];
   rankRoleIds: Record<string, RankDefinition>;
   warnRoleIds: Record<string, string>;
@@ -21,6 +28,8 @@ export type BotGuildConfig = {
   applicationPanelChannelId: string | null;
   supportPanelChannelId: string | null;
   adminPanelChannelId: string | null;
+  warnPunishmentMode: WarnPunishmentMode;
+  warnPunishmentRoleId: string | null;
 };
 
 const EMPTY_CONFIG: BotGuildConfig = {
@@ -33,6 +42,8 @@ const EMPTY_CONFIG: BotGuildConfig = {
   applicationPanelChannelId: null,
   supportPanelChannelId: null,
   adminPanelChannelId: null,
+  warnPunishmentMode: "stripRoles",
+  warnPunishmentRoleId: null,
 };
 
 export type BotGuildMember = {
@@ -99,6 +110,23 @@ export type BotGuild = {
   name: string;
   icon: string | null;
   ownerDiscordId: string | null;
+};
+
+export type DepartmentQuestion = {
+  id: string;
+  label: string;
+  style: "short" | "paragraph";
+  required: boolean;
+};
+
+export type BotGuildDepartment = {
+  id: number;
+  name: string;
+  memberDiscordIds: string[];
+  recruitmentOpen: boolean;
+  // Up to 4 - a 5th application-modal field is always the fixed IC-name/
+  // level/Static-ID one. Empty means "use the default question set".
+  questions: DepartmentQuestion[];
 };
 
 function botApiEnv() {
@@ -210,5 +238,34 @@ export async function addBotBan(
 
 export async function removeBotBan(guildId: string, banId: number) {
   const result = await botApiWrite(guildId, `/bans/${banId}`, { method: "DELETE" });
+  return { ok: result.ok };
+}
+
+export function getBotGuildDepartments(guildId: string) {
+  return botApiFetch<BotGuildDepartment[]>(guildId, "/departments", []);
+}
+
+export async function createBotGuildDepartment(guildId: string, name: string) {
+  const result = await botApiWrite<BotGuildDepartment>(guildId, "/departments", {
+    method: "POST",
+    body: JSON.stringify({ name }),
+  });
+  return result;
+}
+
+export async function deleteBotGuildDepartment(guildId: string, departmentId: number) {
+  const result = await botApiWrite(guildId, `/departments/${departmentId}`, { method: "DELETE" });
+  return { ok: result.ok };
+}
+
+export async function updateBotGuildDepartment(
+  guildId: string,
+  departmentId: number,
+  patch: { memberDiscordIds?: string[]; recruitmentOpen?: boolean; questions?: DepartmentQuestion[] },
+) {
+  const result = await botApiWrite<BotGuildDepartment>(guildId, `/departments/${departmentId}`, {
+    method: "PATCH",
+    body: JSON.stringify(patch),
+  });
   return { ok: result.ok };
 }

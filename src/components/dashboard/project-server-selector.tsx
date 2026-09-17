@@ -92,7 +92,10 @@ export function ProjectServerSelector({
           <SelectTrigger id="server" className="w-full">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          {/* Capped shorter than the default (--available-height) - a long
+              city list (20+ entries) otherwise filled most of the viewport
+              instead of just scrolling. */}
+          <SelectContent className="max-h-64">
             <SelectItem value="none">{labels.serverNone}</SelectItem>
             {cities.map((c) => (
               <SelectItem key={c.id} value={c.id}>

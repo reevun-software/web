@@ -3,10 +3,21 @@ import { Settings, Lock, ShieldOff } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { guildBotSettings, guildModules, guildDepartments } from "@/lib/db/schema";
+import { guildBotSettings, guildModules } from "@/lib/db/schema";
 import { getGuildRoles, getGuildChannels } from "@/lib/discord-guild";
 import { getGuild } from "@/lib/guilds";
-import { getBotGuildConfig, updateBotGuildConfig, getBotGuildMembers, type RankDefinition } from "@/lib/bot-api";
+import {
+  getBotGuildConfig,
+  updateBotGuildConfig,
+  getBotGuildMembers,
+  getBotGuildDepartments,
+  createBotGuildDepartment,
+  deleteBotGuildDepartment,
+  updateBotGuildDepartment,
+  type RankDefinition,
+  type DepartmentQuestion,
+  type WarnPunishmentMode,
+} from "@/lib/bot-api";
 import { getModuleStates } from "@/lib/guild-modules";
 import { requireGuildManager, isGuildOwner } from "@/lib/guild-auth";
 import { MODULE_KEYS } from "@/lib/modules";
@@ -22,6 +33,7 @@ import { SaveForm } from "@/components/dashboard/save-form";
 import { SubmitButton } from "@/components/dashboard/submit-button";
 import { DepartmentsManager } from "@/components/dashboard/departments-manager";
 import { BotConfigManager } from "@/components/dashboard/bot-config-manager";
+import { WarnRolesManager } from "@/components/dashboard/warn-roles-manager";
 import { ProjectServerSelector } from "@/components/dashboard/project-server-selector";
 
 export default async function SettingsPage({
@@ -49,7 +61,7 @@ export default async function SettingsPage({
     getGuildChannels(guildId),
     getBotGuildConfig(guildId),
     getModuleStates(guildId),
-    db.select().from(guildDepartments).where(eq(guildDepartments.guildId, guildId)),
+    getBotGuildDepartments(guildId),
     getBotGuildMembers(guildId),
     getMajesticOnline(),
     getRussiaOnlineOnline(),
@@ -151,7 +163,8 @@ export default async function SettingsPage({
       }
 
       await updateBotGuildConfig(guildId, {
-        leadershipRoleIds: formData.getAll("leadershipRoleIds") as string[],
+        // leadershipRoleIds is not submitted by this form - it's kept in
+        // sync with the Security page's "Роли администраторов" instead.
         verifiedMemberRoleId: (formData.get("verifiedMemberRoleId") as string) || null,
         logChannelId: (formData.get("logChannelId") as string) || null,
         applicationsChannelId: (formData.get("applicationsChannelId") as string) || null,
@@ -162,6 +175,8 @@ export default async function SettingsPage({
           1: (formData.get("warnRole1") as string) || "",
           2: (formData.get("warnRole2") as string) || "",
         },
+        warnPunishmentMode: (formData.get("warnPunishmentMode") as WarnPunishmentMode) || "stripRoles",
+        warnPunishmentRoleId: (formData.get("warnPunishmentRoleId") as string) || null,
         rankRoleIds,
       });
     }
@@ -171,33 +186,47 @@ export default async function SettingsPage({
     revalidatePath(`/dashboard/${guildId}`, "layout");
   }
 
-  // Re-checked fresh here, not the render-time `isOwner`/module-state
-  // reads above - this closure is bound once at page render and never
-  // re-runs, so a tab that loaded before ownership or the module state
-  // changed would otherwise keep acting on stale permissions forever.
+  // Re-checked fresh here, not the render-time `isOwner` read above - this
+  // closure is bound once at page render and never re-runs, so a tab that
+  // loaded before ownership changed would otherwise keep acting on stale
+  // permissions forever.
   async function createDepartment(name: string) {
     "use server";
-    if (!name.trim() || !(await isGuildOwner(guildId)) || !(await getModuleStates(guildId)).departments) return;
-    await db.insert(guildDepartments).values({ guildId, name: name.trim() });
+    if (!name.trim() || !(await isGuildOwner(guildId))) return;
+    await createBotGuildDepartment(guildId, name.trim());
     revalidatePath(`/dashboard/${guildId}/settings`);
   }
 
   async function deleteDepartment(id: number) {
     "use server";
-    if (!(await isGuildOwner(guildId)) || !(await getModuleStates(guildId)).departments) return;
-    await db
-      .delete(guildDepartments)
-      .where(and(eq(guildDepartments.id, id), eq(guildDepartments.guildId, guildId)));
+    if (!(await isGuildOwner(guildId))) return;
+    await deleteBotGuildDepartment(guildId, id);
     revalidatePath(`/dashboard/${guildId}/settings`);
   }
 
   async function updateDepartmentMembers(id: number, memberIds: string[]) {
     "use server";
-    if (!(await isGuildOwner(guildId)) || !(await getModuleStates(guildId)).departments) return;
-    await db
-      .update(guildDepartments)
-      .set({ memberDiscordIds: memberIds })
-      .where(and(eq(guildDepartments.id, id), eq(guildDepartments.guildId, guildId)));
+    if (!(await isGuildOwner(guildId))) return;
+    await updateBotGuildDepartment(guildId, id, { memberDiscordIds: memberIds });
+    revalidatePath(`/dashboard/${guildId}/settings`);
+  }
+
+  async function updateDepartmentQuestions(id: number, formData: FormData) {
+    "use server";
+    if (!(await isGuildOwner(guildId))) return;
+    const keys = [...new Set(formData.getAll("questionKeys") as string[])];
+    const questions: DepartmentQuestion[] = [];
+    for (const key of keys) {
+      const label = String(formData.get(`q-${key}-label`) || "").trim();
+      if (!label) continue;
+      questions.push({
+        id: key,
+        label,
+        style: formData.get(`q-${key}-style`) === "paragraph" ? "paragraph" : "short",
+        required: formData.get(`q-${key}-required`) === "on",
+      });
+    }
+    await updateBotGuildDepartment(guildId, id, { questions: questions.slice(0, 4) });
     revalidatePath(`/dashboard/${guildId}/settings`);
   }
 
@@ -216,7 +245,7 @@ export default async function SettingsPage({
           <div className="px-6 py-4">
             <span className="text-sm font-medium">{t("generalSettingsTitle")}</span>
           </div>
-          <div className="flex flex-col gap-4 px-6 py-4">
+          <div className="-translate-y-2 flex flex-col gap-4 px-6 py-4">
             <div className="flex flex-col gap-2">
               <Label htmlFor="name">{t("name")}</Label>
               <div className="relative">
@@ -240,7 +269,7 @@ export default async function SettingsPage({
             <p className="text-sm text-muted-foreground">{t("note")}</p>
           </div>
 
-          <div className="flex flex-col gap-4 px-6 py-4">
+          <div className="-translate-y-2 flex flex-col gap-4 px-6 py-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="interfaceLanguage">{t("interfaceLanguage")}</Label>
@@ -290,6 +319,26 @@ export default async function SettingsPage({
               />
             </label>
           </div>
+
+          {isOwner && (
+            <div className="-translate-y-2 flex flex-col gap-1.5 px-6 py-4">
+              <ProjectServerSelector
+                defaultProject={current.project}
+                defaultServer={current.server}
+                citiesByProject={citiesByProject}
+                labels={{
+                  projectLabel: t("projectLabel"),
+                  serverLabel: t("serverLabel"),
+                  projectNone: t("projectNone"),
+                  serverNone: t("serverNone"),
+                  majestic: t("projectMajestic"),
+                  russiaonline: t("projectRussiaOnline"),
+                  gta5rp: t("projectGta5rp"),
+                }}
+              />
+              <p className="text-xs text-muted-foreground">{t("projectHint")}</p>
+            </div>
+          )}
         </Card>
       </div>
       </div>
@@ -305,29 +354,6 @@ export default async function SettingsPage({
           <>
             <Card className="flex flex-col divide-y divide-border/60 p-0">
               <div className="px-6 py-4">
-                <span className="text-sm font-medium">{t("projectTitle")}</span>
-              </div>
-              <div className="-translate-y-2 flex flex-col gap-1.5 px-6 py-4">
-                <ProjectServerSelector
-                  defaultProject={current.project}
-                  defaultServer={current.server}
-                  citiesByProject={citiesByProject}
-                  labels={{
-                    projectLabel: t("projectLabel"),
-                    serverLabel: t("serverLabel"),
-                    projectNone: t("projectNone"),
-                    serverNone: t("serverNone"),
-                    majestic: t("projectMajestic"),
-                    russiaonline: t("projectRussiaOnline"),
-                    gta5rp: t("projectGta5rp"),
-                  }}
-                />
-                <p className="text-xs text-muted-foreground">{t("projectHint")}</p>
-              </div>
-            </Card>
-
-            <Card className="flex flex-col divide-y divide-border/60 p-0">
-              <div className="px-6 py-4">
                 <span className="text-sm font-medium">{t("modulesTitle")}</span>
                 <p className="text-xs text-muted-foreground">{t("modulesHint")}</p>
               </div>
@@ -338,7 +364,6 @@ export default async function SettingsPage({
                     ["tickets", t("moduleTickets")],
                     ["afk", t("moduleAfk")],
                     ["blacklist", t("moduleBlacklist")],
-                    ["departments", t("moduleDepartments")],
                   ] as const
                 ).map(([key, label]) => (
                   <label key={key} htmlFor={key} className="flex cursor-pointer items-center justify-between gap-4">
@@ -352,35 +377,74 @@ export default async function SettingsPage({
             <Card className="flex flex-col divide-y divide-border/60 p-0">
               <div className="px-6 py-4">
                 <span className="text-sm font-medium">{t("departmentsTitle")}</span>
-                <p className="text-xs text-muted-foreground">
-                  {moduleStates.departments ? t("departmentsHint") : t("departmentsDisabledHint")}
-                </p>
+                <p className="text-xs text-muted-foreground">{t("departmentsHint")}</p>
               </div>
-              {moduleStates.departments && (
-                <div className="-translate-y-2 px-6 py-4">
-                  <DepartmentsManager
-                    departments={departments}
-                    members={members.map((m) => ({
-                      discordUserId: m.discordId,
-                      username: m.username,
-                    }))}
-                    createDepartment={createDepartment}
-                    deleteDepartment={deleteDepartment}
-                    updateDepartmentMembers={updateDepartmentMembers}
-                    labels={{
-                      addDepartment: t("addDepartment"),
-                      namePlaceholder: t("departmentNamePlaceholder"),
-                      noDepartments: t("noDepartments"),
-                      members: t("departmentMembers"),
-                      addMembers: t("addMembers"),
-                      noMembers: t("noMembers"),
-                      searchMembers: t("searchMembers"),
-                      delete: t("deleteDepartment"),
-                      confirmDelete: t("confirmDeleteDepartment"),
-                    }}
-                  />
-                </div>
-              )}
+              <div className="-translate-y-2 px-6 py-4">
+                <DepartmentsManager
+                  departments={departments}
+                  members={members.map((m) => ({
+                    discordUserId: m.discordId,
+                    username: m.username,
+                  }))}
+                  createDepartment={createDepartment}
+                  deleteDepartment={deleteDepartment}
+                  updateDepartmentMembers={updateDepartmentMembers}
+                  updateDepartmentQuestions={updateDepartmentQuestions}
+                  labels={{
+                    addDepartment: t("addDepartment"),
+                    namePlaceholder: t("departmentNamePlaceholder"),
+                    noDepartments: t("noDepartments"),
+                    members: t("departmentMembers"),
+                    addMembers: t("addMembers"),
+                    noMembers: t("noMembers"),
+                    searchMembers: t("searchMembers"),
+                    delete: t("deleteDepartment"),
+                    confirmDelete: t("confirmDeleteDepartment"),
+                    questionsSettings: t("departmentQuestionsSettings"),
+                    questionsHint: t("departmentQuestionsHint"),
+                    questionLabel: t("departmentQuestionLabel"),
+                    questionStyle: t("departmentQuestionStyle"),
+                    styleShort: t("departmentQuestionStyleShort"),
+                    styleParagraph: t("departmentQuestionStyleParagraph"),
+                    required: t("departmentQuestionRequired"),
+                    addQuestion: t("departmentAddQuestion"),
+                    noQuestions: t("departmentNoQuestions"),
+                    save: t("save"),
+                    saving: t("saving"),
+                    saved: t("saved"),
+                  }}
+                />
+              </div>
+            </Card>
+
+            <Card className="flex flex-col divide-y divide-border/60 p-0">
+              <div className="px-6 py-4">
+                <span className="text-sm font-medium">{t("warnRolesTitle")}</span>
+                <p className="text-xs text-muted-foreground">{t("warnRolesHint")}</p>
+              </div>
+              <div className="-translate-y-2 px-6 py-4">
+                <WarnRolesManager
+                  roles={roles}
+                  defaultWarnRole1={botConfig.warnRoleIds["1"] ?? null}
+                  defaultWarnRole2={botConfig.warnRoleIds["2"] ?? null}
+                  defaultPunishmentMode={botConfig.warnPunishmentMode}
+                  defaultPunishmentRoleId={botConfig.warnPunishmentRoleId}
+                  labels={{
+                    warnRole1: t("botWarnRole1"),
+                    warnRole2: t("botWarnRole2"),
+                    roleNone: t("botRoleNone"),
+                    rolesUnavailable: t("rolesUnavailable"),
+                    punishmentMode: t("warnPunishmentMode"),
+                    punishmentModeHint: t("warnPunishmentModeHint"),
+                    punishmentModeStripRoles: t("warnPunishmentModeStripRoles"),
+                    punishmentModeKick: t("warnPunishmentModeKick"),
+                    punishmentModeBan: t("warnPunishmentModeBan"),
+                    punishmentModeAssignRole: t("warnPunishmentModeAssignRole"),
+                    punishmentRole: t("warnPunishmentRole"),
+                    punishmentRolePlaceholder: t("botRoleNone"),
+                  }}
+                />
+              </div>
             </Card>
 
             <Card className="flex flex-col divide-y divide-border/60 p-0">
@@ -394,8 +458,6 @@ export default async function SettingsPage({
                   channels={channels}
                   initialConfig={botConfig}
                   labels={{
-                    leadershipRoles: t("botLeadershipRoles"),
-                    leadershipRolesHint: t("botLeadershipRolesHint"),
                     selectRoles: t("selectRoles"),
                     rolesUnavailable: t("rolesUnavailable"),
                     searchRoles: t("searchRoles"),
@@ -407,9 +469,6 @@ export default async function SettingsPage({
                     applicationPanelChannel: t("botApplicationPanelChannel"),
                     supportPanelChannel: t("botSupportPanelChannel"),
                     adminPanelChannel: t("botAdminPanelChannel"),
-                    warnRolesTitle: t("botWarnRolesTitle"),
-                    warnRole1: t("botWarnRole1"),
-                    warnRole2: t("botWarnRole2"),
                     ranksTitle: t("botRanksTitle"),
                     ranksHint: t("botRanksHint"),
                     addRank: t("botAddRank"),

@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { guildSecuritySettings, automodFilterConfig, guildBotSettings } from "@/lib/db/schema";
+import { updateBotGuildConfig } from "@/lib/bot-api";
 import { getGuildRoles, getGuildChannels, getBotHighestRolePosition } from "@/lib/discord-guild";
 import { requireGuildManager } from "@/lib/guild-auth";
 import { Card } from "@/components/ui/card";
@@ -147,7 +148,13 @@ export default async function SecurityPage({
       .values(botValues)
       .onConflictDoUpdate({ target: guildBotSettings.guildId, set: botValues });
 
+    // "Роли администраторов" (moderatorRoleIds) doubles as the bot's
+    // leadershipRoleIds - who gets pinged on applications and counts as
+    // family leadership - so there's no separate field for it anymore.
+    await updateBotGuildConfig(guildId, { leadershipRoleIds: moderatorRoleIds });
+
     revalidatePath(`/dashboard/${guildId}/security`);
+    revalidatePath(`/dashboard/${guildId}/settings`);
   }
 
   async function saveFilterConfig(filterType: string, formData: FormData) {
@@ -283,18 +290,8 @@ export default async function SecurityPage({
                 defaultChecked={current.allowHigherModsToModerateLower}
               />
             </label>
-          </div>
-        </Card>
-
-        <Card className="flex flex-col divide-y divide-border/60 p-0">
-          <div className="px-6 py-4">
-            <span className="text-sm font-medium">{t("accessSecurityTitle")}</span>
-          </div>
-          <div className="flex flex-col gap-1.5 px-6 py-4">
-            <Label htmlFor="trustedAdminRoleIds" className="-translate-y-3">
-              {t("trustedAdminRoles")}
-            </Label>
-            <div className="-translate-y-2">
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="trustedAdminRoleIds">{t("trustedAdminRoles")}</Label>
               <RolePicker
                 id="trustedAdminRoleIds"
                 name="trustedAdminRoleIds"
@@ -303,8 +300,8 @@ export default async function SecurityPage({
                 addLabel={t("addRole")}
                 emptyLabel={t("rolesUnavailable")}
               />
+              <p className="text-xs text-muted-foreground">{t("trustedAdminRolesHint")}</p>
             </div>
-            <p className="text-xs text-muted-foreground">{t("trustedAdminRolesHint")}</p>
           </div>
         </Card>
 

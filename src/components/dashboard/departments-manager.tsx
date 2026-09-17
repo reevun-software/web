@@ -6,8 +6,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MemberPicker, type PickableMember } from "@/components/dashboard/member-picker";
+import { DepartmentQuestionsSheet } from "@/components/dashboard/department-questions-sheet";
+import type { DepartmentQuestion } from "@/lib/bot-api";
 
-export type Department = { id: number; name: string; memberDiscordIds: string[] };
+export type Department = {
+  id: number;
+  name: string;
+  memberDiscordIds: string[];
+  questions: DepartmentQuestion[];
+};
 
 export function DepartmentsManager({
   departments,
@@ -15,6 +22,7 @@ export function DepartmentsManager({
   createDepartment,
   deleteDepartment,
   updateDepartmentMembers,
+  updateDepartmentQuestions,
   labels,
 }: {
   departments: Department[];
@@ -22,6 +30,7 @@ export function DepartmentsManager({
   createDepartment: (name: string) => Promise<void>;
   deleteDepartment: (id: number) => Promise<void>;
   updateDepartmentMembers: (id: number, memberIds: string[]) => Promise<void>;
+  updateDepartmentQuestions: (id: number, formData: FormData) => Promise<void>;
   labels: {
     addDepartment: string;
     namePlaceholder: string;
@@ -32,6 +41,18 @@ export function DepartmentsManager({
     searchMembers: string;
     delete: string;
     confirmDelete: string;
+    questionsSettings: string;
+    questionsHint: string;
+    questionLabel: string;
+    questionStyle: string;
+    styleShort: string;
+    styleParagraph: string;
+    required: string;
+    addQuestion: string;
+    noQuestions: string;
+    save: string;
+    saving: string;
+    saved: string;
   };
 }) {
   const [name, setName] = useState("");
@@ -79,19 +100,41 @@ export function DepartmentsManager({
             <Card key={dept.id} className="flex flex-col gap-2 p-4">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-sm font-medium">{dept.name}</span>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon-sm"
-                  className="cursor-pointer text-muted-foreground hover:text-destructive"
-                  aria-label={labels.delete}
-                  onClick={() => {
-                    if (!confirm(labels.confirmDelete)) return;
-                    startTransition(() => deleteDepartment(dept.id));
-                  }}
-                >
-                  <Trash2 className="size-4" strokeWidth={1.5} />
-                </Button>
+                <div className="flex items-center gap-1">
+                  <DepartmentQuestionsSheet
+                    departmentName={dept.name}
+                    questions={dept.questions}
+                    action={(formData) => updateDepartmentQuestions(dept.id, formData)}
+                    labels={{
+                      settingsButtonLabel: labels.questionsSettings,
+                      questionsHint: labels.questionsHint,
+                      questionLabel: labels.questionLabel,
+                      questionStyle: labels.questionStyle,
+                      styleShort: labels.styleShort,
+                      styleParagraph: labels.styleParagraph,
+                      required: labels.required,
+                      addQuestion: labels.addQuestion,
+                      noQuestions: labels.noQuestions,
+                      delete: labels.delete,
+                      save: labels.save,
+                      saving: labels.saving,
+                      saved: labels.saved,
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon-sm"
+                    className="cursor-pointer text-muted-foreground hover:text-destructive"
+                    aria-label={labels.delete}
+                    onClick={() => {
+                      if (!confirm(labels.confirmDelete)) return;
+                      startTransition(() => deleteDepartment(dept.id));
+                    }}
+                  >
+                    <Trash2 className="size-4" strokeWidth={1.5} />
+                  </Button>
+                </div>
               </div>
               <span className="text-xs text-muted-foreground">{labels.members}</span>
               <MemberPicker
