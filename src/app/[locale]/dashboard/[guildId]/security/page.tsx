@@ -268,28 +268,6 @@ export default async function SecurityPage({
                 />
               </div>
             </div>
-            <label
-              htmlFor="ignoreCommandCooldownForMods"
-              className="flex -translate-y-1 cursor-pointer items-center justify-between gap-4"
-            >
-              <span className="text-sm">{t("ignoreCommandCooldownForMods")}</span>
-              <Switch
-                id="ignoreCommandCooldownForMods"
-                name="ignoreCommandCooldownForMods"
-                defaultChecked={current.ignoreCommandCooldownForMods}
-              />
-            </label>
-            <label
-              htmlFor="allowHigherModsToModerateLower"
-              className="flex -translate-y-2 cursor-pointer items-center justify-between gap-4"
-            >
-              <span className="text-sm">{t("allowHigherModsToModerateLower")}</span>
-              <Switch
-                id="allowHigherModsToModerateLower"
-                name="allowHigherModsToModerateLower"
-                defaultChecked={current.allowHigherModsToModerateLower}
-              />
-            </label>
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="trustedAdminRoleIds">{t("trustedAdminRoles")}</Label>
               <RolePicker
@@ -302,6 +280,28 @@ export default async function SecurityPage({
               />
               <p className="text-xs text-muted-foreground">{t("trustedAdminRolesHint")}</p>
             </div>
+            <label
+              htmlFor="ignoreCommandCooldownForMods"
+              className="flex cursor-pointer items-center justify-between gap-4"
+            >
+              <span className="text-sm">{t("ignoreCommandCooldownForMods")}</span>
+              <Switch
+                id="ignoreCommandCooldownForMods"
+                name="ignoreCommandCooldownForMods"
+                defaultChecked={current.ignoreCommandCooldownForMods}
+              />
+            </label>
+            <label
+              htmlFor="allowHigherModsToModerateLower"
+              className="flex cursor-pointer items-center justify-between gap-4"
+            >
+              <span className="text-sm">{t("allowHigherModsToModerateLower")}</span>
+              <Switch
+                id="allowHigherModsToModerateLower"
+                name="allowHigherModsToModerateLower"
+                defaultChecked={current.allowHigherModsToModerateLower}
+              />
+            </label>
           </div>
         </Card>
 

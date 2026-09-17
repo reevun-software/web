@@ -245,10 +245,10 @@ export default async function SettingsPage({
           <div className="px-6 py-4">
             <span className="text-sm font-medium">{t("generalSettingsTitle")}</span>
           </div>
-          <div className="-translate-y-2 flex flex-col gap-4 px-6 py-4">
+          <div className="flex flex-col gap-4 px-6 py-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="name">{t("name")}</Label>
-              <div className="relative">
+              <Label htmlFor="name" className="-translate-y-3">{t("name")}</Label>
+              <div className="relative -translate-y-2">
                 <Input id="name" defaultValue={guild?.name} disabled className="pr-9" />
                 <Lock
                   className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 text-muted-foreground"
@@ -269,10 +269,10 @@ export default async function SettingsPage({
             <p className="text-sm text-muted-foreground">{t("note")}</p>
           </div>
 
-          <div className="-translate-y-2 flex flex-col gap-4 px-6 py-4">
+          <div className="flex flex-col gap-4 px-6 py-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="flex flex-col gap-1.5">
-                <Label htmlFor="interfaceLanguage">{t("interfaceLanguage")}</Label>
+                <Label htmlFor="interfaceLanguage" className="-translate-y-3">{t("interfaceLanguage")}</Label>
                 {/* This page is a Server Component - a SelectValue children
                     render-function (the pattern used elsewhere in this
                     codebase, e.g. mute-settings-fields.tsx) only works from a
@@ -357,7 +357,7 @@ export default async function SettingsPage({
                 <span className="text-sm font-medium">{t("modulesTitle")}</span>
                 <p className="text-xs text-muted-foreground">{t("modulesHint")}</p>
               </div>
-              <div className="-translate-y-2 flex flex-col gap-4 px-6 py-4">
+              <div className="flex flex-col gap-4 px-6 py-4">
                 {(
                   [
                     ["warnings", t("moduleWarnings")],
