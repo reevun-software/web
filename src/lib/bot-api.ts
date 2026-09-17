@@ -82,12 +82,15 @@ export type BotTicket = {
   userId: string;
   status: string;
   requestType: string | null;
+  departmentName: string | null;
   icName: string | null;
   characterLevel: string | null;
   characterStaticId: string | null;
   captRole: string | null;
   oocAge: string | null;
   details: string | null;
+  charactersLink: string | null;
+  customAnswers: { label: string; value: string }[] | null;
   claimedBy: string | null;
   decidedBy: string | null;
   decisionReason: string | null;
