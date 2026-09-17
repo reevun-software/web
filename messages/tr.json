@@ -340,7 +340,7 @@
       "confirmDeleteDepartment": "Bu departman silinsin mi? Üye listesi kaybolacak.",
       "searchRoles": "Rol ara…",
       "botConfigTitle": "Bot rolleri ve kanalları",
-      "botConfigHint": "Bu ayarlar botta tutulur ve hemen uygulanır - liderlik rolleri, rütbeler, uyarılar ve panel/log kanalları.",
+      "botConfigHint": "Bu ayarlar botta tutulur - liderlik rolleri, rütbeler, uyarılar ve panel/log kanalları.",
       "botLeadershipRoles": "Liderlik rolleri",
       "botLeadershipRolesHint": "Bu rollere sahip üyeler aile liderliği sayılır - yönetici komutlarına ve panellere erişebilirler.",
       "botVerifiedMemberRole": "Başvuru kabul edildikten sonraki rol",
@@ -361,8 +361,7 @@
       "botRankLabel": "Etiket",
       "botNicknamePrefix": "Takma ad öneki",
       "botNoRanks": "Henüz rütbe yok",
-      "botDeleteRank": "Rütbeyi sil",
-      "botSaveFailed": "Kaydedilemedi - tekrar deneyin"
+      "botDeleteRank": "Rütbeyi sil"
     },
     "overview": {
       "heading": "Panel",

@@ -340,7 +340,7 @@
       "confirmDeleteDepartment": "¿Eliminar este departamento? Se perderá su lista de miembros.",
       "searchRoles": "Buscar rol…",
       "botConfigTitle": "Roles y canales del bot",
-      "botConfigHint": "Estos ajustes viven en el bot y se aplican de inmediato: roles de liderazgo, rangos, avisos y canales para paneles y registros.",
+      "botConfigHint": "Estos ajustes viven en el bot: roles de liderazgo, rangos, avisos y canales para paneles y registros.",
       "botLeadershipRoles": "Roles de liderazgo",
       "botLeadershipRolesHint": "Los miembros con estos roles cuentan como liderazgo de la familia - tienen acceso a comandos y paneles de administración.",
       "botVerifiedMemberRole": "Rol tras aceptar la solicitud",
@@ -361,8 +361,7 @@
       "botRankLabel": "Etiqueta",
       "botNicknamePrefix": "Prefijo de apodo",
       "botNoRanks": "Aún no hay rangos",
-      "botDeleteRank": "Eliminar rango",
-      "botSaveFailed": "No se pudo guardar - inténtalo de nuevo"
+      "botDeleteRank": "Eliminar rango"
     },
     "overview": {
       "heading": "Panel",

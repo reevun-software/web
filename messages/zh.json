@@ -340,7 +340,7 @@
       "confirmDeleteDepartment": "删除此部门？其成员列表将丢失。",
       "searchRoles": "搜索身份组…",
       "botConfigTitle": "机器人角色与频道",
-      "botConfigHint": "这些设置保存在机器人中并立即生效——领导身份组、军衔、警告以及面板和日志频道。",
+      "botConfigHint": "这些设置保存在机器人中——领导身份组、军衔、警告以及面板和日志频道。",
       "botLeadershipRoles": "领导身份组",
       "botLeadershipRolesHint": "拥有这些身份组的成员被视为家族领导层——可以使用管理命令和面板。",
       "botVerifiedMemberRole": "申请通过后授予的身份组",
@@ -361,8 +361,7 @@
       "botRankLabel": "名称",
       "botNicknamePrefix": "昵称前缀",
       "botNoRanks": "暂无军衔",
-      "botDeleteRank": "删除军衔",
-      "botSaveFailed": "保存失败——请重试"
+      "botDeleteRank": "删除军衔"
     },
     "overview": {
       "heading": "仪表盘",

@@ -6,7 +6,7 @@ import { db } from "@/lib/db";
 import { guildBotSettings, guildModules, guildDepartments } from "@/lib/db/schema";
 import { getGuildRoles, getGuildChannels } from "@/lib/discord-guild";
 import { getGuild } from "@/lib/guilds";
-import { getBotGuildConfig, updateBotGuildConfig, getBotGuildMembers, type BotGuildConfig } from "@/lib/bot-api";
+import { getBotGuildConfig, updateBotGuildConfig, getBotGuildMembers, type RankDefinition } from "@/lib/bot-api";
 import { getModuleStates } from "@/lib/guild-modules";
 import { requireGuildManager, isGuildOwner } from "@/lib/guild-auth";
 import { MODULE_KEYS } from "@/lib/modules";
@@ -134,6 +134,36 @@ export default async function SettingsPage({
             });
         }
       }
+
+      // Bot-owned config (roles, channels, ranks) - the BotConfigManager
+      // card's fields live in this same page form now, not a separate one.
+      const rankKeys = [...new Set(formData.getAll("rankKeys") as string[])];
+      const rankRoleIds: Record<string, RankDefinition> = {};
+      for (const key of rankKeys) {
+        const number = formData.get(`rank-${key}-number`);
+        if (!number) continue;
+        const label = String(formData.get(`rank-${key}-label`) || number);
+        rankRoleIds[String(number)] = {
+          roleIds: formData.getAll(`rank-${key}-roles`) as string[],
+          label,
+          nicknamePrefix: String(formData.get(`rank-${key}-nickname`) || label),
+        };
+      }
+
+      await updateBotGuildConfig(guildId, {
+        leadershipRoleIds: formData.getAll("leadershipRoleIds") as string[],
+        verifiedMemberRoleId: (formData.get("verifiedMemberRoleId") as string) || null,
+        logChannelId: (formData.get("logChannelId") as string) || null,
+        applicationsChannelId: (formData.get("applicationsChannelId") as string) || null,
+        applicationPanelChannelId: (formData.get("applicationPanelChannelId") as string) || null,
+        supportPanelChannelId: (formData.get("supportPanelChannelId") as string) || null,
+        adminPanelChannelId: (formData.get("adminPanelChannelId") as string) || null,
+        warnRoleIds: {
+          1: (formData.get("warnRole1") as string) || "",
+          2: (formData.get("warnRole2") as string) || "",
+        },
+        rankRoleIds,
+      });
     }
 
     revalidatePath(`/dashboard/${guildId}/settings`);
@@ -169,14 +199,6 @@ export default async function SettingsPage({
       .set({ memberDiscordIds: memberIds })
       .where(and(eq(guildDepartments.id, id), eq(guildDepartments.guildId, guildId)));
     revalidatePath(`/dashboard/${guildId}/settings`);
-  }
-
-  async function saveBotConfig(patch: Partial<BotGuildConfig>) {
-    "use server";
-    if (!(await isGuildOwner(guildId))) return { ok: false };
-    const result = await updateBotGuildConfig(guildId, patch);
-    revalidatePath(`/dashboard/${guildId}/settings`);
-    return result;
   }
 
   return (
@@ -371,7 +393,6 @@ export default async function SettingsPage({
                   roles={roles}
                   channels={channels}
                   initialConfig={botConfig}
-                  save={saveBotConfig}
                   labels={{
                     leadershipRoles: t("botLeadershipRoles"),
                     leadershipRolesHint: t("botLeadershipRolesHint"),
@@ -397,10 +418,6 @@ export default async function SettingsPage({
                     nicknamePrefix: t("botNicknamePrefix"),
                     noRanks: t("botNoRanks"),
                     delete: t("botDeleteRank"),
-                    save: t("save"),
-                    saving: t("saving"),
-                    saved: t("saved"),
-                    saveFailed: t("botSaveFailed"),
                   }}
                 />
               </div>

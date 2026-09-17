@@ -340,7 +340,7 @@
       "confirmDeleteDepartment": "Delete this department? Its member list will be lost.",
       "searchRoles": "Search role…",
       "botConfigTitle": "Bot roles and channels",
-      "botConfigHint": "These settings live in the bot and apply immediately - leadership roles, ranks, warns, and channels for panels and logs.",
+      "botConfigHint": "These settings live in the bot - leadership roles, ranks, warns, and channels for panels and logs.",
       "botLeadershipRoles": "Leadership roles",
       "botLeadershipRolesHint": "Members with these roles count as family leadership - they get access to admin commands and panels.",
       "botVerifiedMemberRole": "Role after an application is accepted",
@@ -361,8 +361,7 @@
       "botRankLabel": "Label",
       "botNicknamePrefix": "Nickname prefix",
       "botNoRanks": "No ranks yet",
-      "botDeleteRank": "Delete rank",
-      "botSaveFailed": "Couldn't save - try again"
+      "botDeleteRank": "Delete rank"
     },
     "overview": {
       "heading": "Dashboard",

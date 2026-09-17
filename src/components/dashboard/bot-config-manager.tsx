@@ -1,14 +1,12 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { toast } from "sonner";
+import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { RolePicker } from "@/components/dashboard/role-picker";
 import { RankLadderEditor } from "@/components/dashboard/rank-ladder-editor";
 import type { DiscordRole, DiscordChannel } from "@/lib/discord-guild";
-import type { BotGuildConfig, RankDefinition } from "@/lib/bot-api";
+import type { BotGuildConfig } from "@/lib/bot-api";
 
 const NONE = "none";
 
@@ -98,13 +96,11 @@ export function BotConfigManager({
   roles,
   channels,
   initialConfig,
-  save,
   labels,
 }: {
   roles: DiscordRole[];
   channels: DiscordChannel[];
   initialConfig: BotGuildConfig;
-  save: (patch: Partial<BotGuildConfig>) => Promise<{ ok: boolean }>;
   labels: {
     leadershipRoles: string;
     leadershipRolesHint: string;
@@ -130,54 +126,10 @@ export function BotConfigManager({
     nicknamePrefix: string;
     noRanks: string;
     delete: string;
-    save: string;
-    saving: string;
-    saved: string;
-    saveFailed: string;
   };
 }) {
-  const [isPending, startTransition] = useTransition();
-
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-
-    const rankKeys = [...new Set(formData.getAll("rankKeys") as string[])];
-    const rankRoleIds: Record<string, RankDefinition> = {};
-    for (const key of rankKeys) {
-      const number = formData.get(`rank-${key}-number`);
-      if (!number) continue;
-      const label = String(formData.get(`rank-${key}-label`) || number);
-      rankRoleIds[String(number)] = {
-        roleIds: formData.getAll(`rank-${key}-roles`) as string[],
-        label,
-        nicknamePrefix: String(formData.get(`rank-${key}-nickname`) || label),
-      };
-    }
-
-    const patch: Partial<BotGuildConfig> = {
-      leadershipRoleIds: formData.getAll("leadershipRoleIds") as string[],
-      verifiedMemberRoleId: (formData.get("verifiedMemberRoleId") as string) || null,
-      logChannelId: (formData.get("logChannelId") as string) || null,
-      applicationsChannelId: (formData.get("applicationsChannelId") as string) || null,
-      applicationPanelChannelId: (formData.get("applicationPanelChannelId") as string) || null,
-      supportPanelChannelId: (formData.get("supportPanelChannelId") as string) || null,
-      adminPanelChannelId: (formData.get("adminPanelChannelId") as string) || null,
-      warnRoleIds: {
-        1: (formData.get("warnRole1") as string) || "",
-        2: (formData.get("warnRole2") as string) || "",
-      },
-      rankRoleIds,
-    };
-
-    startTransition(async () => {
-      const result = await save(patch);
-      toast[result.ok ? "success" : "error"](result.ok ? labels.saved : labels.saveFailed);
-    });
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="leadershipRoleIds">{labels.leadershipRoles}</Label>
         <RolePicker
@@ -235,10 +187,6 @@ export function BotConfigManager({
           }}
         />
       </div>
-
-      <Button type="submit" disabled={isPending} className="w-fit cursor-pointer">
-        {isPending ? labels.saving : labels.save}
-      </Button>
-    </form>
+    </div>
   );
 }
