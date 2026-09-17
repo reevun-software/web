@@ -63,7 +63,7 @@ export default async function TicketsPage({
           {rows.map((row) => (
             <TableRow key={row.id}>
               <TableCell className="font-mono text-xs">{row.uid ?? row.ticketKey}</TableCell>
-              <TableCell>{row.requestType ?? row.category}</TableCell>
+              <TableCell>{row.departmentName ?? row.requestType ?? row.category}</TableCell>
               <TableCell>
                 <Badge variant={row.status !== "closed" ? "default" : "secondary"}>
                   {row.status !== "closed" ? t("statusOpen") : t("statusClosed")}
