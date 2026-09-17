@@ -272,3 +272,69 @@ export async function updateBotGuildDepartment(
   });
   return { ok: result.ok };
 }
+
+export type BotSecuritySettings = {
+  moderatorRoleIds: string[];
+  ignoreCommandCooldownForMods: boolean;
+  allowHigherModsToModerateLower: boolean;
+  filterLinks: boolean;
+  filterInvites: boolean;
+  filterScamLinks: boolean;
+  filterBadWords: boolean;
+  filterCapsLock: boolean;
+  filterMentionSpam: boolean;
+  muteMode: "role" | "timeout" | "both";
+  muteRoleId: string | null;
+  muteBlocksReactions: boolean;
+};
+
+const EMPTY_SECURITY_SETTINGS: BotSecuritySettings = {
+  moderatorRoleIds: [],
+  ignoreCommandCooldownForMods: false,
+  allowHigherModsToModerateLower: false,
+  filterLinks: false,
+  filterInvites: true,
+  filterScamLinks: true,
+  filterBadWords: false,
+  filterCapsLock: false,
+  filterMentionSpam: false,
+  muteMode: "timeout",
+  muteRoleId: null,
+  muteBlocksReactions: false,
+};
+
+export function getBotSecuritySettings(guildId: string) {
+  return botApiFetch<BotSecuritySettings>(guildId, "/security", EMPTY_SECURITY_SETTINGS);
+}
+
+export async function updateBotSecuritySettings(guildId: string, patch: Partial<BotSecuritySettings>) {
+  const result = await botApiWrite(guildId, "/security", { method: "PUT", body: JSON.stringify(patch) });
+  return { ok: result.ok };
+}
+
+export type BotAutomodFilterConfig = {
+  deleteMessage: boolean;
+  punishment: "none" | "warn" | "mute" | "kick" | "ban";
+  strategy: "blocklist" | "allowlist";
+  list: string[];
+  notifyUser: boolean;
+  ignoreAdminsAndMods: boolean;
+  ignoreSlashCommands: boolean;
+  targetRoleIds: string[];
+  ignoredRoleIds: string[];
+  targetChannelIds: string[];
+  ignoredChannelIds: string[];
+};
+
+export function getBotAutomodFilterConfigs(guildId: string) {
+  return botApiFetch<Record<string, BotAutomodFilterConfig>>(guildId, "/automod", {});
+}
+
+export async function updateBotAutomodFilterConfig(
+  guildId: string,
+  filterType: string,
+  patch: Partial<BotAutomodFilterConfig>,
+) {
+  const result = await botApiWrite(guildId, `/automod/${filterType}`, { method: "PUT", body: JSON.stringify(patch) });
+  return { ok: result.ok };
+}

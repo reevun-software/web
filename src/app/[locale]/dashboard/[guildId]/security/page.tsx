@@ -3,8 +3,14 @@ import { ShieldCheck } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { guildSecuritySettings, automodFilterConfig, guildBotSettings } from "@/lib/db/schema";
-import { updateBotGuildConfig } from "@/lib/bot-api";
+import { guildBotSettings } from "@/lib/db/schema";
+import {
+  updateBotGuildConfig,
+  getBotSecuritySettings,
+  updateBotSecuritySettings,
+  getBotAutomodFilterConfigs,
+  updateBotAutomodFilterConfig,
+} from "@/lib/bot-api";
 import { getGuildRoles, getGuildChannels, getBotHighestRolePosition } from "@/lib/discord-guild";
 import { requireGuildManager } from "@/lib/guild-auth";
 import { Card } from "@/components/ui/card";
@@ -44,33 +50,14 @@ export default async function SecurityPage({
 }: PageProps<"/[locale]/dashboard/[guildId]/security">) {
   const { guildId } = await params;
   const t = await getTranslations("Dashboard.security");
-  const [[settings], [botSettings], roles, channels, botRolePosition, filterConfigRows] = await Promise.all([
-    db
-      .select()
-      .from(guildSecuritySettings)
-      .where(eq(guildSecuritySettings.guildId, guildId))
-      .limit(1),
+  const [current, [botSettings], roles, channels, botRolePosition, filterConfigsByType] = await Promise.all([
+    getBotSecuritySettings(guildId),
     db.select().from(guildBotSettings).where(eq(guildBotSettings.guildId, guildId)).limit(1),
     getGuildRoles(guildId),
     getGuildChannels(guildId),
     getBotHighestRolePosition(guildId),
-    db.select().from(automodFilterConfig).where(eq(automodFilterConfig.guildId, guildId)),
+    getBotAutomodFilterConfigs(guildId),
   ]);
-
-  const current = settings ?? {
-    moderatorRoleIds: [] as string[],
-    ignoreCommandCooldownForMods: false,
-    allowHigherModsToModerateLower: false,
-    filterLinks: false,
-    filterInvites: true,
-    filterScamLinks: true,
-    filterBadWords: false,
-    filterCapsLock: false,
-    filterMentionSpam: false,
-    muteMode: "timeout",
-    muteRoleId: null as string | null,
-    muteBlocksReactions: false,
-  };
 
   // guild_bot_settings is shared with the Settings page (language, color,
   // slash/text command toggles, project/server) - this page only owns the
@@ -91,17 +78,16 @@ export default async function SecurityPage({
     server: null as string | null,
   };
 
-  const filterConfigs = new Map(filterConfigRows.map((row) => [row.filterType, row]));
+  const filterConfigs = new Map(Object.entries(filterConfigsByType));
 
   async function save(formData: FormData) {
     "use server";
     await requireGuildManager(guildId);
     const moderatorRoleIds = formData.getAll("moderatorRoleIds") as string[];
-    const muteMode = formData.get("muteMode") as string;
+    const muteMode = (formData.get("muteMode") as string) || "timeout";
     const muteRoleId = (formData.get("muteRoleId") as string) || null;
 
-    const values = {
-      guildId,
+    await updateBotSecuritySettings(guildId, {
       moderatorRoleIds,
       ignoreCommandCooldownForMods: formData.get("ignoreCommandCooldownForMods") === "on",
       allowHigherModsToModerateLower: formData.get("allowHigherModsToModerateLower") === "on",
@@ -111,16 +97,10 @@ export default async function SecurityPage({
       filterBadWords: formData.get("filterBadWords") === "on",
       filterCapsLock: formData.get("filterCapsLock") === "on",
       filterMentionSpam: formData.get("filterMentionSpam") === "on",
-      muteMode: muteMode || "timeout",
+      muteMode: muteMode as "role" | "timeout" | "both",
       muteRoleId,
       muteBlocksReactions: formData.get("muteBlocksReactions") === "on",
-      updatedAt: new Date(),
-    };
-
-    await db
-      .insert(guildSecuritySettings)
-      .values(values)
-      .onConflictDoUpdate({ target: guildSecuritySettings.guildId, set: values });
+    });
 
     // Carry the columns this page doesn't own forward from what was already
     // fetched, so this save only touches trusted-admin/member-joining.
@@ -165,12 +145,10 @@ export default async function SecurityPage({
       .map((s) => s.trim())
       .filter(Boolean) ?? [];
 
-    const values = {
-      guildId,
-      filterType,
+    await updateBotAutomodFilterConfig(guildId, filterType, {
       deleteMessage: formData.get("deleteMessage") === "on",
-      punishment: (formData.get("punishment") as string) || "none",
-      strategy: (formData.get("strategy") as string) || "blocklist",
+      punishment: ((formData.get("punishment") as string) || "none") as "none" | "warn" | "mute" | "kick" | "ban",
+      strategy: ((formData.get("strategy") as string) || "blocklist") as "blocklist" | "allowlist",
       list,
       notifyUser: formData.get("notifyUser") === "on",
       ignoreAdminsAndMods: formData.get("ignoreAdminsAndMods") === "on",
@@ -179,16 +157,7 @@ export default async function SecurityPage({
       ignoredRoleIds: formData.getAll("ignoredRoleIds") as string[],
       targetChannelIds: formData.getAll("targetChannelIds") as string[],
       ignoredChannelIds: formData.getAll("ignoredChannelIds") as string[],
-      updatedAt: new Date(),
-    };
-
-    await db
-      .insert(automodFilterConfig)
-      .values(values)
-      .onConflictDoUpdate({
-        target: [automodFilterConfig.guildId, automodFilterConfig.filterType],
-        set: values,
-      });
+    });
     revalidatePath(`/dashboard/${guildId}/security`);
   }
 
