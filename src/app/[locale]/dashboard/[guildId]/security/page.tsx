@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { guildBotSettings } from "@/lib/db/schema";
 import {
+  getBotGuildConfig,
   updateBotGuildConfig,
   getBotSecuritySettings,
   updateBotSecuritySettings,
@@ -50,30 +51,23 @@ export default async function SecurityPage({
 }: PageProps<"/[locale]/dashboard/[guildId]/security">) {
   const { guildId } = await params;
   const t = await getTranslations("Dashboard.security");
-  const [current, [botSettings], roles, channels, botRolePosition, filterConfigsByType] = await Promise.all([
+  const [current, [botSettings], roles, channels, botRolePosition, filterConfigsByType, botConfig] = await Promise.all([
     getBotSecuritySettings(guildId),
     db.select().from(guildBotSettings).where(eq(guildBotSettings.guildId, guildId)).limit(1),
     getGuildRoles(guildId),
     getGuildChannels(guildId),
     getBotHighestRolePosition(guildId),
     getBotAutomodFilterConfigs(guildId),
+    getBotGuildConfig(guildId),
   ]);
 
-  // guild_bot_settings is shared with the Settings page (language, color,
-  // slash/text command toggles, project/server) - this page only owns the
-  // trusted-admin and member-joining columns on it.
+  // guild_bot_settings is shared with the Settings page (language,
+  // project/server) - this page only owns trusted-admin on it. The actual
+  // member-joining fields (default roles, rejoin restoration) moved to the
+  // bot's own guild_config - see `botConfig` above.
   const currentBot = botSettings ?? {
     interfaceLanguage: "ru",
-    systemMessageColor: "#79040C",
-    enableSlashCommands: true,
-    enableTextCommands: true,
     trustedAdminRoleIds: [] as string[],
-    defaultRoleIds: [] as string[],
-    alwaysAssignDefaultRoles: false,
-    restoreNicknameOnRejoin: false,
-    restoreOldRolesOnRejoin: false,
-    restorableRoleIds: [] as string[],
-    exemptRoleIds: [] as string[],
     project: null as string | null,
     server: null as string | null,
   };
@@ -102,23 +96,14 @@ export default async function SecurityPage({
       muteBlocksReactions: formData.get("muteBlocksReactions") === "on",
     });
 
-    // Carry the columns this page doesn't own forward from what was already
-    // fetched, so this save only touches trusted-admin/member-joining.
+    // Trusted-admin roles are this app's own field - carry the rest of the
+    // row forward from what was already fetched.
     // ponytail: read-modify-write race with a concurrent Settings-page save
     // on the same row - acceptable given how rarely both get edited at once.
     const botValues = {
       guildId,
       interfaceLanguage: currentBot.interfaceLanguage,
-      systemMessageColor: currentBot.systemMessageColor,
-      enableSlashCommands: currentBot.enableSlashCommands,
-      enableTextCommands: currentBot.enableTextCommands,
       trustedAdminRoleIds: formData.getAll("trustedAdminRoleIds") as string[],
-      defaultRoleIds: formData.getAll("defaultRoleIds") as string[],
-      alwaysAssignDefaultRoles: formData.get("alwaysAssignDefaultRoles") === "on",
-      restoreNicknameOnRejoin: formData.get("restoreNicknameOnRejoin") === "on",
-      restoreOldRolesOnRejoin: formData.get("restoreOldRolesOnRejoin") === "on",
-      restorableRoleIds: formData.getAll("restorableRoleIds") as string[],
-      exemptRoleIds: formData.getAll("exemptRoleIds") as string[],
       project: currentBot.project,
       server: currentBot.server,
       updatedAt: new Date(),
@@ -128,10 +113,20 @@ export default async function SecurityPage({
       .values(botValues)
       .onConflictDoUpdate({ target: guildBotSettings.guildId, set: botValues });
 
-    // "Роли администраторов" (moderatorRoleIds) doubles as the bot's
-    // leadershipRoleIds - who gets pinged on applications and counts as
-    // family leadership - so there's no separate field for it anymore.
-    await updateBotGuildConfig(guildId, { leadershipRoleIds: moderatorRoleIds });
+    // These used to be silently written only to this app's own DB, which
+    // the bot never reads - it needs them for real (join-role assignment,
+    // rejoin restoration). "Роли администраторов" (moderatorRoleIds) also
+    // doubles as the bot's leadershipRoleIds - who gets pinged on
+    // applications and counts as family leadership.
+    await updateBotGuildConfig(guildId, {
+      leadershipRoleIds: moderatorRoleIds,
+      defaultRoleIds: formData.getAll("defaultRoleIds") as string[],
+      alwaysAssignDefaultRoles: formData.get("alwaysAssignDefaultRoles") === "on",
+      restoreNicknameOnRejoin: formData.get("restoreNicknameOnRejoin") === "on",
+      restoreOldRolesOnRejoin: formData.get("restoreOldRolesOnRejoin") === "on",
+      restorableRoleIds: formData.getAll("restorableRoleIds") as string[],
+      exemptRoleIds: formData.getAll("exemptRoleIds") as string[],
+    });
 
     revalidatePath(`/dashboard/${guildId}/security`);
     revalidatePath(`/dashboard/${guildId}/settings`);
@@ -288,7 +283,7 @@ export default async function SecurityPage({
                   id="defaultRoleIds"
                   name="defaultRoleIds"
                   roles={roles}
-                  defaultSelectedIds={currentBot.defaultRoleIds}
+                  defaultSelectedIds={botConfig.defaultRoleIds}
                   addLabel={t("addRole")}
                   emptyLabel={t("rolesUnavailable")}
                 />
@@ -307,7 +302,7 @@ export default async function SecurityPage({
                 <Switch
                   id="alwaysAssignDefaultRoles"
                   name="alwaysAssignDefaultRoles"
-                  defaultChecked={currentBot.alwaysAssignDefaultRoles}
+                  defaultChecked={botConfig.alwaysAssignDefaultRoles}
                 />
               </label>
               <label
@@ -318,7 +313,7 @@ export default async function SecurityPage({
                 <Switch
                   id="restoreNicknameOnRejoin"
                   name="restoreNicknameOnRejoin"
-                  defaultChecked={currentBot.restoreNicknameOnRejoin}
+                  defaultChecked={botConfig.restoreNicknameOnRejoin}
                 />
               </label>
               <label
@@ -329,7 +324,7 @@ export default async function SecurityPage({
                 <Switch
                   id="restoreOldRolesOnRejoin"
                   name="restoreOldRolesOnRejoin"
-                  defaultChecked={currentBot.restoreOldRolesOnRejoin}
+                  defaultChecked={botConfig.restoreOldRolesOnRejoin}
                 />
               </label>
             </div>
@@ -341,7 +336,7 @@ export default async function SecurityPage({
                   id="restorableRoleIds"
                   name="restorableRoleIds"
                   roles={roles}
-                  defaultSelectedIds={currentBot.restorableRoleIds}
+                  defaultSelectedIds={botConfig.restorableRoleIds}
                   addLabel={t("addRole")}
                   emptyLabel={t("rolesUnavailable")}
                 />
@@ -353,7 +348,7 @@ export default async function SecurityPage({
                   id="exemptRoleIds"
                   name="exemptRoleIds"
                   roles={roles}
-                  defaultSelectedIds={currentBot.exemptRoleIds}
+                  defaultSelectedIds={botConfig.exemptRoleIds}
                   addLabel={t("addRole")}
                   emptyLabel={t("rolesUnavailable")}
                 />

@@ -30,6 +30,19 @@ export type BotGuildConfig = {
   adminPanelChannelId: string | null;
   warnPunishmentMode: WarnPunishmentMode;
   warnPunishmentRoleId: string | null;
+  // These used to be silently written only to this app's own (now-unread)
+  // guild_bot_settings table - moved here since the bot is what actually
+  // reads and acts on all of them (join-role assignment, rejoin
+  // restoration, per-guild command toggle, embed accent color).
+  defaultRoleIds: string[];
+  alwaysAssignDefaultRoles: boolean;
+  restoreNicknameOnRejoin: boolean;
+  restoreOldRolesOnRejoin: boolean;
+  restorableRoleIds: string[];
+  exemptRoleIds: string[];
+  enableSlashCommands: boolean;
+  enableTextCommands: boolean;
+  systemMessageColor: string;
 };
 
 const EMPTY_CONFIG: BotGuildConfig = {
@@ -44,6 +57,15 @@ const EMPTY_CONFIG: BotGuildConfig = {
   adminPanelChannelId: null,
   warnPunishmentMode: "stripRoles",
   warnPunishmentRoleId: null,
+  defaultRoleIds: [],
+  alwaysAssignDefaultRoles: false,
+  restoreNicknameOnRejoin: false,
+  restoreOldRolesOnRejoin: false,
+  restorableRoleIds: [],
+  exemptRoleIds: [],
+  enableSlashCommands: true,
+  enableTextCommands: true,
+  systemMessageColor: "#79040C",
 };
 
 export type BotGuildMember = {

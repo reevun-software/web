@@ -77,16 +77,7 @@ export default async function SettingsPage({
 
   const current = botSettings ?? {
     interfaceLanguage: "ru",
-    systemMessageColor: "#79040C",
-    enableSlashCommands: true,
-    enableTextCommands: true,
     trustedAdminRoleIds: [] as string[],
-    defaultRoleIds: [] as string[],
-    alwaysAssignDefaultRoles: false,
-    restoreNicknameOnRejoin: false,
-    restoreOldRolesOnRejoin: false,
-    restorableRoleIds: [] as string[],
-    exemptRoleIds: [] as string[],
     project: null as string | null,
     server: null as string | null,
   };
@@ -105,19 +96,10 @@ export default async function SettingsPage({
     const values = {
       guildId,
       interfaceLanguage: (formData.get("interfaceLanguage") as string) || "ru",
-      systemMessageColor: (formData.get("systemMessageColor") as string) || "#79040C",
-      enableSlashCommands: formData.get("enableSlashCommands") === "on",
-      enableTextCommands: formData.get("enableTextCommands") === "on",
-      // Trusted-admin roles and member-joining behavior moved to the
-      // Security page's own form - carry the current values forward here
-      // instead of reading formData, since this form no longer submits them.
+      // Trusted-admin roles are the Security page's own field - carry the
+      // current value forward here instead of reading formData, since this
+      // form doesn't submit it.
       trustedAdminRoleIds: current.trustedAdminRoleIds,
-      defaultRoleIds: current.defaultRoleIds,
-      alwaysAssignDefaultRoles: current.alwaysAssignDefaultRoles,
-      restoreNicknameOnRejoin: current.restoreNicknameOnRejoin,
-      restoreOldRolesOnRejoin: current.restoreOldRolesOnRejoin,
-      restorableRoleIds: current.restorableRoleIds,
-      exemptRoleIds: current.exemptRoleIds,
       project,
       server,
       updatedAt: new Date(),
@@ -127,6 +109,15 @@ export default async function SettingsPage({
       .insert(guildBotSettings)
       .values(values)
       .onConflictDoUpdate({ target: guildBotSettings.guildId, set: values });
+
+    // These used to be silently written only to this app's own DB, which
+    // the bot never reads - the bot needs them for real to act on (per-guild
+    // command toggle, embed accent color).
+    await updateBotGuildConfig(guildId, {
+      systemMessageColor: (formData.get("systemMessageColor") as string) || "#79040C",
+      enableSlashCommands: formData.get("enableSlashCommands") === "on",
+      enableTextCommands: formData.get("enableTextCommands") === "on",
+    });
 
     if (freshIsOwner) {
       for (const key of MODULE_KEYS) {
@@ -298,7 +289,7 @@ export default async function SettingsPage({
               </div>
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="systemMessageColor">{t("systemMessageColor")}</Label>
-                <ColorInput name="systemMessageColor" defaultValue={current.systemMessageColor} />
+                <ColorInput name="systemMessageColor" defaultValue={botConfig.systemMessageColor} />
               </div>
             </div>
 
@@ -307,7 +298,7 @@ export default async function SettingsPage({
               <Switch
                 id="enableSlashCommands"
                 name="enableSlashCommands"
-                defaultChecked={current.enableSlashCommands}
+                defaultChecked={botConfig.enableSlashCommands}
               />
             </label>
             <label htmlFor="enableTextCommands" className="flex cursor-pointer items-center justify-between gap-4">
@@ -315,7 +306,7 @@ export default async function SettingsPage({
               <Switch
                 id="enableTextCommands"
                 name="enableTextCommands"
-                defaultChecked={current.enableTextCommands}
+                defaultChecked={botConfig.enableTextCommands}
               />
             </label>
           </div>
