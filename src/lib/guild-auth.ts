@@ -17,13 +17,16 @@ export async function requireGuildManager(guildId: string): Promise<void> {
   }
 }
 
+// Despite the name, this checks "manages this specific guild", not the
+// literal Discord owner account - kept as a separate boolean (rather than
+// switching every call site to requireGuildManager's throw) since callers
+// use it as an inline condition. It used to skip the guildId check
+// entirely (return true for any signed-in user), which let anyone manage
+// a guild they don't have access to - see requireGuildManager's own
+// comment on why every mutating action must check this itself.
 export async function isGuildOwner(guildId: string): Promise<boolean> {
   const session = await auth();
-  if (!session?.discordId) return false;
-  // TEMP: disabled per explicit request - the signed-in user manages the
-  // family but isn't the literal Discord "owner" (a single fixed account
-  // per guild), so this gate was blocking someone who should have access.
-  // Re-enable (or replace with a real "trusted admin" concept) once that's
-  // decided.
-  return true;
+  if (!session?.accessToken) return false;
+  const managed = await getManageableGuilds(session.accessToken);
+  return managed.some((g) => g.id === guildId && g.botInstalled);
 }
