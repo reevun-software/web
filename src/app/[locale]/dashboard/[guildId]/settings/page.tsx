@@ -20,6 +20,7 @@ import {
 } from "@/lib/bot-api";
 import { getModuleStates } from "@/lib/guild-modules";
 import { requireGuildManager, isGuildOwner } from "@/lib/guild-auth";
+import { sanitizeSnowflake, sanitizeSnowflakes, sanitizeHexColor } from "@/lib/discord-format";
 import { MODULE_KEYS } from "@/lib/modules";
 import { getMajesticOnline, getRussiaOnlineOnline, getGta5rpOnline } from "@/lib/online-monitoring";
 import { LOCALES, LOCALE_META } from "@/i18n/routing";
@@ -113,11 +114,13 @@ export default async function SettingsPage({
     // These used to be silently written only to this app's own DB, which
     // the bot never reads - the bot needs them for real to act on (per-guild
     // command toggle, embed accent color).
-    await updateBotGuildConfig(guildId, {
-      systemMessageColor: (formData.get("systemMessageColor") as string) || "#79040C",
-      enableSlashCommands: formData.get("enableSlashCommands") === "on",
-      enableTextCommands: formData.get("enableTextCommands") === "on",
-    });
+    const configResults = [
+      await updateBotGuildConfig(guildId, {
+        systemMessageColor: sanitizeHexColor(formData.get("systemMessageColor"), "#79040C"),
+        enableSlashCommands: formData.get("enableSlashCommands") === "on",
+        enableTextCommands: formData.get("enableTextCommands") === "on",
+      }),
+    ];
 
     if (freshIsOwner) {
       for (const key of MODULE_KEYS) {
@@ -147,34 +150,38 @@ export default async function SettingsPage({
         if (!number) continue;
         const label = String(formData.get(`rank-${key}-label`) || number);
         rankRoleIds[String(number)] = {
-          roleIds: formData.getAll(`rank-${key}-roles`) as string[],
+          roleIds: sanitizeSnowflakes(formData.getAll(`rank-${key}-roles`)),
           label,
           nicknamePrefix: String(formData.get(`rank-${key}-nickname`) || label),
         };
       }
 
-      await updateBotGuildConfig(guildId, {
-        // leadershipRoleIds is not submitted by this form - it's kept in
-        // sync with the Security page's "Роли администраторов" instead.
-        verifiedMemberRoleId: (formData.get("verifiedMemberRoleId") as string) || null,
-        logChannelId: (formData.get("logChannelId") as string) || null,
-        applicationsChannelId: (formData.get("applicationsChannelId") as string) || null,
-        applicationPanelChannelId: (formData.get("applicationPanelChannelId") as string) || null,
-        supportPanelChannelId: (formData.get("supportPanelChannelId") as string) || null,
-        adminPanelChannelId: (formData.get("adminPanelChannelId") as string) || null,
-        warnRoleIds: {
-          1: (formData.get("warnRole1") as string) || "",
-          2: (formData.get("warnRole2") as string) || "",
-        },
-        warnPunishmentMode: (formData.get("warnPunishmentMode") as WarnPunishmentMode) || "stripRoles",
-        warnPunishmentRoleId: (formData.get("warnPunishmentRoleId") as string) || null,
-        rankRoleIds,
-      });
+      configResults.push(
+        await updateBotGuildConfig(guildId, {
+          // leadershipRoleIds is not submitted by this form - it's kept in
+          // sync with the Security page's "Роли администраторов" instead.
+          verifiedMemberRoleId: sanitizeSnowflake(formData.get("verifiedMemberRoleId")),
+          logChannelId: sanitizeSnowflake(formData.get("logChannelId")),
+          applicationsChannelId: sanitizeSnowflake(formData.get("applicationsChannelId")),
+          applicationPanelChannelId: sanitizeSnowflake(formData.get("applicationPanelChannelId")),
+          supportPanelChannelId: sanitizeSnowflake(formData.get("supportPanelChannelId")),
+          adminPanelChannelId: sanitizeSnowflake(formData.get("adminPanelChannelId")),
+          warnRoleIds: {
+            1: sanitizeSnowflake(formData.get("warnRole1")) || "",
+            2: sanitizeSnowflake(formData.get("warnRole2")) || "",
+          },
+          warnPunishmentMode: (formData.get("warnPunishmentMode") as WarnPunishmentMode) || "stripRoles",
+          warnPunishmentRoleId: sanitizeSnowflake(formData.get("warnPunishmentRoleId")),
+          rankRoleIds,
+        }),
+      );
     }
 
     revalidatePath(`/dashboard/${guildId}/settings`);
     revalidatePath(`/dashboard/${guildId}/monitoring`);
     revalidatePath(`/dashboard/${guildId}`, "layout");
+
+    if (configResults.some((r) => !r.ok)) return { error: true };
   }
 
   // Re-checked fresh here, not the render-time `isOwner` read above - this
@@ -228,7 +235,7 @@ export default async function SettingsPage({
         <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
       </div>
 
-      <SaveForm action={saveAll} savedMessage={t("saved")} className="flex flex-col gap-4">
+      <SaveForm action={saveAll} savedMessage={t("saved")} errorMessage={t("saveFailed")} className="flex flex-col gap-4">
       <div className="grid items-start gap-4 lg:grid-cols-2">
       <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-4">

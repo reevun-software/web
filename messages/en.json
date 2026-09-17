@@ -300,6 +300,7 @@
       "note": "Changing the bot's name and settings is done through Discord. Dashboard-specific settings will appear here once they're needed.",
       "generalSettingsTitle": "General settings",
       "saved": "Saved",
+      "saveFailed": "Failed to save - the bot is unreachable, try again later",
       "saving": "Saving...",
       "save": "Save",
       "interfaceLanguage": "Bot interface language in Discord",
@@ -435,6 +436,7 @@
       "colReason": "Reason",
       "colDate": "Date",
       "missingTarget": "Enter a Discord ID or a character name",
+      "botUnreachable": "Failed to save: the bot is unreachable, try again later",
       "added": "Added",
       "confirmDelete": "Remove this blacklist entry?",
       "delete": "Delete"
@@ -546,6 +548,7 @@
       "muteBlocksReactionsHint": "Muting will also stop members from adding reactions to messages",
       "timeoutLimitNotice": "Timeout-based mutes are capped at 28 days - that limit is set by Discord itself.",
       "saved": "Saved",
+      "saveFailed": "Failed to save - the bot is unreachable, try again later",
       "searchRoles": "Search roles…",
       "searchChannels": "Search channels…",
       "trustedAdminRoles": "Trusted Administrator roles",

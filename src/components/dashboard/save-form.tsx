@@ -10,16 +10,22 @@ import { toast } from "sonner";
 export function SaveForm({
   action,
   savedMessage,
+  errorMessage,
   className,
   children,
 }: {
-  action: (formData: FormData) => Promise<void>;
+  action: (formData: FormData) => Promise<{ error?: boolean } | void>;
   savedMessage: string;
+  errorMessage: string;
   className?: string;
   children: React.ReactNode;
 }) {
   async function handleSubmit(formData: FormData) {
-    await action(formData);
+    const result = await action(formData);
+    if (result?.error) {
+      toast.error(errorMessage);
+      return;
+    }
     toast.success(savedMessage);
   }
 

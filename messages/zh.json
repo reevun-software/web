@@ -300,6 +300,7 @@
       "note": "机器人的名称和参数需通过 Discord 修改。面板专属设置会在需要时出现在这里。",
       "generalSettingsTitle": "常规设置",
       "saved": "已保存",
+      "saveFailed": "保存失败——机器人当前无法访问，请稍后重试",
       "saving": "保存中…",
       "save": "保存",
       "interfaceLanguage": "机器人在 Discord 中的界面语言",
@@ -435,6 +436,7 @@
       "colReason": "原因",
       "colDate": "日期",
       "missingTarget": "请输入 Discord ID 或角色名",
+      "botUnreachable": "保存失败：机器人当前无法访问，请稍后重试",
       "added": "已添加",
       "confirmDelete": "确定要删除此黑名单记录吗？",
       "delete": "删除"
@@ -546,6 +548,7 @@
       "muteBlocksReactionsHint": "禁言同时也会阻止成员为消息添加表情回应",
       "timeoutLimitNotice": "基于超时的禁言最长为 28 天——该限制由 Discord 自身设定。",
       "saved": "已保存",
+      "saveFailed": "保存失败——机器人当前无法访问，请稍后重试",
       "searchRoles": "搜索身分组…",
       "searchChannels": "搜索频道…",
       "trustedAdminRoles": "受信任的管理员身分组",

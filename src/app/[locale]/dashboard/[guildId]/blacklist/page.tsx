@@ -57,17 +57,19 @@ export default async function BlacklistPage({
     if (!staff?.discordId) return { error: "missingTarget" };
 
     const result = await addBotBan(guildId, { discordUserId, characterName, reason, issuedBy: staff.discordId });
-    if (!result.ok) return { error: "missingTarget" };
+    if (!result.ok) return { error: "botUnreachable" };
     revalidatePath(`/dashboard/${guildId}/blacklist`);
     return {};
   }
 
-  async function deleteBan(id: number) {
+  async function deleteBan(id: number): Promise<{ error?: boolean }> {
     "use server";
     await requireGuildManager(guildId);
-    if (!(await getModuleStates(guildId)).blacklist) return;
-    await removeBotBan(guildId, id);
+    if (!(await getModuleStates(guildId)).blacklist) return { error: true };
+    const result = await removeBotBan(guildId, id);
     revalidatePath(`/dashboard/${guildId}/blacklist`);
+    if (!result.ok) return { error: true };
+    return {};
   }
 
   return (
@@ -81,6 +83,7 @@ export default async function BlacklistPage({
         <BlacklistForm
           action={addBan}
           missingTargetError={t("missingTarget")}
+          botUnreachableError={t("botUnreachable")}
           addedMessage={t("added")}
           className="grid gap-3 sm:grid-cols-[1fr_1fr_2fr_auto] sm:items-end"
         >
@@ -138,6 +141,7 @@ export default async function BlacklistPage({
                     action={deleteBan.bind(null, row.id)}
                     confirmLabel={t("confirmDelete")}
                     label={t("delete")}
+                    errorMessage={t("botUnreachable")}
                   />
                 </TableCell>
               </TableRow>

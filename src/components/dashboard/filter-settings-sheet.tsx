@@ -50,14 +50,18 @@ export function FilterSettingsSheet({
   roles: DiscordRole[];
   channels: DiscordChannel[];
   botRolePosition: number;
-  action: (formData: FormData) => Promise<void>;
+  action: (formData: FormData) => Promise<{ error?: boolean } | void>;
   labels: Record<string, string>;
 }) {
   const [open, setOpen] = useState(false);
   const hasList = LIST_BASED_FILTERS.has(filterType);
 
   async function handleSubmit(formData: FormData) {
-    await action(formData);
+    const result = await action(formData);
+    if (result?.error) {
+      toast.error(labels.saveFailed);
+      return;
+    }
     toast.success(labels.saved);
     setOpen(false);
   }

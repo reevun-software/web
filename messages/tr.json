@@ -300,6 +300,7 @@
       "note": "Bot adı ve ayarları Discord üzerinden değiştirilir. Panele özel ayarlar ihtiyaç duyulduğunda burada görünecek.",
       "generalSettingsTitle": "Genel ayarlar",
       "saved": "Kaydedildi",
+      "saveFailed": "Kaydedilemedi - bot şu anda erişilemiyor, daha sonra tekrar deneyin",
       "saving": "Kaydediliyor...",
       "save": "Kaydet",
       "interfaceLanguage": "Discord'daki bot arayüz dili",
@@ -435,6 +436,7 @@
       "colReason": "Sebep",
       "colDate": "Tarih",
       "missingTarget": "Discord ID veya karakter adı girin",
+      "botUnreachable": "Kaydedilemedi: bot şu anda erişilemiyor, daha sonra tekrar deneyin",
       "added": "Eklendi",
       "confirmDelete": "Bu kara liste kaydı silinsin mi?",
       "delete": "Sil"
@@ -546,6 +548,7 @@
       "muteBlocksReactionsHint": "Susturma, üyelerin mesajlara tepki eklemesini de engeller",
       "timeoutLimitNotice": "Zaman aşımı tabanlı susturmalar 28 gün ile sınırlıdır - bu sınırı Discord belirler.",
       "saved": "Kaydedildi",
+      "saveFailed": "Kaydedilemedi - bot şu anda erişilemiyor, daha sonra tekrar deneyin",
       "searchRoles": "Rol ara…",
       "searchChannels": "Kanal ara…",
       "trustedAdminRoles": "Güvenilir Yönetici rolleri",

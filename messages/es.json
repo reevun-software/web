@@ -300,6 +300,7 @@
       "note": "El nombre y los parámetros del bot se cambian desde Discord. Aquí aparecerán los ajustes específicos del panel cuando sean necesarios.",
       "generalSettingsTitle": "Configuración general",
       "saved": "Guardado",
+      "saveFailed": "No se pudo guardar - el bot no está disponible, inténtalo más tarde",
       "saving": "Guardando...",
       "save": "Guardar",
       "interfaceLanguage": "Idioma de la interfaz del bot en Discord",
@@ -435,6 +436,7 @@
       "colReason": "Motivo",
       "colDate": "Fecha",
       "missingTarget": "Introduce un ID de Discord o un nombre de personaje",
+      "botUnreachable": "No se pudo guardar: el bot no está disponible, inténtalo más tarde",
       "added": "Añadido",
       "confirmDelete": "¿Eliminar esta entrada de la lista negra?",
       "delete": "Eliminar"
@@ -546,6 +548,7 @@
       "muteBlocksReactionsHint": "Silenciar también impedirá que los miembros añadan reacciones a los mensajes",
       "timeoutLimitNotice": "Los silencios por tiempo de espera están limitados a 28 días - ese límite lo establece el propio Discord.",
       "saved": "Guardado",
+      "saveFailed": "No se pudo guardar - el bot no está disponible, inténtalo más tarde",
       "searchRoles": "Buscar roles…",
       "searchChannels": "Buscar canales…",
       "trustedAdminRoles": "Roles de administrador de confianza",

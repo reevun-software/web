@@ -14,6 +14,7 @@ import {
 } from "@/lib/bot-api";
 import { getGuildRoles, getGuildChannels, getBotHighestRolePosition } from "@/lib/discord-guild";
 import { requireGuildManager } from "@/lib/guild-auth";
+import { sanitizeSnowflake, sanitizeSnowflakes } from "@/lib/discord-format";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -77,11 +78,11 @@ export default async function SecurityPage({
   async function save(formData: FormData) {
     "use server";
     await requireGuildManager(guildId);
-    const moderatorRoleIds = formData.getAll("moderatorRoleIds") as string[];
+    const moderatorRoleIds = sanitizeSnowflakes(formData.getAll("moderatorRoleIds"));
     const muteMode = (formData.get("muteMode") as string) || "timeout";
-    const muteRoleId = (formData.get("muteRoleId") as string) || null;
+    const muteRoleId = sanitizeSnowflake(formData.get("muteRoleId"));
 
-    await updateBotSecuritySettings(guildId, {
+    const securityResult = await updateBotSecuritySettings(guildId, {
       moderatorRoleIds,
       ignoreCommandCooldownForMods: formData.get("ignoreCommandCooldownForMods") === "on",
       allowHigherModsToModerateLower: formData.get("allowHigherModsToModerateLower") === "on",
@@ -103,7 +104,7 @@ export default async function SecurityPage({
     const botValues = {
       guildId,
       interfaceLanguage: currentBot.interfaceLanguage,
-      trustedAdminRoleIds: formData.getAll("trustedAdminRoleIds") as string[],
+      trustedAdminRoleIds: sanitizeSnowflakes(formData.getAll("trustedAdminRoleIds")),
       project: currentBot.project,
       server: currentBot.server,
       updatedAt: new Date(),
@@ -118,21 +119,23 @@ export default async function SecurityPage({
     // rejoin restoration). "Роли администраторов" (moderatorRoleIds) also
     // doubles as the bot's leadershipRoleIds - who gets pinged on
     // applications and counts as family leadership.
-    await updateBotGuildConfig(guildId, {
+    const configResult = await updateBotGuildConfig(guildId, {
       leadershipRoleIds: moderatorRoleIds,
-      defaultRoleIds: formData.getAll("defaultRoleIds") as string[],
+      defaultRoleIds: sanitizeSnowflakes(formData.getAll("defaultRoleIds")),
       alwaysAssignDefaultRoles: formData.get("alwaysAssignDefaultRoles") === "on",
       restoreNicknameOnRejoin: formData.get("restoreNicknameOnRejoin") === "on",
       restoreOldRolesOnRejoin: formData.get("restoreOldRolesOnRejoin") === "on",
-      restorableRoleIds: formData.getAll("restorableRoleIds") as string[],
-      exemptRoleIds: formData.getAll("exemptRoleIds") as string[],
+      restorableRoleIds: sanitizeSnowflakes(formData.getAll("restorableRoleIds")),
+      exemptRoleIds: sanitizeSnowflakes(formData.getAll("exemptRoleIds")),
     });
 
     revalidatePath(`/dashboard/${guildId}/security`);
     revalidatePath(`/dashboard/${guildId}/settings`);
+
+    if (!securityResult.ok || !configResult.ok) return { error: true };
   }
 
-  async function saveFilterConfig(filterType: string, formData: FormData) {
+  async function saveFilterConfig(filterType: string, formData: FormData): Promise<{ error?: boolean }> {
     "use server";
     await requireGuildManager(guildId);
     const list = (formData.get("list") as string | null)
@@ -140,7 +143,7 @@ export default async function SecurityPage({
       .map((s) => s.trim())
       .filter(Boolean) ?? [];
 
-    await updateBotAutomodFilterConfig(guildId, filterType, {
+    const result = await updateBotAutomodFilterConfig(guildId, filterType, {
       deleteMessage: formData.get("deleteMessage") === "on",
       punishment: ((formData.get("punishment") as string) || "none") as "none" | "warn" | "mute" | "kick" | "ban",
       strategy: ((formData.get("strategy") as string) || "blocklist") as "blocklist" | "allowlist",
@@ -148,12 +151,14 @@ export default async function SecurityPage({
       notifyUser: formData.get("notifyUser") === "on",
       ignoreAdminsAndMods: formData.get("ignoreAdminsAndMods") === "on",
       ignoreSlashCommands: formData.get("ignoreSlashCommands") === "on",
-      targetRoleIds: formData.getAll("targetRoleIds") as string[],
-      ignoredRoleIds: formData.getAll("ignoredRoleIds") as string[],
-      targetChannelIds: formData.getAll("targetChannelIds") as string[],
-      ignoredChannelIds: formData.getAll("ignoredChannelIds") as string[],
+      targetRoleIds: sanitizeSnowflakes(formData.getAll("targetRoleIds")),
+      ignoredRoleIds: sanitizeSnowflakes(formData.getAll("ignoredRoleIds")),
+      targetChannelIds: sanitizeSnowflakes(formData.getAll("targetChannelIds")),
+      ignoredChannelIds: sanitizeSnowflakes(formData.getAll("ignoredChannelIds")),
     });
     revalidatePath(`/dashboard/${guildId}/security`);
+    if (!result.ok) return { error: true };
+    return {};
   }
 
   const filterSheetLabels = {
@@ -193,6 +198,7 @@ export default async function SecurityPage({
     save: t("save"),
     saving: t("saving"),
     saved: t("saved"),
+    saveFailed: t("saveFailed"),
     settingsButtonLabel: t("filterSettings.settingsButtonLabel"),
     searchRoles: t("searchRoles"),
     searchChannels: t("searchChannels"),
@@ -205,7 +211,7 @@ export default async function SecurityPage({
         <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
       </div>
 
-      <SaveForm action={save} savedMessage={t("saved")} className="flex flex-col gap-4">
+      <SaveForm action={save} savedMessage={t("saved")} errorMessage={t("saveFailed")} className="flex flex-col gap-4">
         <Card className="flex flex-col divide-y divide-border/60 p-0">
           <div className="px-6 py-4">
             <span className="text-sm font-medium">{t("moderatorsTitle")}</span>

@@ -8,19 +8,23 @@ import { toast } from "sonner";
 export function BlacklistForm({
   action,
   missingTargetError,
+  botUnreachableError,
   addedMessage,
   className,
   children,
 }: {
   action: (formData: FormData) => Promise<{ error?: string }>;
   missingTargetError: string;
+  botUnreachableError: string;
   addedMessage: string;
   className?: string;
   children: React.ReactNode;
 }) {
   async function handleSubmit(formData: FormData) {
     const result = await action(formData);
-    if (result?.error) {
+    if (result?.error === "botUnreachable") {
+      toast.error(botUnreachableError);
+    } else if (result?.error) {
       toast.error(missingTargetError);
     } else {
       toast.success(addedMessage);

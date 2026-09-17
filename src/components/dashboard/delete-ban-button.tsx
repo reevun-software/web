@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { Trash2, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
 // One-way CRUD (add-only, no delete) meant a mistaken ban was permanent.
@@ -12,10 +13,12 @@ export function DeleteBanButton({
   action,
   confirmLabel,
   label,
+  errorMessage,
 }: {
-  action: () => Promise<void>;
+  action: () => Promise<{ error?: boolean } | void>;
   confirmLabel: string;
   label: string;
+  errorMessage: string;
 }) {
   const [pending, startTransition] = useTransition();
 
@@ -29,8 +32,9 @@ export function DeleteBanButton({
       className="cursor-pointer text-muted-foreground hover:text-destructive"
       onClick={() => {
         if (!confirm(confirmLabel)) return;
-        startTransition(() => {
-          action();
+        startTransition(async () => {
+          const result = await action();
+          if (result?.error) toast.error(errorMessage);
         });
       }}
     >

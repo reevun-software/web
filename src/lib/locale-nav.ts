@@ -6,7 +6,7 @@ import { routing, type Locale } from "@/i18n/routing";
 // Mirrors next-intl's own cookie sync (not exported publicly) - needed
 // whenever we navigate with the plain Next.js router, bypassing the wrapped
 // one that would normally set this.
-export function syncLocaleCookie(nextLocale: Locale) {
+function syncLocaleCookie(nextLocale: Locale) {
   try {
     document.cookie = `NEXT_LOCALE=${nextLocale}; path=/; max-age=31536000; SameSite=Lax`;
   } catch {
@@ -29,11 +29,11 @@ export function syncLocaleCookie(nextLocale: Locale) {
 // fetching fresh, so the switch to the default locale looked like a no-op.
 // Every other locale is safe to prefetch since its own URL prefix - not the
 // cookie - determines what the server renders.
-export function shouldPrefetchLocale(locale: Locale) {
+function shouldPrefetchLocale(locale: Locale) {
   return locale !== routing.defaultLocale;
 }
 
-export function localeHref(
+function localeHref(
   pathname: string,
   params: Record<string, string | string[] | undefined>,
   locale: Locale,
