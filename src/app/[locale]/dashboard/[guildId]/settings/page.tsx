@@ -187,32 +187,30 @@ export default async function SettingsPage({
       <SaveForm action={saveAll} savedMessage={t("saved")} className="flex flex-col gap-4">
       <div className="grid items-start gap-4 lg:grid-cols-2">
       <div className="flex flex-col gap-4">
-      <Card className="flex flex-col gap-4 p-6">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="name">{t("name")}</Label>
-          <div className="relative">
-            <Input id="name" defaultValue={guild?.name} disabled className="pr-9" />
-            <Lock
-              className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 text-muted-foreground"
-              strokeWidth={1.5}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="id">{t("serverId")}</Label>
-          <div className="relative">
-            <Input id="id" defaultValue={guildId} disabled className="pr-9 font-mono" />
-            <Lock
-              className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 text-muted-foreground"
-              strokeWidth={1.5}
-            />
-          </div>
-        </div>
-        <p className="text-sm text-muted-foreground">{t("note")}</p>
-      </Card>
-
       <div className="flex flex-col gap-4">
         <Card className="flex flex-col gap-4 p-6">
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="name">{t("name")}</Label>
+            <div className="relative">
+              <Input id="name" defaultValue={guild?.name} disabled className="pr-9" />
+              <Lock
+                className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 text-muted-foreground"
+                strokeWidth={1.5}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="id">{t("serverId")}</Label>
+            <div className="relative">
+              <Input id="id" defaultValue={guildId} disabled className="pr-9 font-mono" />
+              <Lock
+                className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 text-muted-foreground"
+                strokeWidth={1.5}
+              />
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">{t("note")}</p>
+
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="interfaceLanguage">{t("interfaceLanguage")}</Label>
