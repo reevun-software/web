@@ -3,7 +3,7 @@ import { ShieldCheck } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { guildSecuritySettings, automodFilterConfig } from "@/lib/db/schema";
+import { guildSecuritySettings, automodFilterConfig, guildBotSettings } from "@/lib/db/schema";
 import { getGuildRoles, getGuildChannels, getBotHighestRolePosition } from "@/lib/discord-guild";
 import { requireGuildManager } from "@/lib/guild-auth";
 import { Card } from "@/components/ui/card";
@@ -43,12 +43,13 @@ export default async function SecurityPage({
 }: PageProps<"/[locale]/dashboard/[guildId]/security">) {
   const { guildId } = await params;
   const t = await getTranslations("Dashboard.security");
-  const [[settings], roles, channels, botRolePosition, filterConfigRows] = await Promise.all([
+  const [[settings], [botSettings], roles, channels, botRolePosition, filterConfigRows] = await Promise.all([
     db
       .select()
       .from(guildSecuritySettings)
       .where(eq(guildSecuritySettings.guildId, guildId))
       .limit(1),
+    db.select().from(guildBotSettings).where(eq(guildBotSettings.guildId, guildId)).limit(1),
     getGuildRoles(guildId),
     getGuildChannels(guildId),
     getBotHighestRolePosition(guildId),
@@ -68,6 +69,25 @@ export default async function SecurityPage({
     muteMode: "timeout",
     muteRoleId: null as string | null,
     muteBlocksReactions: false,
+  };
+
+  // guild_bot_settings is shared with the Settings page (language, color,
+  // slash/text command toggles, project/server) - this page only owns the
+  // trusted-admin and member-joining columns on it.
+  const currentBot = botSettings ?? {
+    interfaceLanguage: "ru",
+    systemMessageColor: "#79040C",
+    enableSlashCommands: true,
+    enableTextCommands: true,
+    trustedAdminRoleIds: [] as string[],
+    defaultRoleIds: [] as string[],
+    alwaysAssignDefaultRoles: false,
+    restoreNicknameOnRejoin: false,
+    restoreOldRolesOnRejoin: false,
+    restorableRoleIds: [] as string[],
+    exemptRoleIds: [] as string[],
+    project: null as string | null,
+    server: null as string | null,
   };
 
   const filterConfigs = new Map(filterConfigRows.map((row) => [row.filterType, row]));
@@ -100,6 +120,33 @@ export default async function SecurityPage({
       .insert(guildSecuritySettings)
       .values(values)
       .onConflictDoUpdate({ target: guildSecuritySettings.guildId, set: values });
+
+    // Carry the columns this page doesn't own forward from what was already
+    // fetched, so this save only touches trusted-admin/member-joining.
+    // ponytail: read-modify-write race with a concurrent Settings-page save
+    // on the same row - acceptable given how rarely both get edited at once.
+    const botValues = {
+      guildId,
+      interfaceLanguage: currentBot.interfaceLanguage,
+      systemMessageColor: currentBot.systemMessageColor,
+      enableSlashCommands: currentBot.enableSlashCommands,
+      enableTextCommands: currentBot.enableTextCommands,
+      trustedAdminRoleIds: formData.getAll("trustedAdminRoleIds") as string[],
+      defaultRoleIds: formData.getAll("defaultRoleIds") as string[],
+      alwaysAssignDefaultRoles: formData.get("alwaysAssignDefaultRoles") === "on",
+      restoreNicknameOnRejoin: formData.get("restoreNicknameOnRejoin") === "on",
+      restoreOldRolesOnRejoin: formData.get("restoreOldRolesOnRejoin") === "on",
+      restorableRoleIds: formData.getAll("restorableRoleIds") as string[],
+      exemptRoleIds: formData.getAll("exemptRoleIds") as string[],
+      project: currentBot.project,
+      server: currentBot.server,
+      updatedAt: new Date(),
+    };
+    await db
+      .insert(guildBotSettings)
+      .values(botValues)
+      .onConflictDoUpdate({ target: guildBotSettings.guildId, set: botValues });
+
     revalidatePath(`/dashboard/${guildId}/security`);
   }
 
@@ -236,6 +283,117 @@ export default async function SecurityPage({
                 defaultChecked={current.allowHigherModsToModerateLower}
               />
             </label>
+          </div>
+        </Card>
+
+        <Card className="flex flex-col divide-y divide-border/60 p-0">
+          <div className="px-6 py-4">
+            <span className="text-sm font-medium">{t("accessSecurityTitle")}</span>
+          </div>
+          <div className="flex flex-col gap-1.5 px-6 py-4">
+            <Label htmlFor="trustedAdminRoleIds" className="-translate-y-3">
+              {t("trustedAdminRoles")}
+            </Label>
+            <div className="-translate-y-2">
+              <RolePicker
+                id="trustedAdminRoleIds"
+                name="trustedAdminRoleIds"
+                roles={roles}
+                defaultSelectedIds={currentBot.trustedAdminRoleIds}
+                addLabel={t("addRole")}
+                emptyLabel={t("rolesUnavailable")}
+              />
+            </div>
+            <p className="text-xs text-muted-foreground">{t("trustedAdminRolesHint")}</p>
+          </div>
+        </Card>
+
+        <Card className="flex flex-col divide-y divide-border/60 p-0">
+          <div className="px-6 py-4">
+            <span className="text-sm font-medium">{t("memberJoiningTitle")}</span>
+          </div>
+          <div className="flex flex-col divide-y divide-border/60">
+            <div className="flex flex-col gap-1.5 px-6 py-4">
+              <Label htmlFor="defaultRoleIds" className="-translate-y-3">
+                {t("defaultRoles")}
+              </Label>
+              <div className="-translate-y-2">
+                <RolePicker
+                  id="defaultRoleIds"
+                  name="defaultRoleIds"
+                  roles={roles}
+                  defaultSelectedIds={currentBot.defaultRoleIds}
+                  addLabel={t("addRole")}
+                  emptyLabel={t("rolesUnavailable")}
+                />
+              </div>
+              <p className="-translate-y-1 text-xs text-muted-foreground">
+                {t("defaultRolesHint")}
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-4 px-6 py-4">
+              <label
+                htmlFor="alwaysAssignDefaultRoles"
+                className="flex cursor-pointer items-center justify-between gap-4"
+              >
+                <span className="text-sm">{t("alwaysAssignDefaultRoles")}</span>
+                <Switch
+                  id="alwaysAssignDefaultRoles"
+                  name="alwaysAssignDefaultRoles"
+                  defaultChecked={currentBot.alwaysAssignDefaultRoles}
+                />
+              </label>
+              <label
+                htmlFor="restoreNicknameOnRejoin"
+                className="flex cursor-pointer items-center justify-between gap-4"
+              >
+                <span className="text-sm">{t("restoreNickname")}</span>
+                <Switch
+                  id="restoreNicknameOnRejoin"
+                  name="restoreNicknameOnRejoin"
+                  defaultChecked={currentBot.restoreNicknameOnRejoin}
+                />
+              </label>
+              <label
+                htmlFor="restoreOldRolesOnRejoin"
+                className="flex cursor-pointer items-center justify-between gap-4"
+              >
+                <span className="text-sm">{t("restoreOldRoles")}</span>
+                <Switch
+                  id="restoreOldRolesOnRejoin"
+                  name="restoreOldRolesOnRejoin"
+                  defaultChecked={currentBot.restoreOldRolesOnRejoin}
+                />
+              </label>
+            </div>
+
+            <div className="grid gap-4 px-6 py-4 sm:grid-cols-2">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="restorableRoleIds">{t("restorableRoles")}</Label>
+                <RolePicker
+                  id="restorableRoleIds"
+                  name="restorableRoleIds"
+                  roles={roles}
+                  defaultSelectedIds={currentBot.restorableRoleIds}
+                  addLabel={t("addRole")}
+                  emptyLabel={t("rolesUnavailable")}
+                />
+                <p className="text-xs text-muted-foreground">{t("restorableRolesHint")}</p>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="exemptRoleIds">{t("exemptRoles")}</Label>
+                <RolePicker
+                  id="exemptRoleIds"
+                  name="exemptRoleIds"
+                  roles={roles}
+                  defaultSelectedIds={currentBot.exemptRoleIds}
+                  addLabel={t("addRole")}
+                  emptyLabel={t("rolesUnavailable")}
+                />
+                <p className="text-xs text-muted-foreground">{t("exemptRolesHint")}</p>
+              </div>
+            </div>
           </div>
         </Card>
 
