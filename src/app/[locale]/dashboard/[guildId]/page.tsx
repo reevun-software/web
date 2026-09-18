@@ -1,7 +1,8 @@
 import { Users, Ticket as TicketIcon, ShieldAlert, Moon, UserX, LayoutDashboard, Lock } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { getBotGuildMembers, getBotTickets, getBotAfkSessions, getBotBans, getBotAuditLog } from "@/lib/bot-api";
+import { getBotGuildMembers, getBotTickets, getBotAfkSessions, getBotBans, getBotAuditLog, getBotGuildDepartments } from "@/lib/bot-api";
 import { describeAuditEntry } from "@/lib/audit-log";
+import { ticketRequestLabel } from "@/lib/ticket-label";
 import { getModuleStates } from "@/lib/guild-modules";
 import type { ModuleKey } from "@/lib/modules";
 import { cn } from "@/lib/utils";
@@ -22,13 +23,15 @@ export default async function DashboardOverviewPage({
     getModuleStates(guildId),
   ]);
 
-  const [members, allTickets, afk, blacklisted, recentActivity] = await Promise.all([
+  const [members, allTickets, afk, blacklisted, recentActivity, departments] = await Promise.all([
     getBotGuildMembers(guildId),
     getBotTickets(guildId),
     getBotAfkSessions(guildId),
     getBotBans(guildId),
     getBotAuditLog(guildId, 5),
+    getBotGuildDepartments(guildId),
   ]);
+  const departmentsById = new Map(departments.map((d) => [String(d.id), d.name]));
 
   const totalWarnings = members.reduce((sum, m) => sum + m.activeWarnings, 0);
   const openTickets = allTickets.filter((row) => row.status !== "closed").length;
@@ -134,7 +137,7 @@ export default async function DashboardOverviewPage({
             <Card className="flex flex-col divide-y divide-border/60 p-0">
               {recentTickets.map((row) => (
                 <div key={row.id} className="flex items-center justify-between px-4 py-2.5">
-                  <span className="text-sm">{row.departmentName ?? row.requestType ?? row.category}</span>
+                  <span className="text-sm">{ticketRequestLabel(row, departmentsById)}</span>
                   <div className="flex items-center gap-3">
                     <span className="text-xs text-muted-foreground">
                       {new Date(row.createdAt).toLocaleDateString(locale)}

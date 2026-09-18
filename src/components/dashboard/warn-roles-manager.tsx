@@ -103,6 +103,7 @@ export function WarnRolesManager({
             defaultValue={defaultPunishmentRoleId}
             placeholder={labels.punishmentRolePlaceholder}
             emptyLabel={labels.rolesUnavailable}
+            triggerClassName="sm:w-full"
           />
         </div>
       )}

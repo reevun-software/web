@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -35,6 +36,7 @@ export function RoleSelect({
   hierarchyWarningLabel,
   placeholder,
   emptyLabel,
+  triggerClassName,
 }: {
   id?: string;
   name: string;
@@ -44,6 +46,7 @@ export function RoleSelect({
   hierarchyWarningLabel?: string;
   placeholder: string;
   emptyLabel: string;
+  triggerClassName?: string;
 }) {
   const [selectedId, setSelectedId] = useState(
     defaultValue && roles.some((r) => r.id === defaultValue) ? defaultValue : null,
@@ -72,7 +75,7 @@ export function RoleSelect({
             id={id}
             type="button"
             variant="outline"
-            className="w-full cursor-pointer justify-between gap-1.5 sm:w-64"
+            className={cn("w-full cursor-pointer justify-between gap-1.5 sm:w-64", triggerClassName)}
           >
             <span className="flex min-w-0 items-center gap-1.5">
               {selected ? (

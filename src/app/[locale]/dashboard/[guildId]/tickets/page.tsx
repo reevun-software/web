@@ -1,7 +1,8 @@
 import { Ticket as TicketIcon } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { getBotTickets } from "@/lib/bot-api";
+import { getBotTickets, getBotGuildDepartments } from "@/lib/bot-api";
 import { getModuleStates } from "@/lib/guild-modules";
+import { ticketRequestLabel } from "@/lib/ticket-label";
 import { Badge } from "@/components/ui/badge";
 import { ModuleDisabledNotice } from "@/components/dashboard/module-disabled-notice";
 import {
@@ -28,9 +29,14 @@ export default async function TicketsPage({
     return <ModuleDisabledNotice title={tDash("moduleDisabledTitle")} body={tDash("moduleDisabledBody")} />;
   }
 
-  const rows = [...(await getBotTickets(guildId))].sort(
+  const [tickets, departments] = await Promise.all([
+    getBotTickets(guildId),
+    getBotGuildDepartments(guildId),
+  ]);
+  const rows = [...tickets].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
+  const departmentsById = new Map(departments.map((d) => [String(d.id), d.name]));
 
   if (rows.length === 0) {
     return (
@@ -63,7 +69,7 @@ export default async function TicketsPage({
           {rows.map((row) => (
             <TableRow key={row.id}>
               <TableCell className="font-mono text-xs">{row.uid ?? row.ticketKey}</TableCell>
-              <TableCell>{row.departmentName ?? row.requestType ?? row.category}</TableCell>
+              <TableCell>{ticketRequestLabel(row, departmentsById)}</TableCell>
               <TableCell>
                 <Badge variant={row.status !== "closed" ? "default" : "secondary"}>
                   {row.status !== "closed" ? t("statusOpen") : t("statusClosed")}

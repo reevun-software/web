@@ -23,7 +23,7 @@ export default async function DashboardPage() {
     redirect({ href: `/dashboard/${installed[0].id}`, locale });
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-1 flex-col items-center justify-center gap-4 px-6 py-24 text-center">
+    <div className="mx-auto flex max-w-3xl flex-1 flex-col items-center justify-center gap-4 px-6 py-24 text-center">
       {installed.length === 0 ? (
         <>
           <Layers className="size-8 text-muted-foreground" strokeWidth={1.5} />

@@ -362,7 +362,7 @@ export default async function SettingsPage({
                 <span className="text-sm font-medium">{t("modulesTitle")}</span>
                 <p className="text-xs text-muted-foreground">{t("modulesHint")}</p>
               </div>
-              <div className="flex flex-col gap-4 px-6 py-4">
+              <div className="flex flex-col gap-3 px-6 py-3">
                 {(
                   [
                     ["warnings", t("moduleWarnings")],

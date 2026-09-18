@@ -23,7 +23,7 @@ export function FamilyPicker({ families }: { families: PickableFamily[] }) {
           <Card className="overflow-hidden border-border/60 p-0 transition-colors hover:border-primary/40 hover:bg-accent/40">
             <Link
               href={`/dashboard/${family.id}`}
-              className="group flex items-center gap-3 px-5 py-4 text-left transition-transform active:scale-[0.99]"
+              className="group flex items-center gap-3 px-6 py-3 text-left transition-transform active:scale-[0.99]"
             >
               <Avatar size="lg" className="shrink-0">
                 {family.icon && (
