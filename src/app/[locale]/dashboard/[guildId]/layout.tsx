@@ -5,11 +5,9 @@ import { redirect, Link } from "@/i18n/navigation";
 import { auth } from "@/lib/auth";
 import { getManageableGuilds } from "@/lib/guilds";
 import { getModuleStates } from "@/lib/guild-modules";
-import { SUPPORT_DISCORD_URL } from "@/lib/discord";
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
 import { AccountMenu } from "@/components/account-menu";
 import { Button } from "@/components/ui/button";
-import { DiscordIcon } from "@/components/icons/discord-icon";
 
 export default async function GuildLayout({
   children,
@@ -69,20 +67,7 @@ export default async function GuildLayout({
         <main className="flex-1 p-6">{children}</main>
         <footer className="flex flex-col items-center gap-3 border-t border-border/60 px-6 py-4 text-xs text-muted-foreground sm:flex-row sm:justify-between">
           <span>{t("footerCopyright", { year: new Date().getFullYear() })}</span>
-          <div className="flex items-center gap-4">
-            <span>{t("footerRightsReserved")}</span>
-            <div className="flex items-center gap-3">
-              <Link
-                href={SUPPORT_DISCORD_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Discord"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <DiscordIcon className="size-4" />
-              </Link>
-            </div>
-          </div>
+          <span>{t("footerRightsReserved")}</span>
         </footer>
       </div>
     </div>

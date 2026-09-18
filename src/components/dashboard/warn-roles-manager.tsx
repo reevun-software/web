@@ -59,6 +59,7 @@ export function WarnRolesManager({
             defaultValue={defaultWarnRole1}
             placeholder={labels.roleNone}
             emptyLabel={labels.rolesUnavailable}
+            triggerClassName="sm:w-full"
           />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -70,6 +71,7 @@ export function WarnRolesManager({
             defaultValue={defaultWarnRole2}
             placeholder={labels.roleNone}
             emptyLabel={labels.rolesUnavailable}
+            triggerClassName="sm:w-full"
           />
         </div>
         <div className="flex flex-col gap-1.5">
