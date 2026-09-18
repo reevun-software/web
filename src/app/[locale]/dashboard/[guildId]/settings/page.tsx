@@ -358,11 +358,11 @@ export default async function SettingsPage({
         ) : (
           <>
             <Card className="flex flex-col divide-y divide-border/60 p-0">
-              <div className="px-6 py-4">
+              <div className="px-6 pt-4 pb-2">
                 <span className="text-sm font-medium">{t("modulesTitle")}</span>
                 <p className="text-xs text-muted-foreground">{t("modulesHint")}</p>
               </div>
-              <div className="flex flex-col gap-2 px-6 py-2">
+              <div className="flex flex-col gap-2 px-6 pt-1 pb-2">
                 {(
                   [
                     ["warnings", t("moduleWarnings")],
