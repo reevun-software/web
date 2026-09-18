@@ -339,6 +339,7 @@
       "addDepartment": "Añadir departamento",
       "departmentNamePlaceholder": "Nombre del departamento",
       "noDepartments": "Aún no hay departamentos",
+      "departmentRecruitmentOpen": "Reclutamiento abierto",
       "departmentMembers": "Miembros",
       "addMembers": "Seleccionar miembros",
       "noMembers": "No hay miembros disponibles",

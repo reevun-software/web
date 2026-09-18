@@ -209,6 +209,13 @@ export default async function SettingsPage({
     revalidatePath(`/dashboard/${guildId}/settings`);
   }
 
+  async function updateDepartmentRecruitment(id: number, open: boolean) {
+    "use server";
+    if (!(await isGuildOwner(guildId))) return;
+    await updateBotGuildDepartment(guildId, id, { recruitmentOpen: open });
+    revalidatePath(`/dashboard/${guildId}/settings`);
+  }
+
   async function updateDepartmentQuestions(id: number, formData: FormData) {
     "use server";
     if (!(await isGuildOwner(guildId))) return;
@@ -388,10 +395,12 @@ export default async function SettingsPage({
                   deleteDepartment={deleteDepartment}
                   updateDepartmentMembers={updateDepartmentMembers}
                   updateDepartmentQuestions={updateDepartmentQuestions}
+                  updateDepartmentRecruitment={updateDepartmentRecruitment}
                   labels={{
                     addDepartment: t("addDepartment"),
                     namePlaceholder: t("departmentNamePlaceholder"),
                     noDepartments: t("noDepartments"),
+                    recruitmentOpen: t("departmentRecruitmentOpen"),
                     members: t("departmentMembers"),
                     addMembers: t("addMembers"),
                     noMembers: t("noMembers"),

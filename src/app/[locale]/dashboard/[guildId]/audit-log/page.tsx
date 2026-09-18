@@ -1,9 +1,8 @@
 import { History } from "lucide-react";
-import { getLocale, getTranslations } from "next-intl/server";
-import { getBotAuditLog, getBotGuildMembers, type BotAuditLogEntry } from "@/lib/bot-api";
-import { describeAuditEntry } from "@/lib/audit-log";
+import { getTranslations } from "next-intl/server";
+import { getBotAuditLog, getBotGuildMembers } from "@/lib/bot-api";
 import { requireGuildManager } from "@/lib/guild-auth";
-import { AuditLogTable, type AuditLogRow } from "@/components/dashboard/audit-log-table";
+import { AuditLogTable } from "@/components/dashboard/audit-log-table";
 
 const PAGE_SIZE = 50;
 
@@ -11,34 +10,11 @@ export default async function AuditLogPage({
   params,
 }: PageProps<"/[locale]/dashboard/[guildId]/audit-log">) {
   const { guildId } = await params;
-  const [t, locale] = await Promise.all([
-    getTranslations("Dashboard.auditLog"),
-    getLocale(),
-  ]);
+  const t = await getTranslations("Dashboard.auditLog");
   const members = await getBotGuildMembers(guildId);
-  const usernames = new Map(members.map((m) => [m.discordId, m.username]));
-  const nameOf = (id: string) => usernames.get(id) ?? id;
+  const usernames = Object.fromEntries(members.map((m) => [m.discordId, m.username]));
 
-  function toRow(entry: BotAuditLogEntry): AuditLogRow {
-    return {
-      id: entry.id,
-      description: describeAuditEntry(t, nameOf(entry.userId), entry),
-      admin: entry.administratorId ? nameOf(entry.administratorId) : t("systemActor"),
-      reason: (entry.reason ?? entry.warningReason) || "—",
-      date: new Date(entry.createdAt).toLocaleString(locale),
-    };
-  }
-
-  // The bot API has no real offset-based pagination yet - re-fetch with a
-  // bigger limit each "load more" click and slice off the new tail server
-  // side. A closure over the full fetched array (the previous approach)
-  // got embedded as bound arguments in the server action's payload, which
-  // blew up past Next.js's request size limit once a family had enough
-  // audit history - every "Показать ещё" click 500'd. Re-fetching is
-  // stateless (no captured array), and works fine at this data scale;
-  // revisit with real DB offset pagination if audit history grows large
-  // enough for repeated re-fetches to matter.
-  const firstPage = (await getBotAuditLog(guildId, PAGE_SIZE)).map(toRow);
+  const firstPage = await getBotAuditLog(guildId, PAGE_SIZE);
 
   if (firstPage.length === 0) {
     return (
@@ -50,13 +26,19 @@ export default async function AuditLogPage({
     );
   }
 
+  // Stays free of any closure over a plain function (t, a translator built
+  // from getTranslations, a nameOf lookup, etc.) - a "use server" action's
+  // bound closure values must be plain data, and Next.js rejects a
+  // captured function with "Functions cannot be passed directly to Client
+  // Components". Only guildId (a string) gets captured here; entries come
+  // back raw and get formatted client side instead (see AuditLogTable).
   async function loadMore(offset: number) {
     "use server";
     await requireGuildManager(guildId);
     const nextLimit = offset + PAGE_SIZE;
     const entries = await getBotAuditLog(guildId, nextLimit);
     const rows = entries.slice(offset, nextLimit);
-    return { entries: rows.map(toRow), hasMore: entries.length === nextLimit };
+    return { entries: rows, hasMore: entries.length === nextLimit };
   }
 
   return (
@@ -69,6 +51,7 @@ export default async function AuditLogPage({
         initialEntries={firstPage}
         initialHasMore={firstPage.length === PAGE_SIZE}
         loadMore={loadMore}
+        usernames={usernames}
         labels={{
           colAction: t("colAction"),
           colAdmin: t("colAdmin"),
@@ -76,6 +59,7 @@ export default async function AuditLogPage({
           colDate: t("colDate"),
           searchPlaceholder: t("searchPlaceholder"),
           loadMore: t("loadMore"),
+          systemActor: t("systemActor"),
         }}
       />
     </div>

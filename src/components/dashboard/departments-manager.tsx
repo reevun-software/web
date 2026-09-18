@@ -5,6 +5,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
 import { MemberPicker, type PickableMember } from "@/components/dashboard/member-picker";
 import { DepartmentQuestionsSheet } from "@/components/dashboard/department-questions-sheet";
 import type { DepartmentQuestion } from "@/lib/bot-api";
@@ -14,6 +15,7 @@ export type Department = {
   name: string;
   memberDiscordIds: string[];
   questions: DepartmentQuestion[];
+  recruitmentOpen: boolean;
 };
 
 export function DepartmentsManager({
@@ -23,6 +25,7 @@ export function DepartmentsManager({
   deleteDepartment,
   updateDepartmentMembers,
   updateDepartmentQuestions,
+  updateDepartmentRecruitment,
   labels,
 }: {
   departments: Department[];
@@ -31,10 +34,12 @@ export function DepartmentsManager({
   deleteDepartment: (id: number) => Promise<void>;
   updateDepartmentMembers: (id: number, memberIds: string[]) => Promise<void>;
   updateDepartmentQuestions: (id: number, formData: FormData) => Promise<void>;
+  updateDepartmentRecruitment: (id: number, open: boolean) => Promise<void>;
   labels: {
     addDepartment: string;
     namePlaceholder: string;
     noDepartments: string;
+    recruitmentOpen: string;
     members: string;
     addMembers: string;
     noMembers: string;
@@ -100,7 +105,16 @@ export function DepartmentsManager({
             <Card key={dept.id} className="flex flex-col gap-2 p-4">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-sm font-medium">{dept.name}</span>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs text-muted-foreground">{labels.recruitmentOpen}</span>
+                    <Switch
+                      checked={dept.recruitmentOpen}
+                      onCheckedChange={(checked) =>
+                        startTransition(() => updateDepartmentRecruitment(dept.id, checked))
+                      }
+                    />
+                  </div>
                   <DepartmentQuestionsSheet
                     departmentName={dept.name}
                     questions={dept.questions}

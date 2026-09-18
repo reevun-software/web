@@ -339,6 +339,7 @@
       "addDepartment": "Abteilung hinzufügen",
       "departmentNamePlaceholder": "Name der Abteilung",
       "noDepartments": "Noch keine Abteilungen",
+      "departmentRecruitmentOpen": "Rekrutierung geöffnet",
       "departmentMembers": "Mitglieder",
       "addMembers": "Mitglieder auswählen",
       "noMembers": "Keine Mitglieder verfügbar",

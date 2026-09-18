@@ -339,6 +339,7 @@
       "addDepartment": "添加部门",
       "departmentNamePlaceholder": "部门名称",
       "noDepartments": "暂无部门",
+      "departmentRecruitmentOpen": "招募中",
       "departmentMembers": "成员",
       "addMembers": "选择成员",
       "noMembers": "没有可选成员",

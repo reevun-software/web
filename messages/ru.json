@@ -339,6 +339,7 @@
       "addDepartment": "Добавить отдел",
       "departmentNamePlaceholder": "Название отдела",
       "noDepartments": "Пока нет отделов",
+      "departmentRecruitmentOpen": "Набор открыт",
       "departmentMembers": "Участники",
       "addMembers": "Выберите участников",
       "noMembers": "Нет доступных участников",
