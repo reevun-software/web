@@ -29,12 +29,16 @@ export default async function AuditLogPage({
     };
   }
 
-  // The bot API has no offset-based pagination yet - fetch enough for a
-  // first page plus a bit more, and page further loadMore calls in-memory.
-  // Fine at this data scale; revisit with real DB offset pagination if a
-  // family's audit history grows large enough for this to matter.
-  const allEntries = await getBotAuditLog(guildId, PAGE_SIZE * 4);
-  const firstPage = allEntries.slice(0, PAGE_SIZE);
+  // The bot API has no real offset-based pagination yet - re-fetch with a
+  // bigger limit each "load more" click and slice off the new tail server
+  // side. A closure over the full fetched array (the previous approach)
+  // got embedded as bound arguments in the server action's payload, which
+  // blew up past Next.js's request size limit once a family had enough
+  // audit history - every "Показать ещё" click 500'd. Re-fetching is
+  // stateless (no captured array), and works fine at this data scale;
+  // revisit with real DB offset pagination if audit history grows large
+  // enough for repeated re-fetches to matter.
+  const firstPage = (await getBotAuditLog(guildId, PAGE_SIZE)).map(toRow);
 
   if (firstPage.length === 0) {
     return (
@@ -49,8 +53,10 @@ export default async function AuditLogPage({
   async function loadMore(offset: number) {
     "use server";
     await requireGuildManager(guildId);
-    const rows = allEntries.slice(offset, offset + PAGE_SIZE);
-    return { entries: rows.map(toRow), hasMore: offset + PAGE_SIZE < allEntries.length };
+    const nextLimit = offset + PAGE_SIZE;
+    const entries = await getBotAuditLog(guildId, nextLimit);
+    const rows = entries.slice(offset, nextLimit);
+    return { entries: rows.map(toRow), hasMore: entries.length === nextLimit };
   }
 
   return (
@@ -60,7 +66,7 @@ export default async function AuditLogPage({
         <h1 className="text-xl font-semibold tracking-tight">{t("heading")}</h1>
       </div>
       <AuditLogTable
-        initialEntries={firstPage.map(toRow)}
+        initialEntries={firstPage}
         initialHasMore={firstPage.length === PAGE_SIZE}
         loadMore={loadMore}
         labels={{
