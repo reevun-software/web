@@ -1,15 +1,16 @@
 "use client"
 
-import { useTheme } from "next-themes"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 import { CircleCheckIcon, InfoIcon, TriangleAlertIcon, CircleXIcon, Loader2Icon } from "lucide-react"
 
+// App is dark-only by design (see globals.css / the root layout's hardcoded
+// `className="dark"`) - there's no ThemeProvider to make next-themes'
+// useTheme() do anything, so it always resolved to the "system" fallback
+// regardless of the app's own theme.
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
-
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
+      theme="dark"
       className="toaster group"
       closeButton
       richColors

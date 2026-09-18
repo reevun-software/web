@@ -10,9 +10,6 @@ import { DashboardSidebar } from "@/components/dashboard/sidebar";
 import { AccountMenu } from "@/components/account-menu";
 import { Button } from "@/components/ui/button";
 import { DiscordIcon } from "@/components/icons/discord-icon";
-import { TelegramIcon } from "@/components/icons/telegram-icon";
-import { XIcon } from "@/components/icons/x-icon";
-import { GithubIcon } from "@/components/icons/github-icon";
 
 export default async function GuildLayout({
   children,
@@ -83,15 +80,6 @@ export default async function GuildLayout({
                 className="text-muted-foreground hover:text-foreground"
               >
                 <DiscordIcon className="size-4" />
-              </Link>
-              <Link href="/" aria-label="Telegram" className="text-muted-foreground hover:text-foreground">
-                <TelegramIcon className="size-4" />
-              </Link>
-              <Link href="/" aria-label="X" className="text-muted-foreground hover:text-foreground">
-                <XIcon className="size-4" />
-              </Link>
-              <Link href="/" aria-label="GitHub" className="text-muted-foreground hover:text-foreground">
-                <GithubIcon className="size-4" />
               </Link>
             </div>
           </div>

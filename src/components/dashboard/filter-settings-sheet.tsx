@@ -108,7 +108,7 @@ export function FilterSettingsSheet({
             }
           >
             <XIcon className="size-4" />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">{labels.close}</span>
           </DialogPrimitive.Close>
           <form action={handleSubmit} className="flex min-h-0 flex-1 flex-col">
             <div className="shrink-0 border-b border-border/60 px-6 py-4">

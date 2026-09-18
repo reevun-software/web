@@ -199,6 +199,7 @@ export default async function SecurityPage({
     saving: t("saving"),
     saved: t("saved"),
     saveFailed: t("saveFailed"),
+    close: t("closeDialog"),
     settingsButtonLabel: t("filterSettings.settingsButtonLabel"),
     searchRoles: t("searchRoles"),
     searchChannels: t("searchChannels"),

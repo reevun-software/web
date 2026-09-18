@@ -58,6 +58,7 @@ export function DepartmentsManager({
     save: string;
     saving: string;
     saved: string;
+    close: string;
   };
 }) {
   const [name, setName] = useState("");
@@ -91,6 +92,7 @@ export function DepartmentsManager({
           size="icon"
           className="cursor-pointer shrink-0"
           disabled={!name.trim() || isPending}
+          aria-label={labels.addDepartment}
           onClick={submitCreate}
         >
           <Plus className="size-4" strokeWidth={1.5} />
@@ -133,6 +135,7 @@ export function DepartmentsManager({
                       save: labels.save,
                       saving: labels.saving,
                       saved: labels.saved,
+                      close: labels.close,
                     }}
                   />
                   <Button

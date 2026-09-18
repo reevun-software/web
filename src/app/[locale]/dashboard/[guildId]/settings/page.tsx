@@ -419,6 +419,7 @@ export default async function SettingsPage({
                     save: t("save"),
                     saving: t("saving"),
                     saved: t("saved"),
+                    close: t("closeDialog"),
                   }}
                 />
               </div>
