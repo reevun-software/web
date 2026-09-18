@@ -36,7 +36,7 @@ export default async function RanksPage({
       </div>
       <Card className="flex flex-col divide-y divide-border/60 p-0">
         {rows.map(([rank, n]) => (
-          <div key={rank} className="flex items-center justify-between px-5 py-3">
+          <div key={rank} className="flex items-center justify-between px-4 py-2.5">
             <span className="text-sm font-medium">{t("rank", { n: rank })}</span>
             <span className="text-sm text-muted-foreground">{t("memberCount", { n })}</span>
           </div>

@@ -133,7 +133,7 @@ export default async function DashboardOverviewPage({
           ) : (
             <Card className="flex flex-col divide-y divide-border/60 p-0">
               {recentTickets.map((row) => (
-                <div key={row.id} className="flex items-center justify-between px-5 py-3">
+                <div key={row.id} className="flex items-center justify-between px-4 py-2.5">
                   <span className="text-sm">{row.departmentName ?? row.requestType ?? row.category}</span>
                   <div className="flex items-center gap-3">
                     <span className="text-xs text-muted-foreground">
@@ -156,7 +156,7 @@ export default async function DashboardOverviewPage({
           ) : (
             <Card className="flex flex-col divide-y divide-border/60 p-0">
               {topWarned.map((m) => (
-                <div key={m.discordId} className="flex items-center justify-between px-5 py-3">
+                <div key={m.discordId} className="flex items-center justify-between px-4 py-2.5">
                   <span className="flex items-center gap-2.5 text-sm">
                     <Avatar className="size-6">
                       <AvatarFallback className="text-xs">{m.username[0]}</AvatarFallback>
@@ -177,7 +177,7 @@ export default async function DashboardOverviewPage({
           ) : (
             <Card className="flex flex-col divide-y divide-border/60 p-0">
               {recentActivity.map((entry) => (
-                <div key={entry.id} className="flex flex-col gap-1 px-5 py-3">
+                <div key={entry.id} className="flex flex-col gap-1 px-4 py-2.5">
                   <span className="text-sm">
                     {describeAuditEntry(tAuditLog, nameOf(entry.userId), entry)}
                   </span>

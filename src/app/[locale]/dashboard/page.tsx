@@ -4,9 +4,9 @@ import { Link, redirect } from "@/i18n/navigation";
 import { auth } from "@/lib/auth";
 import { getManageableGuilds } from "@/lib/guilds";
 import { DISCORD_BOT_INVITE_URL } from "@/lib/discord";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { OAuthPopupButton } from "@/components/auth/oauth-popup-button";
+import { FamilyPicker } from "@/components/dashboard/family-picker";
 
 export default async function DashboardPage() {
   const locale = await getLocale();
@@ -24,9 +24,9 @@ export default async function DashboardPage() {
 
   return (
     <div className="mx-auto flex max-w-2xl flex-1 flex-col items-center justify-center gap-4 px-6 py-24 text-center">
-      <Layers className="size-8 text-muted-foreground" strokeWidth={1.5} />
       {installed.length === 0 ? (
         <>
+          <Layers className="size-8 text-muted-foreground" strokeWidth={1.5} />
           <h1 className="text-xl font-medium">{t("noFamiliesTitle")}</h1>
           <p className="max-w-[46ch] text-sm text-muted-foreground">
             {t("noFamiliesBody")}
@@ -43,19 +43,13 @@ export default async function DashboardPage() {
         </>
       ) : (
         <>
-          <h1 className="text-xl font-medium">{t("chooseFamilyTitle")}</h1>
-          <div className="flex w-full flex-col gap-2">
-            {installed.map((g) => (
-              <Card key={g.id} className="p-0">
-                <Link
-                  href={`/dashboard/${g.id}`}
-                  className="block px-4 py-3 text-left text-sm font-medium transition-colors hover:bg-accent/60"
-                >
-                  {g.name}
-                </Link>
-              </Card>
-            ))}
+          <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/10">
+            <Layers className="size-7 text-primary" strokeWidth={1.5} />
           </div>
+          <h1 className="text-2xl font-semibold tracking-tight">{t("chooseFamilyTitle")}</h1>
+          <FamilyPicker
+            families={installed.map((g) => ({ id: g.id, name: g.name, icon: g.icon }))}
+          />
         </>
       )}
     </div>

@@ -49,7 +49,7 @@ export function WarnRolesManager({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-3">
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="warnRole1">{labels.warnRole1}</Label>
           <RoleSelect
@@ -72,27 +72,26 @@ export function WarnRolesManager({
             emptyLabel={labels.rolesUnavailable}
           />
         </div>
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="warnPunishmentMode">{labels.punishmentMode}</Label>
+          <Select
+            name="warnPunishmentMode"
+            defaultValue={defaultPunishmentMode}
+            onValueChange={(v) => setPunishmentMode(v as WarnPunishmentMode)}
+          >
+            <SelectTrigger id="warnPunishmentMode" className="w-full">
+              <SelectValue>{(value: string) => modeLabel(value)}</SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="stripRoles">{labels.punishmentModeStripRoles}</SelectItem>
+              <SelectItem value="kick">{labels.punishmentModeKick}</SelectItem>
+              <SelectItem value="ban">{labels.punishmentModeBan}</SelectItem>
+              <SelectItem value="assignRole">{labels.punishmentModeAssignRole}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
-
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="warnPunishmentMode">{labels.punishmentMode}</Label>
-        <Select
-          name="warnPunishmentMode"
-          defaultValue={defaultPunishmentMode}
-          onValueChange={(v) => setPunishmentMode(v as WarnPunishmentMode)}
-        >
-          <SelectTrigger id="warnPunishmentMode" className="w-full sm:w-72">
-            <SelectValue>{(value: string) => modeLabel(value)}</SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="stripRoles">{labels.punishmentModeStripRoles}</SelectItem>
-            <SelectItem value="kick">{labels.punishmentModeKick}</SelectItem>
-            <SelectItem value="ban">{labels.punishmentModeBan}</SelectItem>
-            <SelectItem value="assignRole">{labels.punishmentModeAssignRole}</SelectItem>
-          </SelectContent>
-        </Select>
-        <p className="text-xs text-muted-foreground">{labels.punishmentModeHint}</p>
-      </div>
+      <p className="-mt-2 text-xs text-muted-foreground">{labels.punishmentModeHint}</p>
 
       {punishmentMode === "assignRole" && (
         <div className="flex flex-col gap-1.5 animate-in fade-in slide-in-from-top-1 duration-150 ease-out">
